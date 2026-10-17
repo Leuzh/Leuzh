@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10091d">
+<meta name="description" content="Découvre l'univers de Lipoip, ses passions, ses collections et ses différentes facettes.">
+<title>Lipoip | Un univers à découvrir</title>
+
+<style>
+:root {
+  --bg: #10091d;
+  --panel: #1b102b;
+  --purple: #b18aff;
+  --light: #e8dcff;
+  --muted: #b9abc9;
+  --border: #49315f;
+}
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  color: var(--light);
+  background:
+    radial-gradient(ellipse at 50% 0%, #38204f 0%, transparent 48%),
+    var(--bg);
+  font-family: system-ui, sans-serif;
+  line-height: 1.7;
+}
+
+a { color: inherit; }
+
+header {
+  text-align: center;
+  padding: 78px 20px 48px;
+}
+
+.symbol {
+  color: var(--purple);
+  font-size: 36px;
+  text-shadow: 0 0 25px #a66cff;
+}
+
+h1 {
+  margin: 8px 0;
+  font-size: clamp(42px, 12vw, 70px);
+  letter-spacing: 5px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: var(--purple);
+  letter-spacing: 2px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.intro {
+  max-width: 530px;
+  margin: 22px auto 0;
+  color: var(--muted);
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 16px 30px;
+}
+
+nav a, .social a {
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 15px;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+nav a:hover, .social a:hover {
+  background: #38204f;
+  border-color: var(--purple);
+}
+
+main {
+  max-width: 760px;
+  padding: 0 20px;
+  margin: auto;
+}
+
+section {
+  margin: 22px 0;
+  padding: 27px;
+  background: linear-gradient(145deg, #211431, #170e24);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+h2 {
+  color: var(--purple);
+  font-size: 22px;
+  margin-top: 0;
+}
+
+h3 { margin-bottom: 4px; }
+
+p { color: var(--muted); }
+
+.value {
+  padding: 8px 0;
+  border-bottom: 1px solid #352440;
+}
+
+.value:last-child { border-bottom: 0; }
+
+.value strong { color: var(--light); }
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.tag {
+  border: 1px solid var(--border);
+  background: #29183a;
+  border-radius: 12px;
+  padding: 7px 12px;
+  font-size: 13px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.photo {
+  min-height: 115px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #76558e;
+  border-radius: 14px;
+  color: #bba5d2;
+  text-align: center;
+  padding: 12px;
+  background: #170e24;
+  font-size: 13px;
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.social a {
+  flex: 1;
+  text-align: center;
+  min-width: 130px;
+  padding: 13px;
+  background: #29183a;
+}
+
+footer {
+  text-align: center;
+  padding: 38px 20px 48px;
+  color: #9b87ad;
+  font-size: 13px;
+}
+
+footer strong {
+  display: block;
+  color: var(--purple);
+  margin-top: 10px;
+}
+
+@media (max-width: 420px) {
+  section { padding: 21px; }
+  .gallery { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="symbol" aria-hidden="true">✧</div>
+  <h1>Lipoip</h1>
+  <div class="subtitle">Entre ombre et imagination</div>
+  <p class="intro">
+    Une personne, plusieurs facettes, un univers à découvrir.
+    Bienvenue dans mon petit coin du monde.
+  </p>
+</header>
+
+<nav aria-label="Navigation principale">
+  <a href="#moi">Qui je suis</a>
+  <a href="#passions">Mes passions</a>
+  <a href="#album">Mon album</a>
+  <a href="#reseaux">Mes réseaux</a>
+</nav>
+
+<main>
+  <section id="moi">
+    <h2>✧ Qui je suis</h2>
+    <p>
+      J'aime explorer les idées, observer, questionner et chercher
+      du sens là où d'autres ne voient parfois que des détails.
+      La curiosité et l'imagination occupent une place importante
+      dans mon univers.
+    </p>
+    <p>
+      Je peux être sérieux et réfléchi, puis laisser place à un
+      côté plus spontané et décalé. Je ne cherche pas à me résumer
+      à une seule étiquette : je préfère laisser mes différentes
+      facettes coexister.
+    </p>
+
+    <h3>Mes valeurs</h3>
+    <div class="value">
+      <strong>L'intégrité</strong>
+      <p>Rester fidèle à ce que je pense juste.</p>
+    </div>
+    <div class="value">
+      <strong>La loyauté</strong>
+      <p>Accorder de l'importance aux liens que je choisis.</p>
+    </div>
+    <div class="value">
+      <strong>La patience</strong>
+      <p>Prendre le temps d'observer et de comprendre.</p>
+    </div>
+    <div class="value">
+      <strong>La curiosité</strong>
+      <p>Continuer à apprendre, questionner et découvrir.</p>
+    </div>
+    <p><em>
+      Je préfère que l'on apprenne à me connaître page après page.
+    </em></p>
+  </section>
+
+  <section id="passions">
+    <h2>☾ Mes passions et collections</h2>
+    <p>
+      J'aime les univers qui ont une identité, une histoire et
+      une âme. Les jeux, les cartes à collectionner, les figurines
+      et les mondes imaginaires font partie de mes passions.
+    </p>
+    <p>
+      J'aime aussi créer des personnages, imaginer des histoires
+      et construire des mondes dans lesquels chaque détail peut
+      avoir un sens.
+    </p>
+    <div class="tags">
+      <span class="tag">Cartes à collectionner</span>
+      <span class="tag">Pokémon</span>
+      <span class="tag">Jeux vidéo</span>
+      <span class="tag">Figurines</span>
+      <span class="tag">Imaginaire</span>
+      <span class="tag">Écriture</span>
+    </div>
+  </section>
+
+  <section id="album">
+    <h2>☽ Mon album</h2>
+    <p>
+      Quelques fragments de mon univers, en images.
+      Cette galerie sera complétée au fil du temps.
+    </p>
+    <div class="gallery">
+      <div class="photo">✧<br>Une photo à ajouter</div>
+      <div class="photo">☾<br>Un instant à partager</div>
+    </div>
+  </section>
+
+  <section id="reseaux">
+    <h2>✦ Me retrouver ailleurs</h2>
+    <p>
+      Tu peux également découvrir d'autres facettes de mon univers
+      sur mes réseaux sociaux.
+    </p>
+    <div class="social">
+      <a href="https://www.instagram.com/leuzh_lipoip?rpxt=Nm0zYm0zNXNncTZk"
+         target="_blank" rel="noopener noreferrer">
+        Instagram ↗
+      </a>
+      <a href="https://www.tiktok.com/@leuzhlipoip?_r=1&_t=ZN-9Adoo4NVLLq"
+         target="_blank" rel="noopener noreferrer">
+        TikTok ↗
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Merci d'avoir pris le temps de découvrir ces quelques pages.
+  <strong>Tout ne se révèle pas au premier regard.</strong>
+  <p>✧ Lipoip ✧</p>
+</footer>
+</body>
+</html>
+
