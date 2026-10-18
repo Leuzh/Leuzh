@@ -461,11 +461,11 @@
       border: 0;
       border-radius: 50%;
       background: transparent;
-      color: rgba(210,190,245,.22);
-      font-size: 8px;
+      color: rgba(235,222,255,.72);
+      font-size: 10px;
       line-height: 1;
       cursor: pointer;
-      opacity: .42;
+      opacity: .78;
       transition: color .2s, opacity .2s, text-shadow .2s;
       vertical-align: middle;
       -webkit-tap-highlight-color: transparent;
@@ -476,10 +476,10 @@
       text-shadow: 0 0 7px rgba(177,138,255,.75);
       outline: 1px solid rgba(217,193,255,.45);
     }
-    .cie-feather.found { color: rgba(197,160,255,.18); opacity: .35; }
+    .cie-feather.found { color: rgba(197,160,255,.48); opacity: .58; }
     .cie-feather--tag { width: 16px; height: 16px; font-size: 7px; margin-left: 1px; }
     .photo { position: relative; }
-    .cie-feather--photo { position: absolute; right: 8px; bottom: 8px; z-index: 2; }
+    .cie-feather--photo { position: absolute; top: 8px; right: 8px; bottom: auto; z-index: 10; width: 28px; height: 28px; font-size: 12px; opacity: .96; color: #f2eaff; background: rgba(16,9,29,.88); border: 1px solid rgba(217,193,255,.72); box-shadow: 0 1px 7px rgba(0,0,0,.65); }
     .social { position: relative; }
     .cie-feather--social { position: absolute; right: 4px; top: calc(50% + 17px); z-index: 2; }
     .cie-feather--footer { margin-left: 2px; }
@@ -493,6 +493,63 @@
     .cie-constellation { margin-top: 18px; padding: 16px; border: 1px solid rgba(190,150,255,.28); border-radius: 14px; background: rgba(20,12,35,.62); }
     .cie-constellation-stars { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0; }
     .cie-final-riddle { margin-top: 16px; padding: 16px; border-left: 3px solid #ffd66e; background: rgba(125,82,180,.12); border-radius: 0 12px 12px 0; }
+
+
+    /* Secret de personnalité : discret, mais utilisable au toucher */
+    .secret-word {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+    .secret-word:focus-visible, .secret-star:focus-visible {
+      outline: 2px solid var(--purple);
+      outline-offset: 3px;
+    }
+    .secret-star {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 28px;
+      margin-left: 3px;
+      padding: 0 4px;
+      vertical-align: baseline;
+      color: #b18aff;
+      background: transparent;
+      border: 0;
+      border-radius: 50%;
+      opacity: .42;
+      cursor: pointer;
+      transition: opacity .2s ease, text-shadow .2s ease, transform .2s ease;
+    }
+    .secret-star:hover, .secret-star:focus-visible {
+      opacity: 1;
+      text-shadow: 0 0 12px #b18aff;
+      transform: rotate(12deg);
+    }
+    .secret-word:hover, .secret-word:focus-visible {
+      text-shadow: 0 0 10px #b18aff;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .secret-star { opacity: .08; }
+      .modal-content p:hover .secret-star,
+      .secret-star:hover, .secret-star:focus-visible { opacity: .9; }
+    }
+    .folie-options { display: grid; gap: 10px; margin: 18px 0; }
+    .folie-option {
+      width: 100%; text-align: left; color: var(--light);
+      background: #241535; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 14px; font: inherit; cursor: pointer;
+    }
+    .folie-option:hover, .folie-option:focus-visible { border-color: var(--purple); }
+    .folie-feedback { margin-top: 14px; padding: 14px; border-radius: 12px; background: #241535; }
+    .folie-feedback[hidden] { display: none; }
 
   </style>
 </head>
@@ -540,7 +597,8 @@
           Je peux être sérieux et réfléchi, puis laisser place à un
           côté plus spontané et décalé. Je ne cherche pas à me résumer
           à une seule étiquette : je préfère laisser mes différentes
-          facettes coexister.
+          <button class="secret-word" type="button" data-modal="folie" aria-label="Explorer le mot facettes">facettes</button> coexister.
+          <button class="secret-star" type="button" data-modal="folie" aria-label="Ouvrir une énigme discrète" title="">✧</button>
         </p>
 
         <h3>Mes valeurs</h3>
@@ -567,6 +625,31 @@
     </section>
   </div>
   
+  <!-- Énigme secrète : La folie -->
+  <div class="modal" id="modal-folie" role="dialog" aria-modal="true" aria-labelledby="title-folie" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-folie">✧ Un secret entre les lignes</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p><em>Certains me cachent, d'autres me cultivent. Je peux surgir au milieu d'une conversation parfaitement normale et transformer l'instant en quelque chose d'inattendu. Qui suis-je ?</em></p>
+        <div class="folie-options" role="group" aria-label="Choisir une réponse">
+          <button class="folie-option" type="button" data-folie-answer="humour">L'humour</button>
+          <button class="folie-option" type="button" data-folie-answer="folie">La folie</button>
+          <button class="folie-option" type="button" data-folie-answer="chaos">Le chaos absolu</button>
+        </div>
+        <div class="folie-feedback" id="folie-feedback" aria-live="polite" hidden></div>
+        <div class="folie-reward" id="folie-reward" hidden>
+          <h3>Le secret est révélé 🃏</h3>
+          <p><strong>Derrière le sérieux se cache parfois la folie.</strong></p>
+          <p>Les idées absurdes, les pensées improbables et les élans spontanés font aussi partie de mon univers. Je peux réfléchir longuement à une question, puis partir dans une direction que personne n'avait anticipée.</p>
+          <p>Je ne vois pas forcément de contradiction entre ces deux facettes. Après tout, pourquoi faudrait-il choisir entre réfléchir au monde et savoir le prendre à la légère ?</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <!-- Fenêtre : Mes passions -->
   <div class="modal" id="modal-passions" role="dialog" aria-modal="true" aria-labelledby="title-passions" aria-hidden="true">
     <section class="modal-window">
@@ -787,6 +870,36 @@
           previousFocus.focus();
         }
       }
+
+      // Énigme de niveau 1 : la récompense reste débloquée sur cet appareil.
+      const folieReward = document.getElementById("folie-reward");
+      const folieFeedback = document.getElementById("folie-feedback");
+      const folieOptions = document.querySelectorAll("[data-folie-answer]");
+      const folieUnlocked = () => {
+        try { return localStorage.getItem("lipoip-folie-unlocked") === "1"; }
+        catch (error) { return false; }
+      };
+      function syncFolieState() {
+        if (folieUnlocked()) {
+          folieReward.hidden = false;
+          folieFeedback.hidden = true;
+          folieOptions.forEach(option => option.hidden = true);
+        }
+      }
+      folieOptions.forEach(option => {
+        option.addEventListener("click", () => {
+          if (option.dataset.folieAnswer === "folie") {
+            try { localStorage.setItem("lipoip-folie-unlocked", "1"); } catch (error) {}
+            folieFeedback.hidden = true;
+            folieReward.hidden = false;
+            folieOptions.forEach(item => item.hidden = true);
+          } else {
+            folieFeedback.textContent = "Pas tout à fait ! Cherche ce qui peut surgir spontanément et rendre l'instant inattendu. 😉";
+            folieFeedback.hidden = false;
+          }
+        });
+      });
+      syncFolieState();
 
       modalLinks.forEach(link => {
         link.addEventListener("click", event => {
