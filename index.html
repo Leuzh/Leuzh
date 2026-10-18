@@ -125,7 +125,6 @@
       display: flex;
       animation: overlay-in .18s ease-out;
     }
-
     .modal-window {
       position: relative;
       width: min(100%, 1050px);
@@ -325,7 +324,6 @@
       color: var(--purple);
       margin-top: 10px;
     }
-
     @keyframes overlay-in {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -423,6 +421,7 @@
     }
     .cie-reveal[hidden] { display: none; }
 
+    .cie-star[hidden], .cie-feather[hidden], .cie-final-button[hidden] { display: none !important; }
     .cie-star {
       display: inline-flex;
       align-items: center;
@@ -449,6 +448,47 @@
     .cie-star[data-star="red"] { color: #ff8a9c; }
     .cie-star[data-star="white"] { color: #f5efff; }
     .cie-star-hint { font-size: .88rem; color: var(--muted); margin-top: 6px; }
+
+    /* Plumes : cibles discrètes avec une zone tactile plus large que le symbole. */
+    .cie-feather {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: rgba(210,190,245,.22);
+      font-size: 8px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: .42;
+      transition: color .2s, opacity .2s, text-shadow .2s;
+      vertical-align: middle;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cie-feather:hover, .cie-feather:focus-visible {
+      color: #d9c1ff;
+      opacity: 1;
+      text-shadow: 0 0 7px rgba(177,138,255,.75);
+      outline: 1px solid rgba(217,193,255,.45);
+    }
+    .cie-feather.found { color: rgba(197,160,255,.18); opacity: .35; }
+    .cie-feather--tag { width: 16px; height: 16px; font-size: 7px; margin-left: 1px; }
+    .photo { position: relative; }
+    .cie-feather--photo { position: absolute; right: 8px; bottom: 8px; z-index: 2; }
+    .social { position: relative; }
+    .cie-feather--social { position: absolute; right: 4px; top: calc(50% + 17px); z-index: 2; }
+    .cie-feather--footer { margin-left: 2px; }
+
+    .cie-feather-hint { color: var(--muted); font-size: .9rem; }
+    .cie-feather-hunt { margin-top: 16px; padding: 16px; border: 1px solid rgba(197,160,255,.3); border-radius: 14px; background: rgba(20,12,35,.62); }
+    .cie-feather-hunt[hidden] { display: none; }
+    .cie-final-button { display: inline-block; margin-top: 12px; padding: 11px 16px; color: #fff; background: linear-gradient(135deg,#68429a,#3d2857); border: 1px solid #c5a0ff; border-radius: 999px; font: inherit; font-weight: 650; text-decoration: none; cursor: pointer; box-shadow: 0 0 18px rgba(177,138,255,.16); }
+    .cie-final-button:hover, .cie-final-button:focus-visible { background: #7650a8; outline: 2px solid #d9c1ff; outline-offset: 3px; }
     .cie-constellation[hidden], .cie-final-riddle[hidden] { display: none; }
     .cie-constellation { margin-top: 18px; padding: 16px; border: 1px solid rgba(190,150,255,.28); border-radius: 14px; background: rgba(20,12,35,.62); }
     .cie-constellation-stars { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0; }
@@ -519,13 +559,14 @@
         <div class="value">
           <strong>La curiosité</strong>
           <p>Continuer à apprendre, questionner et découvrir.</p>
+          <button class="cie-feather" type="button" data-feather="1" aria-label="Fragment discret près de la curiosité" hidden>🪶</button>
         </div>
         <p><em>Je préfère que l'on apprenne à me connaître page après page.</em></p>
-        <button class="cie-star" type="button" data-star="violet" aria-label="Étoile violette" title="Une étoile discrète" disabled>✦</button>
+        <button class="cie-star" type="button" data-star="violet" aria-label="Étoile violette" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
   </div>
-
+  
   <!-- Fenêtre : Mes passions -->
   <div class="modal" id="modal-passions" role="dialog" aria-modal="true" aria-labelledby="title-passions" aria-hidden="true">
     <section class="modal-window">
@@ -550,9 +591,9 @@
           <span class="tag">Jeux vidéo</span>
           <span class="tag">Figurines</span>
           <span class="tag">Imaginaire</span>
-          <span class="tag">Écriture</span>
+          <span class="tag">Écriture<button class="cie-feather cie-feather--tag" type="button" data-feather="2" aria-label="Petit fragment dans les étiquettes" hidden>🪶</button></span>
         </div>
-        <button class="cie-star" type="button" data-star="blue" aria-label="Étoile bleue" title="Une étoile discrète" disabled>✦</button>
+        <button class="cie-star" type="button" data-star="blue" aria-label="Étoile bleue" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
   </div>
@@ -571,11 +612,11 @@
         </p>
         <div class="gallery">
           <div class="photo"><img src="photos/1792277583334.jpg" alt="Photo 1" loading="lazy"></div>
-          <div class="photo"><img src="photos/1792277583411.jpg" alt="Photo 2" loading="lazy"></div>
+          <div class="photo"><img src="photos/1792277583411.jpg" alt="Photo 2" loading="lazy"><button class="cie-feather cie-feather--photo" type="button" data-feather="3" aria-label="Fragment discret dans une photo" hidden>🪶</button></div>
           <div class="photo"><img src="photos/IMG_20260502_223811_866.webp" alt="Photo 3" loading="lazy"></div>
           <div class="photo"><img src="photos/Sans titre 34_20260708011617.jpg" alt="Photo 4" loading="lazy"></div>
         </div>
-        <button class="cie-star" type="button" data-star="gold" aria-label="Étoile dorée" title="Une étoile discrète" disabled>✦</button>
+        <button class="cie-star" type="button" data-star="gold" aria-label="Étoile dorée" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
   </div>
@@ -615,8 +656,9 @@
               <span class="social-handle">@leuzhlipoip</span>
             </span>
           </a>
+          <button class="cie-feather cie-feather--social" type="button" data-feather="4" aria-label="Fragment discret près des réseaux" hidden>🪶</button>
         </div>
-        <button class="cie-star" type="button" data-star="red" aria-label="Étoile rouge" title="Une étoile discrète" disabled>✦</button>
+        <button class="cie-star" type="button" data-star="red" aria-label="Étoile rouge" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
   </div>
@@ -666,18 +708,41 @@
               </div>
             </form>
             <p id="cie-final-feedback" class="cie-feedback" aria-live="polite"></p>
+            <div id="cie-feather-hunt" class="cie-feather-hunt" hidden>
+              <p><strong>✧ Troisième épreuve : les plumes perdues ✧</strong></p>
+              <p>« Je tombe sans me blesser, je voyage sans jambes. Je suis la trace légère d'un messager du ciel. Cinq fragments de moi se sont dispersés dans les pages de ce monde. Retrouve-les tous. »</p>
+              <p id="cie-feather-hint" class="cie-feather-hint">Les plumes sont apparues. Un indice se précisera à chaque fragment retrouvé.</p>
+              <p id="cie-feather-feedback" class="cie-feedback" aria-live="polite">0 plume sur 5 retrouvée.</p>
+              <button id="cie-final-button" class="cie-final-button" type="button" data-modal="cie-archive" hidden>✧ Ouvrir la dernière archive</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </div>
 
+  <!-- Dernière archive, accessible après la chasse aux plumes -->
+  <div class="modal" id="modal-cie-archive" role="dialog" aria-modal="true" aria-labelledby="title-cie-archive" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-cie-archive">✧ La dernière archive</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p><strong>Tu as retrouvé les cinq plumes.</strong></p>
+        <p>Chaque étoile t'a guidé, chaque mot t'a ouvert une porte, et chaque plume t'a rapproché du dernier secret.</p>
+        <p><em>« Les histoires ne disparaissent pas. Elles attendent simplement quelqu'un pour les porter plus loin. »</em></p>
+        <p>La CIE garde encore bien des pages vierges. Celle-ci est désormais à toi.</p>
+      </div>
+    </section>
+  </div>
+
   <footer>
     Merci d'avoir pris le temps de découvrir ces quelques pages.
-    <strong>Tout ne se révèle pas au premier regard.</strong>
+    <strong>Tout ne se révèle pas au premier regard.</strong><button class="cie-feather cie-feather--footer" type="button" data-feather="5" aria-label="Fragment discret dans le pied de page" hidden>🪶</button>
     <p>✧ Lipoip ✧</p>
     <button class="cie-secret-trigger" type="button" data-modal="cie" aria-label="Découvrir un secret étoilé">✦ Un éclat étrange</button>
-    <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled>✦</button>
+    <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled hidden>✦</button>
   </footer>
 
   <script>
@@ -691,7 +756,12 @@
         const modal = document.getElementById(`modal-${name}`);
         if (!modal) return;
 
-        previousFocus = document.activeElement;
+        if (activeModal && activeModal !== modal) {
+          activeModal.classList.remove("is-open");
+          activeModal.setAttribute("aria-hidden", "true");
+        } else if (!activeModal) {
+          previousFocus = document.activeElement;
+        }
         activeModal = modal;
         modal.classList.add("is-open");
         modal.setAttribute("aria-hidden", "false");
@@ -769,7 +839,7 @@
 
       function unlockStars() {
         starsUnlocked = true;
-        starButtons.forEach(button => { button.disabled = false; });
+        starButtons.forEach(button => { button.hidden = false; button.disabled = false; });
       }
 
       starButtons.forEach(button => {
@@ -809,12 +879,59 @@
             .replace(/[\u0300-\u036f]/g, "");
           const feedback = document.getElementById("cie-final-feedback");
           if (["un livre", "livre", "le livre", "une histoire", "histoire", "un texte", "texte", "l'ecriture", "ecriture", "l'écriture"].includes(answer)) {
-            feedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur. Une nouvelle archive sera bientôt écrite…";
+            feedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur. Quelque chose de léger s'est dispersé dans le site…";
+            unlockFeathers();
           } else {
             feedback.textContent = "La porte reste close. Pense à ce qui voyage à travers les siècles et change selon celui qui le découvre.";
           }
         });
       }
+
+ // Les plumes n'apparaissent qu'après la résolution de la deuxième énigme.
+      const featherButtons = [...document.querySelectorAll("[data-feather]")];
+      const featherHunt = document.getElementById("cie-feather-hunt");
+      const featherFeedback = document.getElementById("cie-feather-feedback");
+      const finalButton = document.getElementById("cie-final-button");
+      const foundFeathers = new Set();
+
+      const featherHint = document.getElementById("cie-feather-hint");
+      const featherHints = {
+        "1": "Indice : une valeur se cache dans la façon de raconter la curiosité.",
+        "2": "Indice : parmi les étiquettes des passions, l'écriture a une petite marge secrète.",
+        "3": "Indice : dans l'album, observe les bords d'une image plutôt que son sujet.",
+        "4": "Indice : près des portes qui mènent vers les réseaux, un détail attend.",
+        "5": "Indice : le dernier fragment veille tout en bas de la page."
+      };
+
+      function updateFeatherHint() {
+        const next = ["1", "2", "3", "4", "5"].find(id => !foundFeathers.has(id));
+        if (featherHint) {
+          featherHint.textContent = next ? featherHints[next] : "Tous les fragments sont réunis. La dernière archive t'attend.";
+        }
+      }
+
+      function unlockFeathers() {
+        featherHunt.hidden = false;
+        featherButtons.forEach(button => { button.hidden = false; });
+        featherFeedback.textContent = "0 plume sur 5 retrouvée.";
+        updateFeatherHint();
+      }
+
+      featherButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          if (button.hidden || foundFeathers.has(button.dataset.feather)) return;
+          foundFeathers.add(button.dataset.feather);
+          button.classList.add("found");
+          button.disabled = true;
+          button.setAttribute("aria-label", "Plume retrouvée");
+          featherFeedback.textContent = `${foundFeathers.size} plume${foundFeathers.size > 1 ? "s" : ""} sur 5 retrouvée${foundFeathers.size > 1 ? "s" : ""}.`;
+          updateFeatherHint();
+          if (foundFeathers.size === featherButtons.length) {
+            featherFeedback.textContent = "Les cinq plumes sont réunies. La dernière archive est maintenant accessible.";
+            finalButton.hidden = false;
+          }
+        });
+      });
 
       // L'accès à la chasse reste fermé tant que la première énigme n'est pas résolue.
       if (riddleForm) {
