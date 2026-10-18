@@ -361,6 +361,68 @@
         transition-duration: .01ms !important;
       }
     }
+
+
+    /* Secrets de la CIE */
+    .cie-secret-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      color: #d9c1ff;
+      background: rgba(125, 82, 180, .12);
+      border: 1px solid rgba(190, 150, 255, .28);
+      border-radius: 999px;
+      font: inherit;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .cie-secret-trigger:hover, .cie-secret-trigger:focus-visible {
+      background: rgba(125, 82, 180, .25);
+      border-color: rgba(210, 180, 255, .7);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .cie-riddle {
+      margin: 18px 0;
+      padding: 16px;
+      border: 1px solid rgba(190, 150, 255, .28);
+      border-radius: 14px;
+      background: rgba(20, 12, 35, .62);
+    }
+    .cie-answer-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .cie-answer-row input {
+      flex: 1 1 180px;
+      min-width: 0;
+      padding: 11px 12px;
+      color: var(--text, #f5efff);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(190,150,255,.35);
+      border-radius: 10px;
+      font: inherit;
+    }
+    .cie-answer-row button {
+      padding: 10px 14px;
+      color: #fff;
+      background: #68429a;
+      border: 1px solid #a98ad2;
+      border-radius: 10px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .cie-feedback { min-height: 1.5em; margin-top: 10px; color: #d9c1ff; }
+    .cie-reveal {
+      margin-top: 16px;
+      padding: 16px;
+      border-left: 3px solid #bda0ee;
+      background: rgba(125,82,180,.12);
+      border-radius: 0 12px 12px 0;
+    }
+    .cie-reveal[hidden] { display: none; }
+
   </style>
 </head>
 
@@ -524,10 +586,42 @@
     </section>
   </div>
 
+
+  <!-- Archives secrètes de la CIE -->
+  <div class="modal" id="modal-cie" role="dialog" aria-modal="true" aria-labelledby="title-cie" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-cie">✦ Archives étoilées de la CIE</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p>Un signe s'est allumé dans les marges. La Carte d'Identité Étoilé reconnaît les curieux, mais elle ne livre rien sans une petite réflexion.</p>
+        <div class="cie-riddle">
+          <p><strong>Première énigme</strong></p>
+          <p>« Je n'ai ni voix ni oreilles, pourtant je peux transmettre mille voix. Je garde les pensées et raconte les mondes. Qui suis-je ? »</p>
+          <form id="cie-riddle-form">
+            <div class="cie-answer-row">
+              <input id="cie-answer" name="answer" type="text" autocomplete="off" placeholder="Ta réponse…" aria-label="Réponse à l'énigme" required>
+              <button type="submit">Révéler</button>
+            </div>
+          </form>
+          <p id="cie-feedback" class="cie-feedback" aria-live="polite"></p>
+        </div>
+        <div id="cie-reveal" class="cie-reveal" hidden>
+          <p><strong>✧ Archive déverrouillée ✧</strong></p>
+          <p>Tu as trouvé le livre, mais le véritable secret n'est pas l'encre qu'il contient. C'est ce qu'on choisit d'y entendre.</p>
+          <p><em>« Le monde attend juste d'être écouté, alors écoute-le et raconte-le. »</em></p>
+          <p>Une première étoile s'allume. Garde l'œil ouvert : d'autres indices pourront apparaître dans les pages de Lipoip.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <footer>
     Merci d'avoir pris le temps de découvrir ces quelques pages.
     <strong>Tout ne se révèle pas au premier regard.</strong>
     <p>✧ Lipoip ✧</p>
+    <button class="cie-secret-trigger" type="button" data-modal="cie" aria-label="Découvrir un secret étoilé">✦ Un éclat étrange</button>
   </footer>
 
   <script>
@@ -588,6 +682,26 @@
       document.addEventListener("keydown", event => {
         if (event.key === "Escape") closeModal();
       });
+
+      // Petite énigme locale de la CIE : aucune donnée n'est envoyée ni enregistrée.
+      const riddleForm = document.getElementById("cie-riddle-form");
+      if (riddleForm) {
+        riddleForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const answer = (document.getElementById("cie-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          const feedback = document.getElementById("cie-feedback");
+          const reveal = document.getElementById("cie-reveal");
+          if (["livre", "un livre", "le livre"].includes(answer)) {
+            feedback.textContent = "La serrure cède. Une archive s'ouvre…";
+            reveal.hidden = false;
+          } else {
+            feedback.textContent = "La serrure reste close. Relis l'énigme et cherche ce qui conserve les pensées.";
+            reveal.hidden = true;
+          }
+        });
+      }
     })();
   </script>
 </body>
