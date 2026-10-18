@@ -423,6 +423,37 @@
     }
     .cie-reveal[hidden] { display: none; }
 
+    .cie-star {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin: 8px 5px 0 0;
+      padding: 0;
+      border: 1px solid rgba(190,150,255,.24);
+      border-radius: 50%;
+      background: rgba(255,255,255,.035);
+      font-size: 21px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: .72;
+      transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease;
+    }
+    .cie-star:hover, .cie-star:focus-visible { opacity: 1; transform: scale(1.13); outline: 1px solid #d9c1ff; }
+    .cie-star:disabled { cursor: default; opacity: .34; }
+    .cie-star.found { opacity: 1; box-shadow: 0 0 14px currentColor; border-color: currentColor; }
+    .cie-star[data-star="blue"] { color: #78cfff; }
+    .cie-star[data-star="violet"] { color: #c5a0ff; }
+    .cie-star[data-star="gold"] { color: #ffd66e; }
+    .cie-star[data-star="red"] { color: #ff8a9c; }
+    .cie-star[data-star="white"] { color: #f5efff; }
+    .cie-star-hint { font-size: .88rem; color: var(--muted); margin-top: 6px; }
+    .cie-constellation[hidden], .cie-final-riddle[hidden] { display: none; }
+    .cie-constellation { margin-top: 18px; padding: 16px; border: 1px solid rgba(190,150,255,.28); border-radius: 14px; background: rgba(20,12,35,.62); }
+    .cie-constellation-stars { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0; }
+    .cie-final-riddle { margin-top: 16px; padding: 16px; border-left: 3px solid #ffd66e; background: rgba(125,82,180,.12); border-radius: 0 12px 12px 0; }
+
   </style>
 </head>
 
@@ -490,6 +521,7 @@
           <p>Continuer à apprendre, questionner et découvrir.</p>
         </div>
         <p><em>Je préfère que l'on apprenne à me connaître page après page.</em></p>
+        <button class="cie-star" type="button" data-star="violet" aria-label="Étoile violette" title="Une étoile discrète" disabled>✦</button>
       </div>
     </section>
   </div>
@@ -520,6 +552,7 @@
           <span class="tag">Imaginaire</span>
           <span class="tag">Écriture</span>
         </div>
+        <button class="cie-star" type="button" data-star="blue" aria-label="Étoile bleue" title="Une étoile discrète" disabled>✦</button>
       </div>
     </section>
   </div>
@@ -542,6 +575,7 @@
           <div class="photo"><img src="photos/IMG_20260502_223811_866.webp" alt="Photo 3" loading="lazy"></div>
           <div class="photo"><img src="photos/Sans titre 34_20260708011617.jpg" alt="Photo 4" loading="lazy"></div>
         </div>
+        <button class="cie-star" type="button" data-star="gold" aria-label="Étoile dorée" title="Une étoile discrète" disabled>✦</button>
       </div>
     </section>
   </div>
@@ -582,6 +616,7 @@
             </span>
           </a>
         </div>
+        <button class="cie-star" type="button" data-star="red" aria-label="Étoile rouge" title="Une étoile discrète" disabled>✦</button>
       </div>
     </section>
   </div>
@@ -611,7 +646,27 @@
           <p><strong>✧ Archive déverrouillée ✧</strong></p>
           <p>Tu as trouvé le livre, mais le véritable secret n'est pas l'encre qu'il contient. C'est ce qu'on choisit d'y entendre.</p>
           <p><em>« Le monde attend juste d'être écouté, alors écoute-le et raconte-le. »</em></p>
-          <p>Une première étoile s'allume. Garde l'œil ouvert : d'autres indices pourront apparaître dans les pages de Lipoip.</p>
+          <p>Une première étoile s'allume. Cinq autres éclats attendent dans les pages du site. Retrouve-les et suis leur ordre.</p>
+          <div class="cie-constellation">
+            <p><strong>✧ L'énigme de la constellation ✧</strong></p>
+            <p>« La glace ouvre la voie. Le crépuscule vient ensuite. Le soleil brille au milieu. La braise le suit, et la lune clôt le voyage. »</p>
+            <p class="cie-star-hint">Cherche les cinq petites étoiles dans les différentes fenêtres, puis clique dessus dans l'ordre donné par l'énigme.</p>
+            <div class="cie-constellation-stars" aria-label="Progression de la constellation">
+              <span id="cie-step-1">☆</span><span id="cie-step-2">☆</span><span id="cie-step-3">☆</span><span id="cie-step-4">☆</span><span id="cie-step-5">☆</span>
+            </div>
+            <p id="cie-star-feedback" class="cie-feedback" aria-live="polite">La constellation attend son premier éclat.</p>
+          </div>
+          <div id="cie-final-riddle" class="cie-final-riddle" hidden>
+            <p><strong>✦ Deuxième archive : le gardien silencieux ✦</strong></p>
+            <p>« Je nais quand une pensée quitte le silence. Je peux traverser les siècles sans faire un pas. Je change selon celui qui me lit, mais mes signes restent les mêmes. Je peux ouvrir mille portes sans posséder de clé. Qui suis-je ? »</p>
+            <form id="cie-final-form">
+              <div class="cie-answer-row">
+                <input id="cie-final-answer" name="final-answer" type="text" autocomplete="off" placeholder="La réponse de la deuxième archive…" aria-label="Réponse à la deuxième énigme" required>
+                <button type="submit">Déchiffrer</button>
+              </div>
+            </form>
+            <p id="cie-final-feedback" class="cie-feedback" aria-live="polite"></p>
+          </div>
         </div>
       </div>
     </section>
@@ -622,6 +677,7 @@
     <strong>Tout ne se révèle pas au premier regard.</strong>
     <p>✧ Lipoip ✧</p>
     <button class="cie-secret-trigger" type="button" data-modal="cie" aria-label="Découvrir un secret étoilé">✦ Un éclat étrange</button>
+    <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled>✦</button>
   </footer>
 
   <script>
@@ -700,6 +756,73 @@
             feedback.textContent = "La serrure reste close. Relis l'énigme et cherche ce qui conserve les pensées.";
             reveal.hidden = true;
           }
+        });
+      }
+
+      // Chasse aux cinq étoiles : bleue, violette, dorée, rouge, blanche.
+      const starOrder = ["blue", "violet", "gold", "red", "white"];
+      const starButtons = [...document.querySelectorAll("[data-star]")];
+      const starFeedback = document.getElementById("cie-star-feedback");
+      const finalRiddle = document.getElementById("cie-final-riddle");
+      let starProgress = 0;
+      let starsUnlocked = false;
+
+      function unlockStars() {
+        starsUnlocked = true;
+        starButtons.forEach(button => { button.disabled = false; });
+      }
+
+      starButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          if (!starsUnlocked || document.getElementById("cie-reveal").hidden) return;
+          const chosen = button.dataset.star;
+          if (chosen === starOrder[starProgress]) {
+            button.classList.add("found");
+            button.disabled = true;
+            const step = document.getElementById(`cie-step-${starProgress + 1}`);
+            if (step) step.textContent = "✦";
+            starProgress += 1;
+            if (starProgress === starOrder.length) {
+              starFeedback.textContent = "La constellation est complète. Une seconde archive s'ouvre…";
+              finalRiddle.hidden = false;
+            } else {
+              starFeedback.textContent = `Bon éclat ! ${starProgress} étoile${starProgress > 1 ? 's' : ''} sur 5 retrouvée${starProgress > 1 ? 's' : ''}.`;
+            }
+          } else {
+            starProgress = 0;
+            starButtons.forEach(item => { item.classList.remove("found"); item.disabled = false; });
+            for (let i = 1; i <= 5; i++) {
+              const step = document.getElementById(`cie-step-${i}`);
+              if (step) step.textContent = "☆";
+            }
+            starFeedback.textContent = "L'ordre est brisé. Relis l'énigme et recommence depuis la première étoile.";
+          }
+        });
+      });
+
+      const finalForm = document.getElementById("cie-final-form");
+      if (finalForm) {
+        finalForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const answer = (document.getElementById("cie-final-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          const feedback = document.getElementById("cie-final-feedback");
+          if (["un livre", "livre", "le livre", "une histoire", "histoire", "un texte", "texte", "l'ecriture", "ecriture", "l'écriture"].includes(answer)) {
+            feedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur. Une nouvelle archive sera bientôt écrite…";
+          } else {
+            feedback.textContent = "La porte reste close. Pense à ce qui voyage à travers les siècles et change selon celui qui le découvre.";
+          }
+        });
+      }
+
+      // L'accès à la chasse reste fermé tant que la première énigme n'est pas résolue.
+      if (riddleForm) {
+        riddleForm.addEventListener("submit", () => {
+          const answer = (document.getElementById("cie-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          if (["livre", "un livre", "le livre"].includes(answer)) unlockStars();
         });
       }
     })();
