@@ -551,6 +551,17 @@
     .folie-feedback { margin-top: 14px; padding: 14px; border-radius: 12px; background: #241535; }
     .folie-feedback[hidden] { display: none; }
 
+    /* Chasse aux sept symboles : indices indépendants et progression locale. */
+    /* Les symboles sont des zones tactiles discrètes, pas des boutons décoratifs visibles. */
+    .lipoip-clue { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; min-width: 22px; margin: 0 1px; padding: 0; border: 1px solid transparent; border-radius: 50%; color: rgba(205,190,225,.13); background: transparent; box-shadow: none; font-size: 12px; cursor: pointer; opacity: .34; transition: color .2s, background .2s, opacity .2s; vertical-align: middle; }
+    .lipoip-clue:hover, .lipoip-clue:focus-visible { opacity: 1; color: #eadcff; background: rgba(87,52,125,.8); box-shadow: 0 0 10px rgba(177,138,255,.28); outline: 2px solid #e8dcff; outline-offset: 2px; }
+    .lipoip-clue.found { color: rgba(205,190,225,.55); background: transparent; border-color: transparent; box-shadow: none; opacity: .9; }
+    .lipoip-clue.found:hover, .lipoip-clue.found:focus-visible { opacity: 1; color: #eadcff; }
+    .lipoip-clue-note { display: none; margin: 8px 0 12px; padding: 10px 13px; border-left: 3px solid #b18aff; border-radius: 0 10px 10px 0; background: rgba(125,82,180,.14); color: #e8dcff; }
+    .lipoip-clue-note.is-visible { display: block; }
+    .lipoip-progress { margin-top: 14px; padding: 13px; border: 1px solid rgba(190,150,255,.3); border-radius: 12px; background: rgba(20,12,35,.62); }
+    .lipoip-progress button { padding: 10px 15px; color: #fff; background: #68429a; border: 1px solid #c5a0ff; border-radius: 999px; font: inherit; cursor: pointer; }
+    .lipoip-progress button[hidden] { display: none !important; }
   </style>
 </head>
 
@@ -619,7 +630,10 @@
           <p>Continuer à apprendre, questionner et découvrir.</p>
           <button class="cie-feather" type="button" data-feather="1" aria-label="Fragment discret près de la curiosité" hidden>🪶</button>
         </div>
-        <p><em>Je préfère que l'on apprenne à me connaître page après page.</em></p>
+        <p><em>Je préfère que l'on apprenne à me connaître page après page.</em> <button class="lipoip-clue" type="button" data-clue="1" aria-label="Découvrir un symbole">✧</button></p>
+        <p class="lipoip-clue-note" id="clue-note-1">Un visage se comprend rarement en un seul regard.</p>
+        <button class="lipoip-clue" type="button" data-clue="2" aria-label="Découvrir un second symbole">⌘</button>
+        <p class="lipoip-clue-note" id="clue-note-2">Les passions laissent des traces dans leurs marges.</p>
         <button class="cie-star" type="button" data-star="violet" aria-label="Étoile violette" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
@@ -676,6 +690,10 @@
           <span class="tag">Imaginaire</span>
           <span class="tag">Écriture<button class="cie-feather cie-feather--tag" type="button" data-feather="2" aria-label="Petit fragment dans les étiquettes" hidden>🪶</button></span>
         </div>
+        <button class="lipoip-clue" type="button" data-clue="3" aria-label="Découvrir un symbole">☾</button>
+        <p class="lipoip-clue-note" id="clue-note-3">Une collection raconte aussi ce qui ne se voit pas.</p>
+        <button class="lipoip-clue" type="button" data-clue="4" aria-label="Découvrir un second symbole">❖</button>
+        <p class="lipoip-clue-note" id="clue-note-4">Certaines histoires n’ont pas besoin de mots.</p>
         <button class="cie-star" type="button" data-star="blue" aria-label="Étoile bleue" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
@@ -699,6 +717,8 @@
           <div class="photo"><img src="photos/IMG_20260502_223811_866.webp" alt="Photo 3" loading="lazy"></div>
           <div class="photo"><img src="photos/Sans titre 34_20260708011617.jpg" alt="Photo 4" loading="lazy"></div>
         </div>
+        <button class="lipoip-clue" type="button" data-clue="5" aria-label="Découvrir un symbole près de l'album">⌁</button>
+        <p class="lipoip-clue-note" id="clue-note-5">Une image n’est pas toujours une fin de page.</p>
         <button class="cie-star" type="button" data-star="gold" aria-label="Étoile dorée" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
@@ -741,6 +761,8 @@
           </a>
           <button class="cie-feather cie-feather--social" type="button" data-feather="4" aria-label="Fragment discret près des réseaux" hidden>🪶</button>
         </div>
+        <button class="lipoip-clue" type="button" data-clue="6" aria-label="Découvrir un symbole">♧</button>
+        <p class="lipoip-clue-note" id="clue-note-6">Tout chemin extérieur peut mener à une vieille archive.</p>
         <button class="cie-star" type="button" data-star="red" aria-label="Étoile rouge" title="Une étoile discrète" disabled hidden>✦</button>
       </div>
     </section>
@@ -755,6 +777,9 @@
         <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
       </div>
       <div class="modal-content">
+        <button class="lipoip-clue" type="button" data-clue="7" aria-label="Découvrir le septième symbole">🐾</button>
+        <p class="lipoip-clue-note" id="clue-note-7">Une archive peut contenir une chasse qui n’appartient à aucune archive.</p>
+        <div class="lipoip-progress"><p id="lipoip-clue-progress" aria-live="polite">Les fragments demeurent incomplets.</p><button id="lipoip-open-riddle" type="button" data-modal="piste-chat" hidden>✧ Reconstituer la piste</button></div>
         <p>Un signe s'est allumé dans les marges. La Carte d'Identité Étoilé reconnaît les curieux, mais elle ne livre rien sans une petite réflexion.</p>
         <div class="cie-riddle">
           <p><strong>Première énigme</strong></p>
@@ -816,6 +841,42 @@
         <p>Chaque étoile t'a guidé, chaque mot t'a ouvert une porte, et chaque plume t'a rapproché du dernier secret.</p>
         <p><em>« Les histoires ne disparaissent pas. Elles attendent simplement quelqu'un pour les porter plus loin. »</em></p>
         <p>La CIE garde encore bien des pages vierges. Celle-ci est désormais à toi.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Piste finale des sept symboles -->
+  <div class="modal" id="modal-piste-chat" role="dialog" aria-modal="true" aria-labelledby="title-piste-chat" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-piste-chat">✧ La piste réunie</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p><strong>Sept signes, sept fragments.</strong> Tu les as trouvés sans ordre, mais ils t'ont tous conduit ici.</p>
+        <p>Derrière cette question se cache un compagnon que l'on dit indépendant, mystérieux et maître de ses propres choix.</p>
+        <div class="cie-riddle">
+          <p><strong>Énigme</strong></p>
+          <p>« Quel est l'un des meilleurs amis de l'homme ? »</p>
+          <form id="lipoip-cat-riddle-form">
+            <div class="cie-answer-row">
+              <input id="lipoip-cat-answer" name="cat-answer" type="text" autocomplete="off" placeholder="Ta réponse…" aria-label="Réponse à la piste finale" required>
+              <button type="submit">Vérifier</button>
+            </div>
+          </form>
+          <p id="lipoip-cat-feedback" class="cie-feedback" aria-live="polite"></p>
+          <div id="lipoip-cat-success" class="cie-reveal" hidden>
+            <p><strong>✧ Secret déverrouillé ✧</strong></p>
+            <p>Tu as trouvé la bonne réponse. Une nouvelle page de ton histoire attendra son heure.</p>
+            <p>Tu as trouvé l'album secret d'Aria. Remplace les noms des fichiers ci-dessous par ceux de tes photos de chat.</p>
+            <div class="gallery aria-gallery">
+              <div class="photo"><img src="photos/aria-1.jpg" alt="Aria, photo secrète 1" loading="lazy"></div>
+              <div class="photo"><img src="photos/aria-2.jpg" alt="Aria, photo secrète 2" loading="lazy"></div>
+              <div class="photo"><img src="photos/aria-3.jpg" alt="Aria, photo secrète 3" loading="lazy"></div>
+              <div class="photo"><img src="photos/aria-4.jpg" alt="Aria, photo secrète 4" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -1047,6 +1108,67 @@
       });
 
       // L'accès à la chasse reste fermé tant que la première énigme n'est pas résolue.
+      // Chasse indépendante aux sept symboles : ordre libre, sauvegarde locale.
+      const clueButtons = [...document.querySelectorAll("[data-clue]")];
+      const clueProgress = document.getElementById("lipoip-clue-progress");
+      const openCatRiddle = document.getElementById("lipoip-open-riddle");
+      const catForm = document.getElementById("lipoip-cat-riddle-form");
+      const catFeedback = document.getElementById("lipoip-cat-feedback");
+      const catSuccess = document.getElementById("lipoip-cat-success");
+      // Cette chasse recommence à zéro à chaque actualisation, sans modifier la CIE.
+      const clueStorageKey = "lipoip-seven-symbols-v2";
+      const catStorageKey = "lipoip-cat-secret-v1";
+      try {
+        localStorage.removeItem(clueStorageKey);
+        localStorage.removeItem(catStorageKey);
+      } catch (_) {}
+      let foundClues = new Set();
+
+      function refreshClueProgress() {
+        if (clueProgress) clueProgress.textContent = foundClues.size === 7 ? "Les sept fragments sont réunis. La piste peut être reconstituée." : "Les fragments demeurent incomplets.";
+        if (openCatRiddle) openCatRiddle.hidden = foundClues.size < 7;
+        clueButtons.forEach(button => {
+          const id = button.dataset.clue;
+          const found = foundClues.has(id);
+          button.classList.toggle("found", found);
+          button.setAttribute("aria-pressed", String(found));
+          const note = document.getElementById(`clue-note-${id}`);
+          if (note && !found) note.classList.remove("is-visible");
+        });
+      }
+
+      clueButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const id = button.dataset.clue;
+          const note = document.getElementById(`clue-note-${id}`);
+          if (!foundClues.has(id)) {
+            foundClues.add(id);
+            refreshClueProgress();
+          }
+          // Un second toucher masque l'indice, sans oublier le symbole trouvé.
+          if (note) note.classList.toggle("is-visible");
+        });
+      });
+      refreshClueProgress();
+
+      if (catForm) {
+        catForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const answer = (document.getElementById("lipoip-cat-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          if (["chat", "un chat", "le chat"].includes(answer)) {
+            if (catFeedback) catFeedback.textContent = "La serrure s'ouvre. Le secret est à toi.";
+            if (catSuccess) catSuccess.hidden = false;
+            // La réussite reste valable jusqu'à l'actualisation de la page.
+          } else {
+            if (catFeedback) catFeedback.textContent = "La serrure reste close. Relis les fragments et la piste réunie.";
+            if (catSuccess) catSuccess.hidden = true;
+          }
+        });
+      }
+
+
       if (riddleForm) {
         riddleForm.addEventListener("submit", () => {
           const answer = (document.getElementById("cie-answer").value || "")
