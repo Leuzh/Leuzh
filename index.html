@@ -650,6 +650,14 @@
     .crown-progress > div { height: 100%; width: 0; background: linear-gradient(90deg,#8b5cf6,#f5d77b); transition: width .25s; }
     #crown-final[hidden], #crown-stage-2[hidden], #crown-stage-3[hidden], #crown-stage-4[hidden] { display:none; }
 
+  
+    /* Titre « Survivant des grottes » (secret Boulder Dash) */
+    body[data-equipped-title="boulder-dash"] { --purple:#ffb347; --border:rgba(255,179,71,.5); background:radial-gradient(ellipse at 50% 0%,#4a2a12 0%,transparent 55%),#120a05; }
+    body[data-equipped-title="boulder-dash"] h1 { color:#ffd9a0; text-shadow:0 0 10px #ff9a2e,0 0 28px #b45a10; }
+    body[data-equipped-title="boulder-dash"] .symbol { color:#ffb347; text-shadow:0 0 14px #ff9a2e,0 0 34px #b45a10; }
+    body[data-equipped-title="boulder-dash"] .subtitle { color:#ffcf8a; letter-spacing:.15em; }
+    body[data-equipped-title="boulder-dash"] header { border-bottom:3px dashed rgba(255,179,71,.55); }
+    body[data-equipped-title="boulder-dash"] .equipped-title-badge { color:#ffe2b8; border-color:#ffb347; box-shadow:0 0 18px rgba(255,154,46,.55); }
   </style>
 </head>
 
@@ -1011,7 +1019,7 @@
         <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
         <p id="secret-percent"><strong>0 %</strong> exploré</p>
         <ul id="secret-list" style="padding-left:22px">
-          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li>
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li>
         </ul>
         <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
         <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
@@ -1152,7 +1160,7 @@
       }
 
       // Registre des secrets : chaque découverte est conservée sur cet appareil.
-      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami"];
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash"];
       const secretStorageKey = "lipoip-secret-registry-v1";
       let discoveredSecrets = new Set();
       try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
@@ -1187,6 +1195,35 @@
         if (codeFeedback) codeFeedback.textContent = "";
       });
 
+      // Code secret « grottes » (Boulder Dash) : ↑ ↓ ← → B.
+      // Saisi UNIQUEMENT avec les boutons de l'interface « Entrée secrète » (étoile au-dessus de Lipoip).
+      // Aucun écouteur clavier ni global. Indépendant du code Konami, qui n'est pas modifié.
+      const boulderCode = ["up", "down", "left", "right", "b"];
+      const codeModal = document.getElementById("modal-code-secret");
+      let boulderProgress = [];
+      if (codeModal) {
+        codeModal.querySelectorAll("[data-code-key]").forEach(button => button.addEventListener("click", () => {
+          if (!codeModal.classList.contains("is-open")) return;
+          const key = button.dataset.codeKey;
+          if (key === boulderCode[boulderProgress.length]) boulderProgress.push(key);
+          else boulderProgress = key === boulderCode[0] ? [key] : [];
+          if (boulderProgress.length === boulderCode.length) {
+            boulderProgress = [];
+            markSecret("boulder-dash");
+            if (codeFeedback) codeFeedback.textContent = "Code accepté.";
+          } else if (boulderProgress.length > 0 && codeFeedback && codeFeedback.textContent === "Code incorrect.") {
+            // Saisie valide du code des grottes en cours : on masque le « Code incorrect. » du Konami.
+            codeFeedback.textContent = "";
+          }
+        }));
+        const boulderReset = document.getElementById("konami-reset");
+        if (boulderReset) boulderReset.addEventListener("click", () => { boulderProgress = []; });
+        // Fermeture (croix, fond sombre, Échap) ou passage à une autre fenêtre : saisie remise à zéro.
+        new MutationObserver(() => {
+          if (!codeModal.classList.contains("is-open")) boulderProgress = [];
+        }).observe(codeModal, { attributes: true, attributeFilter: ["class"] });
+      }
+
       // Réinitialisation volontaire de la progression secrète et des titres.
       const resetProgressButton = document.getElementById("reset-all-progress");
       if (resetProgressButton) resetProgressButton.addEventListener("click", () => {
@@ -1211,6 +1248,7 @@
         {id:"aria",name:"Ami d'Aria",desc:"Pour avoir découvert le secret de l'album d'Aria.",source:"aria"},
         {id:"couronne",name:"Tisseur d'indices",desc:"Pour avoir résolu les trois épreuves de la Couronne oubliée.",source:"couronne"},
         {id:"konami",name:"Héritier du code oublié",desc:"Un code sans indice transforme entièrement l’apparence du site.",source:"konami"},
+        {id:"boulder-dash",name:"Survivant des grottes",desc:"Les rochers tombent, mais tu avances : un code des grottes réchauffe tout le site de braise.",source:"boulder-dash"},
         {id:"complet",name:"L'Âme de l'Univers",desc:"Titre ultime : découvre tous les secrets actuellement définis. Si de nouveaux secrets sont ajoutés, il se verrouille de nouveau jusqu’à leur découverte. Une fois équipé, il transforme l’ambiance entière du site.",source:"__all__"}
       ];
       let equippedTitle = "";
