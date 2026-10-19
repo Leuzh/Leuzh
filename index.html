@@ -107,6 +107,20 @@
     .welcome-panel p { margin: 0; color: var(--muted); }
     .welcome-panel strong { color: var(--purple); }
 
+    /* Effet de surbrillance du message d'accueil */
+    #welcome-highlight {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 8px;
+      transition: background .3s ease, box-shadow .3s ease, text-shadow .3s ease;
+    }
+
+    #welcome-highlight.is-highlighted {
+      background: rgba(177, 138, 255, .18);
+      box-shadow: 0 0 22px rgba(177, 138, 255, .55);
+      text-shadow: 0 0 12px rgba(200, 165, 255, .9);
+    }
+
     /* Les sections s'ouvrent dans des fenêtres modales. */
     .modal {
       position: fixed;
@@ -581,11 +595,20 @@
     <a href="#passions" data-modal="passions">Mes passions</a>
     <a href="#album" data-modal="album">Mon album</a>
     <a href="#reseaux" data-modal="reseaux">Mes réseaux</a>
+    <a href="#secrets" data-modal="secrets">Registre des secrets</a>
+    <a href="#origines" data-modal="origines">Les noms cachés</a>
   </nav>
 
   <main>
     <div class="welcome-panel">
-      <p><strong>Bienvenue dans mon univers.</strong></p>
+      <p><strong id="welcome-highlight">Bienvenue dans mon univers.</strong></p>
+      <button
+        id="highlight-button"
+        class="cie-secret-trigger"
+        type="button"
+        aria-pressed="false">
+        ✧ Faire briller mon univers
+      </button>
       <p>Choisis un chapitre dans la navigation pour en découvrir davantage.</p>
     </div>
   </main>
@@ -881,6 +904,42 @@
     </section>
   </div>
 
+
+  <!-- Registre de progression des secrets -->
+  <div class="modal" id="modal-secrets" role="dialog" aria-modal="true" aria-labelledby="title-secrets" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-secrets">📜 Registre des secrets</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p id="secret-count" aria-live="polite">0 secret découvert sur 9.</p>
+        <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
+        <p id="secret-percent"><strong>0 %</strong> exploré</p>
+        <ul id="secret-list" style="padding-left:22px">
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li>
+        </ul>
+        <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
+        <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Énigmes sur l'origine des pseudonymes -->
+  <div class="modal" id="modal-origines" role="dialog" aria-modal="true" aria-labelledby="title-origines" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-origines">✧ Les noms cachés</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Deux noms, deux histoires. La seconde énigme ne s'ouvrira qu'après la première.</p>
+        <div class="cie-riddle"><p><strong>Première énigme : le nom sucré</strong></p><p>« Je suis né d'un nom sucré, choisi pour un jeu. Une faute de lettres m'a donné une autre forme, et cette erreur est devenue mon identité. Qui suis-je ? »</p>
+          <form id="origin-lipoip-form"><div class="cie-answer-row"><input id="origin-lipoip-answer" type="text" autocomplete="off" placeholder="Qui suis-je ?" aria-label="Réponse à la première énigme" required><button type="submit">Révéler</button></div></form><p id="origin-lipoip-feedback" class="cie-feedback" aria-live="polite"></p>
+          <div id="origin-lipoip-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Lipoip ✧</strong></p><p>Tu voulais choisir le pseudonyme « Lolipop » pour le jeu mobile AFK Arena. Mais une faute de lettres, liée à ta dyslexie, a transformé le mot en « Lipoip ». Ce nom né par accident est finalement devenu ton pseudonyme.</p></div>
+        </div>
+        <div id="origin-leuzh-block" class="cie-riddle" hidden><p><strong>Deuxième énigme : la marque de la confrérie</strong></p><p>« J'avais déjà un nom lorsque j'ai rejoint une confrérie. Ses membres portaient tous une même marque dans leur nom. La mienne s'est glissée dans le mien, puis j'ai pris la plume pour les miens. Quel nom en est né ? »</p>
+          <form id="origin-leuzh-form"><div class="cie-answer-row"><input id="origin-leuzh-answer" type="text" autocomplete="off" placeholder="Quel nom ?" aria-label="Réponse à la deuxième énigme" required><button type="submit">Déchiffrer</button></div></form><p id="origin-leuzh-feedback" class="cie-feedback" aria-live="polite"></p>
+          <div id="origin-leuzh-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Leuzh ✧</strong></p><p>Tu as rejoint la Confrérie Euzhienne alors que ton pseudonyme était déjà Lipoip. Les membres ajoutaient « Euzh » à leur nom. De cette tradition est né « Leuzh ». Tu es ensuite devenu le scribe de cette confrérie, aujourd'hui inactive, mais dont l'héritage continue de vivre dans tes souvenirs et tes créations.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <footer>
     Merci d'avoir pris le temps de découvrir ces quelques pages.
     <strong>Tout ne se révèle pas au premier regard.</strong><button class="cie-feather cie-feather--footer" type="button" data-feather="5" aria-label="Fragment discret dans le pied de page" hidden>🪶</button>
@@ -932,6 +991,73 @@
         }
       }
 
+      // Registre des secrets : chaque découverte est conservée sur cet appareil.
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh"];
+      const secretStorageKey = "lipoip-secret-registry-v1";
+      let discoveredSecrets = new Set();
+      try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
+      function markSecret(id) {
+        if (!secretIds.includes(id)) return;
+        discoveredSecrets.add(id);
+        try { localStorage.setItem(secretStorageKey, JSON.stringify([...discoveredSecrets])); } catch (_) {}
+        updateSecretRegistry();
+      }
+      function updateSecretRegistry() {
+        const count = secretIds.filter(id => discoveredSecrets.has(id)).length;
+        const percent = Math.round(count / secretIds.length * 100);
+        const countNode = document.getElementById("secret-count");
+        const percentNode = document.getElementById("secret-percent");
+        const bar = document.getElementById("secret-progress-bar");
+        const complete = document.getElementById("secret-complete-message");
+        if (countNode) countNode.textContent = `${count} secret${count === 1 ? "" : "s"} découvert${count === 1 ? "" : "s"} sur ${secretIds.length}.`;
+        if (percentNode) percentNode.innerHTML = `<strong>${percent} %</strong> exploré`;
+        if (bar) bar.style.width = `${percent}%`;
+        if (complete) complete.hidden = count !== secretIds.length;
+        document.querySelectorAll("[data-secret-item]").forEach(item => {
+          const found = discoveredSecrets.has(item.dataset.secretItem);
+          item.style.opacity = found ? "1" : ".65";
+          item.style.listStyleType = found ? "'✦  '" : "'◇  '";
+          if (!item.querySelector("small")) { const status = document.createElement("small"); status.textContent = found ? "  Découvert" : "  À découvrir"; item.appendChild(status); }
+          else item.querySelector("small").textContent = found ? "  Découvert" : "  À découvrir";
+        });
+      }
+      updateSecretRegistry();
+      // Réconcilie les découvertes déjà sauvegardées dans les anciennes énigmes.
+      try { if (localStorage.getItem("lipoip-folie-unlocked") === "1") markSecret("folie"); } catch (_) {}
+
+      const originLipoipForm = document.getElementById("origin-lipoip-form");
+      const originLeuzhForm = document.getElementById("origin-leuzh-form");
+      const originLipoipReward = document.getElementById("origin-lipoip-reward");
+      const originLeuzhBlock = document.getElementById("origin-leuzh-block");
+      const originLeuzhReward = document.getElementById("origin-leuzh-reward");
+      try {
+        if (localStorage.getItem("lipoip-origin-lipoip-v1") === "1") { originLipoipReward.hidden = false; originLeuzhBlock.hidden = false; }
+        if (localStorage.getItem("lipoip-origin-leuzh-v1") === "1") originLeuzhReward.hidden = false;
+      } catch (_) {}
+      function normalizeAnswer(value) { return (value || "").trim().toLocaleLowerCase("fr-FR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[’']/g, "").replace(/\s+/g, " "); }
+      if (originLipoipForm) originLipoipForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const answer = normalizeAnswer(document.getElementById("origin-lipoip-answer").value);
+        const feedback = document.getElementById("origin-lipoip-feedback");
+        if (["lipoip", "le lipoip"].includes(answer)) {
+          feedback.textContent = "La première histoire se révèle. La seconde énigme est maintenant accessible.";
+          originLipoipReward.hidden = false; originLeuzhBlock.hidden = false;
+          try { localStorage.setItem("lipoip-origin-lipoip-v1", "1"); } catch (_) {}
+          markSecret("lipoip");
+        } else feedback.textContent = "Ce nom est né d'une erreur de lettres. Essaie encore.";
+      });
+      if (originLeuzhForm) originLeuzhForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const answer = normalizeAnswer(document.getElementById("origin-leuzh-answer").value);
+        const feedback = document.getElementById("origin-leuzh-feedback");
+        if (["leuzh", "le leuzh"].includes(answer)) {
+          feedback.textContent = "La marque de la confrérie a retrouvé son origine.";
+          originLeuzhReward.hidden = false;
+          try { localStorage.setItem("lipoip-origin-leuzh-v1", "1"); } catch (_) {}
+          markSecret("leuzh");
+        } else feedback.textContent = "Relis l'indice sur la marque partagée par les membres.";
+      });
+
       // Énigme de niveau 1 : la récompense reste débloquée sur cet appareil.
       const folieReward = document.getElementById("folie-reward");
       const folieFeedback = document.getElementById("folie-feedback");
@@ -945,6 +1071,7 @@
           folieReward.hidden = false;
           folieFeedback.hidden = true;
           folieOptions.forEach(option => option.hidden = true);
+          markSecret("folie");
         }
       }
       folieOptions.forEach(option => {
@@ -954,6 +1081,7 @@
             folieFeedback.hidden = true;
             folieReward.hidden = false;
             folieOptions.forEach(item => item.hidden = true);
+            markSecret("folie");
           } else {
             folieFeedback.textContent = "Pas tout à fait ! Cherche ce qui peut surgir spontanément et rendre l'instant inattendu. 😉";
             folieFeedback.hidden = false;
@@ -966,6 +1094,7 @@
         link.addEventListener("click", event => {
           event.preventDefault();
           openModal(link.dataset.modal);
+          if (link.dataset.modal === "cie-archive") markSecret("cie-archive");
         });
       });
 
@@ -996,6 +1125,7 @@
           if (["livre", "un livre", "le livre"].includes(answer)) {
             feedback.textContent = "La serrure cède. Une archive s'ouvre…";
             reveal.hidden = false;
+            markSecret("cie-livre");
           } else {
             feedback.textContent = "La serrure reste close. Relis l'énigme et cherche ce qui conserve les pensées.";
             reveal.hidden = true;
@@ -1029,6 +1159,7 @@
             if (starProgress === starOrder.length) {
               starFeedback.textContent = "La constellation est complète. Une seconde archive s'ouvre…";
               finalRiddle.hidden = false;
+              markSecret("cie-etoiles");
             } else {
               starFeedback.textContent = `Bon éclat ! ${starProgress} étoile${starProgress > 1 ? 's' : ''} sur 5 retrouvée${starProgress > 1 ? 's' : ''}.`;
             }
@@ -1055,6 +1186,7 @@
           if (["un livre", "livre", "le livre", "une histoire", "histoire", "un texte", "texte", "l'ecriture", "ecriture", "l'écriture"].includes(answer)) {
             feedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur. Quelque chose de léger s'est dispersé dans le site…";
             unlockFeathers();
+            markSecret("cie-gardien");
           } else {
             feedback.textContent = "La porte reste close. Pense à ce qui voyage à travers les siècles et change selon celui qui le découvre.";
           }
@@ -1103,6 +1235,7 @@
           if (foundFeathers.size === featherButtons.length) {
             featherFeedback.textContent = "Les cinq plumes sont réunies. La dernière archive est maintenant accessible.";
             finalButton.hidden = false;
+            markSecret("cie-plumes");
           }
         });
       });
@@ -1118,11 +1251,8 @@
       // Cette chasse recommence à zéro à chaque actualisation, sans modifier la CIE.
       const clueStorageKey = "lipoip-seven-symbols-v2";
       const catStorageKey = "lipoip-cat-secret-v1";
-      try {
-        localStorage.removeItem(clueStorageKey);
-        localStorage.removeItem(catStorageKey);
-      } catch (_) {}
       let foundClues = new Set();
+      try { foundClues = new Set(JSON.parse(localStorage.getItem(clueStorageKey) || "[]")); } catch (_) {}
 
       function refreshClueProgress() {
         if (clueProgress) clueProgress.textContent = foundClues.size === 7 ? "Les sept fragments sont réunis. La piste peut être reconstituée." : "Les fragments demeurent incomplets.";
@@ -1143,6 +1273,7 @@
           const note = document.getElementById(`clue-note-${id}`);
           if (!foundClues.has(id)) {
             foundClues.add(id);
+            try { localStorage.setItem(clueStorageKey, JSON.stringify([...foundClues])); } catch (_) {}
             refreshClueProgress();
           }
           // Un second toucher masque l'indice, sans oublier le symbole trouvé.
@@ -1150,6 +1281,7 @@
         });
       });
       refreshClueProgress();
+      try { if (localStorage.getItem(catStorageKey) === "1" && catSuccess) catSuccess.hidden = false; } catch (_) {}
 
       if (catForm) {
         catForm.addEventListener("submit", event => {
@@ -1160,7 +1292,8 @@
           if (["chat", "un chat", "le chat"].includes(answer)) {
             if (catFeedback) catFeedback.textContent = "La serrure s'ouvre. Le secret est à toi.";
             if (catSuccess) catSuccess.hidden = false;
-            // La réussite reste valable jusqu'à l'actualisation de la page.
+            markSecret("aria");
+            try { localStorage.setItem(catStorageKey, "1"); } catch (_) {}
           } else {
             if (catFeedback) catFeedback.textContent = "La serrure reste close. Relis les fragments et la piste réunie.";
             if (catSuccess) catSuccess.hidden = true;
@@ -1175,6 +1308,20 @@
             .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
           if (["livre", "un livre", "le livre"].includes(answer)) unlockStars();
+        });
+      }
+
+      // Bouton qui active ou désactive la surbrillance du message d'accueil.
+      const highlightButton = document.getElementById("highlight-button");
+      const welcomeHighlight = document.getElementById("welcome-highlight");
+
+      if (highlightButton && welcomeHighlight) {
+        highlightButton.addEventListener("click", () => {
+          const highlighted = welcomeHighlight.classList.toggle("is-highlighted");
+          highlightButton.setAttribute("aria-pressed", String(highlighted));
+          highlightButton.textContent = highlighted
+            ? "✧ Éteindre l'éclat"
+            : "✧ Faire briller mon univers";
         });
       }
     })();
