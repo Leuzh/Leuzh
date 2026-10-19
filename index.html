@@ -1161,7 +1161,9 @@
         discoveredSecrets.add(id);
         try { localStorage.setItem(secretStorageKey, JSON.stringify([...discoveredSecrets])); } catch (_) {}
         updateSecretRegistry();
-      renderTitleCollection();
+        renderTitleCollection();
+      }
+
       // Easter egg sans indice : séquence Konami saisie avec les touches à l’écran.
       const konamiCode = ["up","up","down","down","left","right","left","right","b","a"];
       let enteredCode = [];
@@ -1200,7 +1202,6 @@
         try { Object.keys(localStorage).filter(key => /lipoip.*(clue|star|feather|cat|secret|origin|folie|couronne|title)/i.test(key)).forEach(key => localStorage.removeItem(key)); } catch (_) {}
         window.location.reload();
       });
-      }
       const titleDefinitions = [
         {id:"chercheur",name:"Chercheur de l'invisible",desc:"L’accueil souligne ton nom et encadre le message de bienvenue.",source:"folie"},
         {id:"scribe",name:"Scribe des origines",desc:"Le nom et le symbole prennent une signature dorée.",source:"lipoip"},
