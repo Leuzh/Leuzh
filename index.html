@@ -930,11 +930,11 @@
         <p>Deux noms, deux histoires. La seconde énigme ne s'ouvrira qu'après la première.</p>
         <div class="cie-riddle"><p><strong>Première énigme : le nom sucré</strong></p><p>« Je suis né d'un nom sucré, choisi pour un jeu. Une faute de lettres m'a donné une autre forme, et cette erreur est devenue mon identité. Qui suis-je ? »</p>
           <form id="origin-lipoip-form"><div class="cie-answer-row"><input id="origin-lipoip-answer" type="text" autocomplete="off" placeholder="Qui suis-je ?" aria-label="Réponse à la première énigme" required><button type="submit">Révéler</button></div></form><p id="origin-lipoip-feedback" class="cie-feedback" aria-live="polite"></p>
-          <div id="origin-lipoip-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Lipoip ✧</strong></p><p>Tu voulais choisir le pseudonyme « Lolipop » pour le jeu mobile AFK Arena. Mais une faute de lettres, liée à ta dyslexie, a transformé le mot en « Lipoip ». Ce nom né par accident est finalement devenu ton pseudonyme.</p></div>
+          <div id="origin-lipoip-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Lipoip ✧</strong></p><p>Je voulais choisir le pseudonyme « Lolipop » pour le jeu mobile AFK Arena. Mais, à cause de ma dyslexie, j’ai inversé des lettres en l’écrivant : « Lipoip » est né de cette erreur. Finalement, ce nom imprévu est devenu mon pseudonyme.</p></div>
         </div>
         <div id="origin-leuzh-block" class="cie-riddle" hidden><p><strong>Deuxième énigme : la marque de la confrérie</strong></p><p>« J'avais déjà un nom lorsque j'ai rejoint une confrérie. Ses membres portaient tous une même marque dans leur nom. La mienne s'est glissée dans le mien, puis j'ai pris la plume pour les miens. Quel nom en est né ? »</p>
           <form id="origin-leuzh-form"><div class="cie-answer-row"><input id="origin-leuzh-answer" type="text" autocomplete="off" placeholder="Quel nom ?" aria-label="Réponse à la deuxième énigme" required><button type="submit">Déchiffrer</button></div></form><p id="origin-leuzh-feedback" class="cie-feedback" aria-live="polite"></p>
-          <div id="origin-leuzh-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Leuzh ✧</strong></p><p>Tu as rejoint la Confrérie Euzhienne alors que ton pseudonyme était déjà Lipoip. Les membres ajoutaient « Euzh » à leur nom. De cette tradition est né « Leuzh ». Tu es ensuite devenu le scribe de cette confrérie, aujourd'hui inactive, mais dont l'héritage continue de vivre dans tes souvenirs et tes créations.</p></div>
+          <div id="origin-leuzh-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Leuzh ✧</strong></p><p>J’ai rejoint la Confrérie Euzhienne alors que mon pseudonyme était déjà Lipoip. Les membres ajoutaient « Euzh » à leur nom. De cette tradition est né « Leuzh ». Je suis ensuite devenu le scribe de cette confrérie, aujourd’hui inactive, mais dont l’héritage continue de vivre dans mes souvenirs et mes créations.</p></div>
         </div>
       </div>
     </section>
@@ -1015,10 +1015,12 @@
         if (complete) complete.hidden = count !== secretIds.length;
         document.querySelectorAll("[data-secret-item]").forEach(item => {
           const found = discoveredSecrets.has(item.dataset.secretItem);
-          item.style.opacity = found ? "1" : ".65";
-          item.style.listStyleType = found ? "'✦  '" : "'◇  '";
-          if (!item.querySelector("small")) { const status = document.createElement("small"); status.textContent = found ? "  Découvert" : "  À découvrir"; item.appendChild(status); }
-          else item.querySelector("small").textContent = found ? "  Découvert" : "  À découvrir";
+          // Masque le nom des secrets tant qu'ils ne sont pas découverts.
+          item.hidden = !found;
+          item.style.opacity = "1";
+          item.style.listStyleType = "'✦  '";
+          const status = item.querySelector("small");
+          if (status) status.remove();
         });
       }
       updateSecretRegistry();
