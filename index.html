@@ -576,6 +576,21 @@
     .lipoip-progress { margin-top: 14px; padding: 13px; border: 1px solid rgba(190,150,255,.3); border-radius: 12px; background: rgba(20,12,35,.62); }
     .lipoip-progress button { padding: 10px 15px; color: #fff; background: #68429a; border: 1px solid #c5a0ff; border-radius: 999px; font: inherit; cursor: pointer; }
     .lipoip-progress button[hidden] { display: none !important; }
+
+    /* Chasse secrète : Couronne oubliée */
+    #welcome-highlight.secret-ready { cursor: pointer; position: relative; }
+    #welcome-highlight.secret-ready::after { content: "·"; color: rgba(177,138,255,.28); font-size: 12px; margin-left: 3px; vertical-align: top; }
+    #welcome-highlight.secret-ready:focus-visible { outline: 1px dotted var(--purple); outline-offset: 4px; }
+    .crown-stage { border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin: 16px 0; background: rgba(255,255,255,.025); }
+    .crown-options { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+    .crown-options button, .crown-action { border: 1px solid var(--border); border-radius: 12px; background: #261638; color: var(--light); padding: 10px 14px; cursor: pointer; font: inherit; }
+    .crown-options button:hover, .crown-action:hover { border-color: var(--purple); background: #38204f; }
+    .crown-feedback { min-height: 1.7em; color: var(--purple); }
+    .crown-fragments { letter-spacing: 5px; color: #f5d77b; font-size: 22px; }
+    .crown-progress { height: 8px; border-radius: 99px; overflow: hidden; background: rgba(255,255,255,.1); margin: 12px 0; }
+    .crown-progress > div { height: 100%; width: 0; background: linear-gradient(90deg,#8b5cf6,#f5d77b); transition: width .25s; }
+    #crown-final[hidden], #crown-stage-2[hidden], #crown-stage-3[hidden], #crown-stage-4[hidden] { display:none; }
+
   </style>
 </head>
 
@@ -601,7 +616,7 @@
 
   <main>
     <div class="welcome-panel">
-      <p><strong id="welcome-highlight">Bienvenue dans mon univers.</strong></p>
+      <p><strong id="welcome-highlight" tabindex="0" role="button" aria-label="Détail secret du message de bienvenue">Bienvenue dans mon univers.</strong></p>
       <button
         id="highlight-button"
         class="cie-secret-trigger"
@@ -914,7 +929,7 @@
         <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
         <p id="secret-percent"><strong>0 %</strong> exploré</p>
         <ul id="secret-list" style="padding-left:22px">
-          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li>
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li>
         </ul>
         <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
         <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
@@ -935,6 +950,53 @@
         <div id="origin-leuzh-block" class="cie-riddle" hidden><p><strong>Deuxième énigme : la marque de la confrérie</strong></p><p>« J'avais déjà un nom lorsque j'ai rejoint une confrérie. Ses membres portaient tous une même marque dans leur nom. La mienne s'est glissée dans le mien, puis j'ai pris la plume pour les miens. Quel nom en est né ? »</p>
           <form id="origin-leuzh-form"><div class="cie-answer-row"><input id="origin-leuzh-answer" type="text" autocomplete="off" placeholder="Quel nom ?" aria-label="Réponse à la deuxième énigme" required><button type="submit">Déchiffrer</button></div></form><p id="origin-leuzh-feedback" class="cie-feedback" aria-live="polite"></p>
           <div id="origin-leuzh-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Leuzh ✧</strong></p><p>J’ai rejoint la Confrérie Euzhienne alors que mon pseudonyme était déjà Lipoip. Les membres ajoutaient « Euzh » à leur nom. De cette tradition est né « Leuzh ». Je suis ensuite devenu le scribe de cette confrérie, aujourd’hui inactive, mais dont l’héritage continue de vivre dans mes souvenirs et mes créations.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- Nouvelle chasse indépendante : La Couronne oubliée -->
+  <div class="modal" id="modal-couronne" role="dialog" aria-modal="true" aria-labelledby="title-couronne" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-couronne">👑 La Couronne oubliée</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>La Couronne ne récompense pas ceux qui devinent. Elle récompense ceux qui relient les indices. Trois épreuves t’attendent. Note les fragments obtenus : ils serviront à la fin.</p>
+        <div class="crown-progress" aria-label="Progression de la chasse"><div id="crown-progress-bar"></div></div>
+        <p id="crown-progress-text" aria-live="polite">Épreuve 1 sur 3</p>
+        <div class="crown-stage" id="crown-stage-1">
+          <h3>Ⅰ. L'encre qui manque</h3>
+          <p>Dans le carnet du scribe, cette suite a été gravée :</p>
+          <p class="crown-fragments" aria-label="Suite codée">A · C · F · J · O · ?</p>
+          <p>Chaque lettre avance davantage que la précédente dans l'alphabet. Quelle lettre complète la suite ?</p>
+          <div class="cie-answer-row"><input id="crown-answer-1" type="text" maxlength="1" autocomplete="off" placeholder="Une lettre" aria-label="Lettre manquante"><button type="button" id="crown-submit-1">Déchiffrer</button></div>
+          <p class="crown-feedback" id="crown-feedback-1" aria-live="polite"></p>
+          <button class="crown-action" type="button" data-crown-hint="1">Demander un indice</button><p class="crown-feedback" id="crown-hint-1" aria-live="polite"></p>
+        </div>
+        <div class="crown-stage" id="crown-stage-2" hidden>
+          <h3>Ⅱ. Les trois gardiens</h3>
+          <p>Le fragment est caché dans un seul coffre : argent, bois ou verre. Chaque gardien prononce une phrase, et <strong>une seule phrase est vraie</strong>.</p>
+          <ul><li><strong>A :</strong> « Le fragment est dans le coffre d'argent. »</li><li><strong>B :</strong> « Le fragment n'est pas dans le coffre de bois. »</li><li><strong>C :</strong> « Le fragment n'est pas dans le coffre d'argent. »</li></ul>
+          <p>Dans quel coffre se trouve le fragment ? Teste les possibilités au lieu de deviner.</p>
+          <div class="crown-options"><button type="button" data-crown-chest="silver">Argent</button><button type="button" data-crown-chest="wood">Bois</button><button type="button" data-crown-chest="glass">Verre</button></div>
+          <p class="crown-feedback" id="crown-feedback-2" aria-live="polite"></p>
+          <button class="crown-action" type="button" data-crown-hint="2">Demander un indice</button><p class="crown-feedback" id="crown-hint-2" aria-live="polite"></p>
+        </div>
+        <div class="crown-stage" id="crown-stage-3" hidden>
+          <h3>Ⅲ. La serrure muette</h3>
+          <p>Trois symboles doivent être pressés dans le bon ordre. Les inscriptions disent :</p>
+          <ul><li>« L'étoile vient immédiatement après la lune. »</li><li>« La plume n'est pas en première position. »</li><li>« L'étoile touche la plume : elles sont côte à côte. »</li></ul>
+          <p>Déduis l'ordre, puis clique les symboles. Aucun ordre n'est affiché.</p>
+          <div class="crown-options"><button type="button" data-crown-symbol="star">✦ Étoile</button><button type="button" data-crown-symbol="moon">☾ Lune</button><button type="button" data-crown-symbol="feather">🪶 Plume</button></div>
+          <p>Combinaison : <strong id="crown-combination">aucun symbole</strong></p><p class="crown-feedback" id="crown-feedback-3" aria-live="polite"></p>
+          <button class="crown-action" id="crown-reset-lock" type="button">Effacer la combinaison</button>
+          <button class="crown-action" type="button" data-crown-hint="3">Demander un indice</button><p class="crown-feedback" id="crown-hint-3" aria-live="polite"></p>
+        </div>
+        <div class="crown-stage" id="crown-final" hidden>
+          <h3>✧ La Gloire retrouvée ✧</h3><p>Tu as relié les indices, testé les hypothèses et refusé les réponses trop faciles. La Couronne oubliée reconnaît désormais ton mérite.</p>
+          <p style="text-align:center;font-size:1.2rem;color:#f5d77b"><strong>Gardien des Secrets de Lipoip</strong></p>
+          <p>La gloire n’appartient pas à celui qui possède toutes les réponses, mais à celui qui prend le temps de chercher.</p>
+          <p id="crown-final-status" aria-live="polite">Cette découverte est enregistrée sur cet appareil.</p>
         </div>
       </div>
     </section>
@@ -992,7 +1054,7 @@
       }
 
       // Registre des secrets : chaque découverte est conservée sur cet appareil.
-      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh"];
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne"];
       const secretStorageKey = "lipoip-secret-registry-v1";
       let discoveredSecrets = new Set();
       try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
@@ -1326,6 +1388,82 @@
             : "✧ Faire briller mon univers";
         });
       }
+
+      // Entrée discrète : faire briller l'accueil, puis cliquer sur son message.
+      // Chasse indépendante : La Couronne oubliée.
+      const crownKey = "lipoip-couronne-stage-v2";
+      const crownStages = ["crown-stage-1", "crown-stage-2", "crown-stage-3"];
+      let crownStage = 0;
+      let crownCombination = [];
+      try { crownStage = Math.max(0, Math.min(3, Number(localStorage.getItem(crownKey) || 0))); } catch (_) {}
+      function saveCrownStage() { try { localStorage.setItem(crownKey, String(crownStage)); } catch (_) {} }
+      function updateCrownProgress() {
+        const bar = document.getElementById("crown-progress-bar");
+        const label = document.getElementById("crown-progress-text");
+        if (bar) bar.style.width = `${Math.min(crownStage, 3) / 3 * 100}%`;
+        if (label) label.textContent = crownStage >= 3 ? "Les trois épreuves sont accomplies." : `Épreuve ${crownStage + 1} sur 3`;
+        crownStages.forEach((id, i) => { const node = document.getElementById(id); if (node) node.hidden = i !== crownStage; });
+        const final = document.getElementById("crown-final"); if (final) final.hidden = crownStage < 3;
+      }
+      function openCrownHunt() { openModal("couronne"); updateCrownProgress(); }
+      function enterCrownHunt() {
+        if (!welcomeHighlight || !welcomeHighlight.classList.contains("is-highlighted")) return;
+        openCrownHunt();
+      }
+      if (welcomeHighlight) {
+        welcomeHighlight.addEventListener("click", enterCrownHunt);
+        welcomeHighlight.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); enterCrownHunt(); } });
+      }
+      const crownHints = {
+        "1": "Les écarts entre les lettres augmentent d'une unité à chaque fois. Convertis les lettres en positions dans l'alphabet.",
+        "2": "Teste les trois coffres. Pour chaque choix, écris V ou F à côté des trois déclarations et compte les vérités.",
+        "3": "L'étoile doit être juste après la lune. La plume ne peut pas être première et doit toucher l'étoile."
+      };
+      document.querySelectorAll("[data-crown-hint]").forEach(button => button.addEventListener("click", () => {
+        const target = document.getElementById("crown-hint-" + button.dataset.crownHint);
+        if (target) target.textContent = crownHints[button.dataset.crownHint] || "";
+      }));
+      const crownSubmit1 = document.getElementById("crown-submit-1");
+      if (crownSubmit1) crownSubmit1.addEventListener("click", () => {
+        const value = (document.getElementById("crown-answer-1").value || "").trim().toUpperCase();
+        const feedback = document.getElementById("crown-feedback-1");
+        if (value === "U") { crownStage = 1; saveCrownStage(); updateCrownProgress(); }
+        else if (feedback) feedback.textContent = "Pas encore. Regarde les écarts : +2, puis +3, puis +4…";
+      });
+      // Une seule déclaration vraie : le coffre de verre satisfait A=F, B=V, C=V (deux vraies), donc impossible;
+      // le coffre d'argent donne V,V,F (deux vraies); le coffre de bois donne F,F,V (une vraie).
+      document.querySelectorAll("[data-crown-chest]").forEach(button => button.addEventListener("click", () => {
+        const feedback = document.getElementById("crown-feedback-2");
+        if (button.dataset.crownChest === "wood") { crownStage = 2; saveCrownStage(); updateCrownProgress(); }
+        else if (feedback) feedback.textContent = "Cette hypothèse ne respecte pas la règle d'une seule phrase vraie. Recompte les trois déclarations.";
+      }));
+      const crownOrder = ["moon", "star", "feather"];
+      const labels = {star:"✦", moon:"☾", feather:"🪶"};
+      function renderCrownCombination() {
+        const combo = document.getElementById("crown-combination");
+        if (combo) combo.textContent = crownCombination.map(x => labels[x]).join(" → ") || "aucun symbole";
+      }
+      document.querySelectorAll("[data-crown-symbol]").forEach(button => button.addEventListener("click", () => {
+        if (crownStage !== 2) return;
+        if (crownCombination.length >= 3) crownCombination = [];
+        crownCombination.push(button.dataset.crownSymbol); renderCrownCombination();
+        if (crownCombination.length === 3) {
+          const feedback = document.getElementById("crown-feedback-3");
+          if (crownCombination.every((value, index) => value === crownOrder[index])) {
+            crownStage = 3; saveCrownStage(); updateCrownProgress(); markSecret("couronne");
+          } else {
+            if (feedback) feedback.textContent = "La serrure refuse cette combinaison. Les trois inscriptions doivent être vraies en même temps.";
+            crownCombination = []; renderCrownCombination();
+          }
+        }
+      }));
+      const crownReset = document.getElementById("crown-reset-lock");
+      if (crownReset) crownReset.addEventListener("click", () => {
+        crownCombination = []; renderCrownCombination();
+        const feedback = document.getElementById("crown-feedback-3"); if (feedback) feedback.textContent = "Combinaison effacée.";
+      });
+      if (crownStage >= 3) { const status = document.getElementById("crown-final-status"); if (status) status.textContent = "Ta découverte est déjà enregistrée sur cet appareil."; }
+      updateCrownProgress();
     })();
   </script>
 </body>
