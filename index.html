@@ -677,10 +677,30 @@
     body[data-equipped-title="eclaireur"] .subtitle { color:#ffe3a6; }
     body[data-equipped-title="eclaireur"] .welcome-panel, body[data-equipped-title="eclaireur"] .modal-window { box-shadow:0 0 28px rgba(255,226,160,.18); }
     body[data-equipped-title="eclaireur"] .equipped-title-badge { color:#fff3cf; border-color:#ffe3a6; box-shadow:0 0 18px rgba(255,226,160,.5); }
+    /* ===== Le Ciel du zodiaque (appui long sur la phrase du pied de page) ===== */
+    #zodiac-trigger { user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent; transition:text-shadow .6s, color .6s; }
+    #zodiac-trigger.is-pressing { color:#fff6dc; text-shadow:0 0 12px rgba(214,200,255,.9); }
+    .zodiac-sky { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:14px 0; }
+    .zodiac-season { grid-column:1 / -1; margin-top:6px; font-size:.82rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+    .zodiac-chip { padding:8px 4px; text-align:center; border:1px dashed var(--border); border-radius:12px; opacity:.45; font-size:1rem; }
+    .zodiac-chip.is-lit { opacity:1; border-style:solid; color:#ffe9b0; text-shadow:0 0 10px rgba(255,226,160,.8); background:rgba(255,226,160,.07); }
+    .zodiac-pick { padding:10px 4px; color:var(--light); font:inherit; text-align:center; background:rgba(20,12,35,.7); border:1px solid var(--border); border-radius:12px; cursor:pointer; }
+    .zodiac-pick:disabled { color:#ffe9b0; border-color:#ffe3a6; cursor:default; text-shadow:0 0 10px rgba(255,226,160,.8); }
+    #shooting-stars { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-1; display:none; }
+    body[data-equipped-title="zodiaque"] #shooting-stars { display:block; }
+    .shooting-star { position:absolute; top:-12%; left:var(--x); width:2px; height:95px; background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(222,210,255,.95)); border-radius:2px; opacity:0; transform:rotate(35deg); animation:shootingStar var(--d) linear var(--delay) infinite; }
+    @keyframes shootingStar { 0% { transform:translate(0,0) rotate(35deg); opacity:0; } 6% { opacity:1; } 45% { opacity:0; } 100% { transform:translate(-70vh,100vh) rotate(35deg); opacity:0; } }
+    body[data-equipped-title="zodiaque"] { --bg:#0a0a22; --panel:#14143a; --border:rgba(160,170,255,.4); --purple:#b9c4ff; background:radial-gradient(ellipse at 50% 0%, #26235c 0%, transparent 56%), var(--bg); }
+    body[data-equipped-title="zodiaque"] h1 { color:#eef0ff; text-shadow:0 0 10px rgba(200,210,255,.7), 0 0 30px rgba(120,130,255,.45); }
+    body[data-equipped-title="zodiaque"] .symbol { color:#dfe4ff; text-shadow:0 0 16px #aab6ff, 0 0 36px rgba(110,120,255,.6); }
+    body[data-equipped-title="zodiaque"] .subtitle { color:#c9d1ff; }
+    body[data-equipped-title="zodiaque"] .equipped-title-badge { color:#e6e9ff; border-color:#aab6ff; box-shadow:0 0 18px rgba(130,145,255,.55); }
+    @media (prefers-reduced-motion: reduce) { .shooting-star { animation:none; top:var(--y); opacity:.3; transform:rotate(35deg); } }
   </style>
 </head>
 
 <body>
+  <div id="shooting-stars" aria-hidden="true"><span class="shooting-star" style="--x:92%;--d:7s;--delay:0s;--y:8%"></span><span class="shooting-star" style="--x:78%;--d:9s;--delay:2.5s;--y:22%"></span><span class="shooting-star" style="--x:64%;--d:8s;--delay:5s;--y:35%"></span><span class="shooting-star" style="--x:50%;--d:10s;--delay:1.2s;--y:12%"></span><span class="shooting-star" style="--x:36%;--d:7.5s;--delay:6.5s;--y:28%"></span><span class="shooting-star" style="--x:22%;--d:9.5s;--delay:3.8s;--y:18%"></span><span class="shooting-star" style="--x:8%;--d:8.5s;--delay:8s;--y:40%"></span><span class="shooting-star" style="--x:58%;--d:11s;--delay:9.5s;--y:50%"></span><span class="shooting-star" style="--x:84%;--d:10.5s;--delay:4.5s;--y:60%"></span></div>
   <header>
     <button class="titles-corner-button" type="button" data-modal="titres">✧ Mes titres</button>
     <button class="symbol star-code-trigger" id="star-code-trigger" type="button" data-modal="code-secret" aria-label="Une étoile au-dessus de Lipoip">✧</button>
@@ -905,6 +925,7 @@
           <button class="cie-secret-trigger" type="button" data-modal="cie-quest">✦ CIE</button>
           <button class="cie-secret-trigger album-quest-button" type="button" id="open-album-quest" data-modal="piste-chat" hidden>...</button>
           <button class="cie-secret-trigger" type="button" id="open-babel-quest" data-modal="babel" hidden>📖 Le Livre de Babel</button>
+          <button class="cie-secret-trigger" type="button" id="open-zodiac-quest" data-modal="zodiaque" hidden>🌌 Le Ciel du zodiaque</button>
           <button class="cie-secret-trigger reset-progress-button" type="button" id="reset-all-progress">↺ Réinitialiser secrets et titres</button>
         </div>
         <button class="lipoip-clue" type="button" data-clue="7" aria-label="Découvrir le septième symbole">🐾</button>
@@ -1039,7 +1060,7 @@
         <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
         <p id="secret-percent"><strong>0 %</strong> exploré</p>
         <ul id="secret-list" style="padding-left:22px">
-          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li><li data-secret-item="babel">Le Livre de Babel</li>
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li><li data-secret-item="babel">Le Livre de Babel</li><li data-secret-item="zodiaque">Le Ciel du zodiaque</li>
         </ul>
         <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
         <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
@@ -1114,11 +1135,24 @@
 
   <footer>
     Merci d'avoir pris le temps de découvrir ces quelques pages.
-    <strong>Tout ne se révèle pas au premier regard.</strong><button class="cie-feather cie-feather--footer" type="button" data-feather="5" aria-label="Fragment discret dans le pied de page" hidden>🪶</button>
+    <strong id="zodiac-trigger">Tout ne se révèle pas au premier regard.</strong><button class="cie-feather cie-feather--footer" type="button" data-feather="5" aria-label="Fragment discret dans le pied de page" hidden>🪶</button>
     <p>✧ Lipoip ✧</p>
     <button class="cie-secret-trigger" type="button" data-modal="cie" aria-label="Découvrir un secret étoilé">✦ Un éclat étrange</button>
     <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled hidden>✦</button>
   </footer>
+
+  <!-- Quête : Le Ciel du zodiaque (déclenchée par un appui long sur la phrase du pied de page) -->
+  <div class="modal" id="modal-zodiaque" role="dialog" aria-modal="true" aria-labelledby="title-zodiaque" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-zodiaque">🌌 Le Ciel du zodiaque</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Le pied de page s'est assombri : un ciel nocturne s'ouvre. Douze constellations attendent d'être reconnues, une par une.</p>
+        <div id="zodiac-sky" class="zodiac-sky" aria-live="polite"></div>
+        <div id="zodiac-stage"></div>
+        <div id="zodiac-final" class="cie-reveal" hidden><p><strong>✧ Le Ciel du zodiaque ✧</strong></p><p>La ceinture du zodiaque est reliée. Douze constellations, une année entière : le ciel a fini de tourner, et il recommencera.</p></div>
+      </div>
+    </section>
+  </div>
 
   <!-- Quête : Le Livre de Babel (déclenchée par un appui long sur le titre) -->
   <div class="modal" id="modal-babel" role="dialog" aria-modal="true" aria-labelledby="title-babel" aria-hidden="true">
@@ -1193,7 +1227,7 @@
       }
 
       // Registre des secrets : chaque découverte est conservée sur cet appareil.
-      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash", "babel"];
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash", "babel", "zodiaque"];
       const secretStorageKey = "lipoip-secret-registry-v1";
       let discoveredSecrets = new Set();
       try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
@@ -1299,7 +1333,8 @@
           "lipoip-couronne-stage-v2", "lipoip-origin-lipoip-v1", "lipoip-origin-leuzh-v1",
           "lipoip-folie-unlocked", "lipoip-cat-secret-v1", "lipoip-cat-unlocked-v1",
           "lipoip-babel-found-v1", "lipoip-babel-stage-v1",
-          "lipoip-visited-tabs-v1", "lipoip-cie-progress-v1"
+          "lipoip-visited-tabs-v1", "lipoip-cie-progress-v1",
+          "lipoip-zodiac-found-v1", "lipoip-zodiac-stage-v1", "lipoip-zodiac-final-v1"
         ];
         keysToReset.forEach(key => { try { localStorage.removeItem(key); } catch (_) {} });
         // Retire aussi les anciennes clés de la chasse CIE/album pour repartir proprement.
@@ -1318,6 +1353,7 @@
         {id:"konami",name:"Héritier du code oublié",desc:"Un code sans indice transforme entièrement l’apparence du site.",source:"konami"},
         {id:"boulder-dash",name:"Survivant des grottes",desc:"Les rochers tombent, mais tu avances : un code des grottes réchauffe tout le site de braise.",source:"boulder-dash"},
         {id:"babel",name:"Lecteur de Babel",desc:"Pour avoir reconstitué le livre de la Bibliothèque de Babel. Le titre de la page s’estompe comme une encre pas encore sèche.",source:"babel"},
+        {id:"zodiaque",name:"Voyageur du zodiaque",desc:"Pour avoir reconnu les douze constellations du zodiaque. Une pluie d’étoiles filantes traverse le fond du site.",source:"zodiaque"},
         {id:"complet",name:"L'Âme de l'Univers",desc:"Titre ultime : découvre tous les secrets actuellement définis. Si de nouveaux secrets sont ajoutés, il se verrouille de nouveau jusqu’à leur découverte. Une fois équipé, il transforme l’ambiance entière du site.",source:"__all__"}
       ];
       let equippedTitle = "";
@@ -1929,6 +1965,115 @@
       }
       renderBabel();
       if (babelStage === babelStages.length) markSecret("babel");
+
+      // ===== Le Ciel du zodiaque : appui long (2 s) sur la phrase du pied de page, puis 12 énigmes =====
+      const zodiacFoundKey = "lipoip-zodiac-found-v1", zodiacStageKey = "lipoip-zodiac-stage-v1", zodiacFinalKey = "lipoip-zodiac-final-v1";
+      const zodiacButton = document.getElementById("open-zodiac-quest");
+      if (zodiacButton && babelRead(zodiacFoundKey) === "1") zodiacButton.hidden = false;
+      const zodiacTrigger = document.getElementById("zodiac-trigger");
+      if (zodiacTrigger) {
+        let zTimer = null, zGlow = null, zX = 0, zY = 0;
+        const zCancel = () => { clearTimeout(zTimer); clearTimeout(zGlow); zTimer = null; zGlow = null; zodiacTrigger.classList.remove("is-pressing"); };
+        zodiacTrigger.addEventListener("pointerdown", event => {
+          if (event.button > 0) return;
+          zX = event.clientX; zY = event.clientY;
+          zCancel();
+          zGlow = setTimeout(() => zodiacTrigger.classList.add("is-pressing"), 600);
+          zTimer = setTimeout(() => {
+            zTimer = null; zodiacTrigger.classList.remove("is-pressing");
+            babelWrite(zodiacFoundKey, "1");
+            if (zodiacButton) zodiacButton.hidden = false;
+            openModal("zodiaque");
+          }, 2000);
+        });
+        zodiacTrigger.addEventListener("pointermove", event => { if (zTimer && Math.hypot(event.clientX - zX, event.clientY - zY) > 14) zCancel(); });
+        ["pointerup", "pointercancel", "pointerleave"].forEach(name => zodiacTrigger.addEventListener(name, zCancel));
+        zodiacTrigger.addEventListener("contextmenu", event => event.preventDefault());
+      }
+
+      const zodiacSeasons = ["🌱 Printemps", "☀️ Été", "🍂 Automne", "❄️ Hiver"];
+      const zodiacSigns = [
+        { name: "Bélier", glyph: "♈", riddle: "« Je porte des cornes enroulées, et ma toison est en or. »", answers: ["belier"] },
+        { name: "Taureau", glyph: "♉", riddle: "« Je charge tête baissée dans l’arène, et une étoile rouge brille à la place de mon œil. »", answers: ["taureau"] },
+        { name: "Gémeaux", glyph: "♊", riddle: "« Deux frères inséparables, l’un mortel, l’autre immortel, partagent le même ciel. »", answers: ["gemeaux", "castor et pollux", "castor pollux", "dioscures"] },
+        { name: "Cancer", glyph: "♋", riddle: "« Je marche de côté et j’ai des pinces. »", answers: ["cancer", "crabe"] },
+        { name: "Lion", glyph: "♌", riddle: "« Le premier travail d’Hercule : sa peau était impénétrable. »", answers: ["lion"] },
+        { name: "Vierge", glyph: "♍", riddle: "« Je suis une jeune femme qui tient un épi de blé. »", answers: ["vierge"] },
+        { name: "Balance", glyph: "♎", riddle: "« Je suis le seul des douze à ne pas être un être vivant. »", answers: ["balance"] },
+        { name: "Scorpion", glyph: "♏", riddle: "« Je vis dans le désert, j’ai des pinces et une queue venimeuse. »", answers: ["scorpion"] },
+        { name: "Sagittaire", glyph: "♐", riddle: "« Moitié homme, moitié cheval, mon arc est tendu. »", answers: ["sagittaire", "centaure"] },
+        { name: "Capricorne", glyph: "♑", riddle: "« Moitié chèvre, moitié poisson. »", answers: ["capricorne"] },
+        { name: "Verseau", glyph: "♒", riddle: "« Je porte une jarre et j’en verse l’eau. »", answers: ["verseau", "porteur d eau"] },
+        { name: "Poissons", glyph: "♓", riddle: "« Nous sommes deux, reliés par une corde, et nous nageons chacun de notre côté. »", answers: ["poissons", "poisson"] }
+      ];
+      const zodiacFinalLayout = [7, 2, 10, 0, 5, 9, 3, 11, 6, 1, 8, 4];
+      const zodiacSky = document.getElementById("zodiac-sky");
+      const zodiacStageBox = document.getElementById("zodiac-stage");
+      const zodiacFinalBox = document.getElementById("zodiac-final");
+      let zodiacStage = parseInt(babelRead(zodiacStageKey) || "0", 10);
+      if (!(zodiacStage >= 0 && zodiacStage <= zodiacSigns.length)) zodiacStage = 0;
+      let zodiacFinalDone = babelRead(zodiacFinalKey) === "1";
+      let zodiacPicked = 0;
+      const zodiacText = glyph => glyph + "\uFE0E";
+      function renderZodiac() {
+        if (!zodiacSky || !zodiacStageBox) return;
+        zodiacSky.innerHTML = "";
+        zodiacSigns.forEach((sign, index) => {
+          if (index % 3 === 0) { const label = document.createElement("div"); label.className = "zodiac-season"; label.textContent = zodiacSeasons[index / 3]; zodiacSky.appendChild(label); }
+          const chip = document.createElement("div"); const lit = index < zodiacStage;
+          chip.className = "zodiac-chip" + (lit ? " is-lit" : "");
+          chip.textContent = lit ? `${zodiacText(sign.glyph)} ${sign.name}` : "✧";
+          zodiacSky.appendChild(chip);
+        });
+        zodiacStageBox.innerHTML = "";
+        if (zodiacFinalBox) zodiacFinalBox.hidden = !zodiacFinalDone;
+        if (zodiacStage < zodiacSigns.length) {
+          const sign = zodiacSigns[zodiacStage];
+          const block = document.createElement("div"); block.className = "cie-riddle";
+          const title = document.createElement("p"); const strong = document.createElement("strong");
+          strong.textContent = `${zodiacSeasons[Math.floor(zodiacStage / 3)]} · énigme ${zodiacStage + 1} sur 12`; title.appendChild(strong);
+          const riddle = document.createElement("p"); riddle.textContent = sign.riddle;
+          const form = document.createElement("form"); const row = document.createElement("div"); row.className = "cie-answer-row";
+          const input = document.createElement("input");
+          input.type = "text"; input.autocomplete = "off"; input.placeholder = "Quelle constellation ?"; input.required = true;
+          input.setAttribute("aria-label", `Réponse à l’énigme ${zodiacStage + 1}`);
+          const submit = document.createElement("button"); submit.type = "submit"; submit.textContent = "Allumer";
+          row.append(input, submit); form.appendChild(row);
+          const feedback = document.createElement("p"); feedback.className = "cie-feedback"; feedback.setAttribute("aria-live", "polite");
+          form.addEventListener("submit", event => {
+            event.preventDefault();
+            if (sign.answers.includes(babelNormalize(input.value))) {
+              zodiacStage += 1; babelWrite(zodiacStageKey, String(zodiacStage)); zodiacPicked = 0; renderZodiac();
+            } else feedback.textContent = "Le ciel reste sombre. Relis l’énigme.";
+          });
+          block.append(title, riddle, form, feedback);
+          zodiacStageBox.appendChild(block);
+        } else if (!zodiacFinalDone) {
+          const block = document.createElement("div"); block.className = "cie-riddle";
+          const intro = document.createElement("p");
+          intro.textContent = "Les douze constellations brillent. Relie la ceinture du zodiaque : touche-les dans l’ordre de l’année, du printemps à l’hiver.";
+          const grid = document.createElement("div"); grid.className = "zodiac-sky";
+          const feedback = document.createElement("p"); feedback.className = "cie-feedback"; feedback.setAttribute("aria-live", "polite");
+          feedback.textContent = `${zodiacPicked} / 12`;
+          zodiacFinalLayout.forEach(signIndex => {
+            const pick = document.createElement("button"); pick.type = "button"; pick.className = "zodiac-pick";
+            pick.textContent = `${zodiacText(zodiacSigns[signIndex].glyph)} ${zodiacSigns[signIndex].name}`;
+            pick.disabled = signIndex < zodiacPicked;
+            pick.addEventListener("click", () => {
+              if (signIndex === zodiacPicked) {
+                zodiacPicked += 1;
+                if (zodiacPicked === zodiacSigns.length) { zodiacFinalDone = true; babelWrite(zodiacFinalKey, "1"); markSecret("zodiaque"); }
+                renderZodiac();
+              } else { zodiacPicked = 0; renderZodiac(); const note = zodiacStageBox.querySelector(".cie-feedback"); if (note) note.textContent = "L’ordre est brisé. Pense au cycle de l’année, du printemps à l’hiver."; }
+            });
+            grid.appendChild(pick);
+          });
+          block.append(intro, grid, feedback);
+          zodiacStageBox.appendChild(block);
+        }
+      }
+      renderZodiac();
+      if (zodiacFinalDone) markSecret("zodiaque");
     })();
   </script>
 </body>
