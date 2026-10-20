@@ -658,6 +658,17 @@
     body[data-equipped-title="boulder-dash"] .subtitle { color:#ffcf8a; letter-spacing:.15em; }
     body[data-equipped-title="boulder-dash"] header { border-bottom:3px dashed rgba(255,179,71,.55); }
     body[data-equipped-title="boulder-dash"] .equipped-title-badge { color:#ffe2b8; border-color:#ffb347; box-shadow:0 0 18px rgba(255,154,46,.55); }
+
+    /* ===== Le Livre de Babel (quête ajoutée en V1.7) ===== */
+    #main-title { user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent; }
+    .babel-shelf { display:flex; justify-content:center; gap:12px; font-size:1.7rem; padding:12px; margin:14px 0; border:1px solid var(--border); border-radius:14px; background:rgba(0,0,0,.22); }
+    .babel-slot { opacity:.35; }
+    .babel-slot.is-filled { opacity:1; }
+    .babel-stage-title { margin:0 0 6px; }
+    body[data-equipped-title="babel"] h1 { color:#e8dcff; text-shadow:0 0 6px rgba(177,138,255,.65), 0 4px 10px rgba(177,138,255,.35); animation:babelInk 7s ease-in-out infinite; }
+    body[data-equipped-title="babel"] .symbol { text-shadow:0 0 12px rgba(177,138,255,.55); opacity:.85; }
+    @keyframes babelInk { 0%,100% { opacity:1; filter:blur(0); } 50% { opacity:.4; filter:blur(1.4px); } }
+    @media (prefers-reduced-motion: reduce) { body[data-equipped-title="babel"] h1 { animation:none; opacity:.65; filter:blur(.6px); } }
   </style>
 </head>
 
@@ -665,7 +676,7 @@
   <header>
     <button class="titles-corner-button" type="button" data-modal="titres">✧ Mes titres</button>
     <button class="symbol star-code-trigger" id="star-code-trigger" type="button" data-modal="code-secret" aria-label="Une étoile au-dessus de Lipoip">✧</button>
-    <h1>Lipoip</h1>
+    <h1 id="main-title">Lipoip</h1>
     <div class="subtitle">Entre ombre et imagination</div>
     <div id="equipped-title-badge" class="equipped-title-badge" hidden></div>
     <p class="intro">
@@ -885,6 +896,7 @@
           <button class="cie-secret-trigger" type="button" data-modal="origines">✧ Les noms cachés</button>
           <button class="cie-secret-trigger" type="button" data-modal="cie-quest">✦ CIE</button>
           <button class="cie-secret-trigger album-quest-button" type="button" id="open-album-quest" data-modal="piste-chat" hidden>...</button>
+          <button class="cie-secret-trigger" type="button" id="open-babel-quest" data-modal="babel" hidden>📖 Le Livre de Babel</button>
           <button class="cie-secret-trigger reset-progress-button" type="button" id="reset-all-progress">↺ Réinitialiser secrets et titres</button>
         </div>
         <button class="lipoip-clue" type="button" data-clue="7" aria-label="Découvrir le septième symbole">🐾</button>
@@ -1019,7 +1031,7 @@
         <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
         <p id="secret-percent"><strong>0 %</strong> exploré</p>
         <ul id="secret-list" style="padding-left:22px">
-          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li>
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li><li data-secret-item="babel">Le Livre de Babel</li>
         </ul>
         <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
         <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
@@ -1100,6 +1112,19 @@
     <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled hidden>✦</button>
   </footer>
 
+  <!-- Quête : Le Livre de Babel (déclenchée par un appui long sur le titre) -->
+  <div class="modal" id="modal-babel" role="dialog" aria-modal="true" aria-labelledby="title-babel" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-babel">📖 Le Livre de Babel</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Les lettres se sont mélangées, puis un livre s'est ouvert. Ses étagères sont vides : cinq objets attendent de retrouver leur place.</p>
+        <p id="babel-shelf" class="babel-shelf" aria-live="polite"></p>
+        <div id="babel-stages"></div>
+        <div id="babel-final" class="cie-reveal" hidden><p><strong>✧ Le Livre de Babel ✧</strong></p><p>Cinq objets ont retrouvé leur place sur l’étagère. Dans la Bibliothèque de Babel, presque tous les livres ne sont que du bruit, mais celui-ci avait un sens, et tu l’as reconstitué.</p><p>Dans Magic aussi, la bibliothèque se pioche carte après carte : chaque page attendait la sienne.</p></div>
+      </div>
+    </section>
+  </div>
+
   <div class="modal" id="modal-code-secret" role="dialog" aria-modal="true" aria-labelledby="title-code-secret" aria-hidden="true">
     <section class="modal-window">
       <div class="modal-header"><h2 class="modal-title" id="title-code-secret">✧ Entrée secrète</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
@@ -1160,7 +1185,7 @@
       }
 
       // Registre des secrets : chaque découverte est conservée sur cet appareil.
-      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash"];
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash", "babel"];
       const secretStorageKey = "lipoip-secret-registry-v1";
       let discoveredSecrets = new Set();
       try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
@@ -1232,7 +1257,8 @@
         const keysToReset = [
           secretStorageKey, "lipoip-equipped-title-v1", "lipoip-seven-symbols-v2",
           "lipoip-couronne-stage-v2", "lipoip-origin-lipoip-v1", "lipoip-origin-leuzh-v1",
-          "lipoip-folie-unlocked", "lipoip-cat-secret-v1", "lipoip-cat-unlocked-v1"
+          "lipoip-folie-unlocked", "lipoip-cat-secret-v1", "lipoip-cat-unlocked-v1",
+          "lipoip-babel-found-v1", "lipoip-babel-stage-v1"
         ];
         keysToReset.forEach(key => { try { localStorage.removeItem(key); } catch (_) {} });
         // Retire aussi les anciennes clés de la chasse CIE/album pour repartir proprement.
@@ -1249,6 +1275,7 @@
         {id:"couronne",name:"Tisseur d'indices",desc:"Pour avoir résolu les trois épreuves de la Couronne oubliée.",source:"couronne"},
         {id:"konami",name:"Héritier du code oublié",desc:"Un code sans indice transforme entièrement l’apparence du site.",source:"konami"},
         {id:"boulder-dash",name:"Survivant des grottes",desc:"Les rochers tombent, mais tu avances : un code des grottes réchauffe tout le site de braise.",source:"boulder-dash"},
+        {id:"babel",name:"Lecteur de Babel",desc:"Pour avoir reconstitué le livre de la Bibliothèque de Babel. Le titre de la page s’estompe comme une encre pas encore sèche.",source:"babel"},
         {id:"complet",name:"L'Âme de l'Univers",desc:"Titre ultime : découvre tous les secrets actuellement définis. Si de nouveaux secrets sont ajoutés, il se verrouille de nouveau jusqu’à leur découverte. Une fois équipé, il transforme l’ambiance entière du site.",source:"__all__"}
       ];
       let equippedTitle = "";
@@ -1672,6 +1699,136 @@
       });
       if (crownStage >= 3) { const status = document.getElementById("crown-final-status"); if (status) status.textContent = "Ta découverte est déjà enregistrée sur cet appareil."; }
       updateCrownProgress();
+
+      // ===== Le Livre de Babel : appui long (3 s) sur le titre, puis 5 énigmes =====
+      const babelFoundKey = "lipoip-babel-found-v1", babelStageKey = "lipoip-babel-stage-v1";
+      const babelButton = document.getElementById("open-babel-quest");
+      const babelRead = key => { try { return localStorage.getItem(key); } catch (_) { return null; } };
+      const babelWrite = (key, value) => { try { localStorage.setItem(key, value); } catch (_) {} };
+      if (babelButton && babelRead(babelFoundKey) === "1") babelButton.hidden = false;
+
+      const mainTitle = document.getElementById("main-title");
+      if (mainTitle) {
+        const originalTitle = mainTitle.textContent;
+        let pressTimer = null, shuffling = false, pressX = 0, pressY = 0;
+        const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const cancelPress = () => { clearTimeout(pressTimer); pressTimer = null; };
+        function finishBabelTrigger() {
+          babelWrite(babelFoundKey, "1");
+          if (babelButton) babelButton.hidden = false;
+          openModal("babel");
+        }
+        function startBabelShuffle() {
+          if (shuffling) return;
+          if (reduceMotion) { finishBabelTrigger(); return; }
+          shuffling = true;
+          let ticks = 0;
+          const timer = setInterval(() => {
+            const letters = originalTitle.split("");
+            for (let i = letters.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [letters[i], letters[j]] = [letters[j], letters[i]]; }
+            mainTitle.textContent = letters.join("");
+            if (++ticks >= 10) {
+              clearInterval(timer);
+              mainTitle.textContent = originalTitle;
+              shuffling = false;
+              finishBabelTrigger();
+            }
+          }, 110);
+        }
+        mainTitle.addEventListener("pointerdown", event => {
+          if (event.button > 0 || shuffling) return;
+          pressX = event.clientX; pressY = event.clientY;
+          cancelPress();
+          pressTimer = setTimeout(() => { pressTimer = null; startBabelShuffle(); }, 3000);
+        });
+        mainTitle.addEventListener("pointermove", event => {
+          if (pressTimer && Math.hypot(event.clientX - pressX, event.clientY - pressY) > 14) cancelPress();
+        });
+        ["pointerup", "pointercancel", "pointerleave"].forEach(name => mainTitle.addEventListener(name, cancelPress));
+        mainTitle.addEventListener("contextmenu", event => event.preventDefault());
+      }
+
+      const babelStages = [
+        { emoji: "🎴", title: "Première étagère",
+          riddle: "« On me lance pour attraper, je m’ouvre en deux couleurs, et ce que je referme ne s’échappe plus. »",
+          answers: ["poke ball", "pokeball"],
+          reveal: "Une Poké Ball vient se ranger sur la première étagère, refermée sur ce qu’elle a attrapé." },
+        { emoji: "🟩", title: "Deuxième étagère",
+          riddle: "« Vert, silencieux, sans bras, et pourtant c’est quand je m’approche trop que tout explose. »",
+          answers: ["creeper"],
+          reveal: "Un creeper se glisse entre deux volumes. Il ne dit rien, mais l’étagère tremble un peu." },
+        { emoji: "⚔️", title: "Troisième étagère",
+          riddle: "« Je n’ai pas de tête mais j’ai une pointe, un fil mais pas de couture, une garde qui ne protège que celui qui me tient. Je dors dans un fourreau. »",
+          answers: ["epee"],
+          reveal: "Une épée repose dans son fourreau, à plat sur les livres. Elle attend." },
+        { emoji: "🃏", title: "Quatrième étagère",
+          riddle: "« Cinq couleurs me font naître : blanc, bleu, noir, rouge, vert. Sans moi, aucune carte ne peut être jouée. »",
+          answers: ["mana"],
+          reveal: "Une carte glisse entre les pages, cinq couleurs brillant sur sa tranche." },
+        { emoji: "📖", title: "Cinquième étagère",
+          riddle: "« Je suis une fine bande de papier ou de tissu. Je ne lis rien, mais je sais toujours où tu t’es arrêté. »",
+          answers: ["signet", "marque page", "marque pages"],
+          reveal: "Un signet marque la page. Tu pourras revenir exactement là où tu t’étais arrêté." }
+      ];
+      const babelStagesBox = document.getElementById("babel-stages");
+      const babelShelf = document.getElementById("babel-shelf");
+      const babelFinal = document.getElementById("babel-final");
+      let babelStage = parseInt(babelRead(babelStageKey) || "0", 10);
+      if (!(babelStage >= 0 && babelStage <= babelStages.length)) babelStage = 0;
+      function babelNormalize(value) {
+        return normalizeAnswer((value || "").replace(/[’']/g, " ")).replace(/-/g, " ").replace(/^(le|la|les|l|un|une|du|des|de la)\s+/, "").replace(/\s+/g, " ").trim();
+      }
+      function renderBabel() {
+        if (!babelStagesBox || !babelShelf) return;
+        babelShelf.innerHTML = "";
+        babelStages.forEach((stage, index) => {
+          const slot = document.createElement("span");
+          slot.className = "babel-slot" + (index < babelStage ? " is-filled" : "");
+          slot.textContent = index < babelStage ? stage.emoji : "◌";
+          babelShelf.appendChild(slot);
+        });
+        babelStagesBox.innerHTML = "";
+        babelStages.forEach((stage, index) => {
+          if (index > babelStage) return;
+          const block = document.createElement("div");
+          block.className = "cie-riddle";
+          const title = document.createElement("p"); title.className = "babel-stage-title";
+          const strong = document.createElement("strong"); strong.textContent = `${stage.emoji} ${stage.title}`; title.appendChild(strong);
+          const riddle = document.createElement("p"); riddle.textContent = stage.riddle;
+          block.append(title, riddle);
+          if (index < babelStage) {
+            const reveal = document.createElement("div"); reveal.className = "cie-reveal";
+            const text = document.createElement("p"); text.textContent = stage.reveal; reveal.appendChild(text);
+            block.appendChild(reveal);
+          } else {
+            const form = document.createElement("form");
+            const row = document.createElement("div"); row.className = "cie-answer-row";
+            const input = document.createElement("input");
+            input.type = "text"; input.autocomplete = "off"; input.placeholder = "Ta réponse"; input.required = true;
+            input.setAttribute("aria-label", `Réponse : ${stage.title}`);
+            const submit = document.createElement("button"); submit.type = "submit"; submit.textContent = "Ranger";
+            row.append(input, submit); form.appendChild(row);
+            const feedback = document.createElement("p"); feedback.className = "cie-feedback"; feedback.setAttribute("aria-live", "polite");
+            form.addEventListener("submit", event => {
+              event.preventDefault();
+              const answer = babelNormalize(input.value);
+              if (stage.answers.includes(answer)) {
+                babelStage = index + 1;
+                babelWrite(babelStageKey, String(babelStage));
+                if (babelStage === babelStages.length) markSecret("babel");
+                renderBabel();
+              } else {
+                feedback.textContent = "Les livres restent silencieux. Relis l’énigme.";
+              }
+            });
+            block.append(form, feedback);
+          }
+          babelStagesBox.appendChild(block);
+        });
+        if (babelFinal) babelFinal.hidden = babelStage < babelStages.length;
+      }
+      renderBabel();
+      if (babelStage === babelStages.length) markSecret("babel");
     })();
   </script>
 </body>
