@@ -80,12 +80,22 @@
     body[data-equipped-title="complet"] .symbol { color:#f5d77b; text-shadow:0 0 12px #f5d77b,0 0 32px #a66cff; }
     body[data-equipped-title="complet"] .subtitle { color:#f5d77b; letter-spacing:5px; }
     body[data-equipped-title="complet"] .welcome-panel, body[data-equipped-title="complet"] nav { border-color:rgba(245,215,122,.5); box-shadow:0 0 22px rgba(166,108,255,.12); }
-    .titles-corner-button { position:fixed; z-index:1000; top:12px; left:12px; padding:9px 13px; color:#eadbff; background:rgba(22,13,36,.92); border:1px solid rgba(190,150,255,.5); border-radius:999px; font:inherit; font-size:.85rem; cursor:pointer; backdrop-filter:blur(8px); box-shadow:0 3px 18px rgba(0,0,0,.25); }
+    .titles-corner-button { position:fixed; z-index:1000; top:12px; left:12px; padding:9px 13px; color:#eadbff; background:rgba(22,13,36,.92); border:1px solid rgba(190,150,255,.5); border-radius:999px; font:inherit; font-size:.85rem; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.22); }
     .titles-corner-button:hover, .titles-corner-button:focus-visible { border-color:#f5d77b; outline:none; }
     .strange-shortcuts { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0 18px; }
     .strange-shortcuts .cie-secret-trigger { margin-top:0; }
     .equipped-title-badge { display:inline-block; margin:14px auto 0; padding:6px 12px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:12px; letter-spacing:.5px; }
     .title-list { display:grid; gap:12px; padding:0; list-style:none; }
+    .title-groups { display:grid; gap:10px; margin:14px 0; }
+    .title-group { border:1px solid rgba(177,138,255,.38); border-radius:14px; overflow:hidden; background:rgba(24,15,38,.72); }
+    .title-group-toggle { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; padding:14px; color:#f0e5ff; background:linear-gradient(110deg,rgba(67,43,91,.88),rgba(29,19,45,.92)); border:0; text-align:left; font:inherit; font-weight:750; cursor:pointer; }
+    .title-group-toggle:hover,.title-group-toggle:focus-visible { outline:none; background:linear-gradient(110deg,rgba(91,59,120,.92),rgba(39,24,58,.96)); }
+    .title-group-count { color:#d0b7f7; font-size:.86rem; white-space:nowrap; }
+    .title-group-chevron { display:inline-block; margin-left:8px; transition:transform .18s ease; }
+    .title-group-toggle[aria-expanded="true"] .title-group-chevron { transform:rotate(90deg); }
+    .title-group .title-list { padding:12px; margin:0; }
+    .title-group .title-card { padding:13px; }
+    @media (prefers-reduced-motion: reduce) { .title-group-chevron { transition:none; } }
     .title-card { border:1px solid rgba(177,138,255,.65); border-radius:14px; padding:16px; background:rgba(34,22,48,.92); }
     .title-card h3 { color:#f0ddff; font-size:1.15rem; }
     .title-card:not(.is-locked) { border-color:rgba(245,215,122,.72); background:rgba(49,35,61,.96); }
@@ -136,7 +146,7 @@
       border-radius: 999px;
       padding: 9px 15px;
       font-size: 13px;
-      transition: background .2s, border-color .2s, transform .2s;
+      transition: background .12s, border-color .12s;
     }
 
     nav a:hover, nav a:focus-visible {
@@ -190,13 +200,12 @@
       justify-content: center;
       padding: clamp(8px, 2.5vw, 28px);
       background: rgba(5, 2, 10, .82);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      /* Flou désactivé pour éviter les saccades sur les navigateurs mobiles. */
     }
 
     .modal.is-open {
       display: flex;
-      animation: overlay-in .18s ease-out;
+      animation: none;
     }
     .modal-window {
       position: relative;
@@ -210,8 +219,9 @@
         linear-gradient(145deg, #211431, #130b20 75%);
       border: 1px solid #76558e;
       border-radius: 22px;
-      box-shadow: 0 24px 90px rgba(0, 0, 0, .55), 0 0 35px rgba(177, 138, 255, .12);
-      animation: window-in .22s ease-out;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, .42), 0 0 14px rgba(177, 138, 255, .08);
+      animation: none;
+      will-change: auto;
     }
 
     .modal-header {
@@ -245,7 +255,7 @@
       font-size: 25px;
       line-height: 1;
       cursor: pointer;
-      transition: background .2s, border-color .2s, transform .2s;
+      transition: background .12s, border-color .12s;
     }
 
     .close-modal:hover, .close-modal:focus-visible {
@@ -350,7 +360,7 @@
       background: linear-gradient(135deg, #29183a, #1b102b);
       border: 1px solid var(--border);
       border-radius: 15px;
-      transition: background .2s, border-color .2s, transform .2s;
+      transition: background .12s, border-color .12s;
     }
 
     .social a:hover, .social a:focus-visible {
@@ -408,6 +418,11 @@
     }
 
     @media (max-width: 600px) {
+      /* Mode mobile : animations courtes pour garder une ouverture vivante sans alourdir le défilement. */
+      html { scroll-behavior: auto; }
+      nav a { transition: none; }
+      .modal.is-open { animation: overlay-in .16s ease-out; }
+      .modal-window { animation: window-in .18s ease-out; box-shadow: 0 8px 24px rgba(0, 0, 0, .35); }
       header { padding: 55px 18px 28px; }
       nav { gap: 8px; padding-bottom: 24px; }
       nav a { padding: 8px 12px; }
@@ -538,23 +553,26 @@
       font-size: 10px;
       line-height: 1;
       cursor: pointer;
-      opacity: .78;
-      transition: color .2s, opacity .2s, text-shadow .2s;
+      opacity: .28;
+      transition: color .2s, opacity .2s, text-shadow .2s, transform .25s ease;
+      position: relative;
       vertical-align: middle;
       -webkit-tap-highlight-color: transparent;
     }
     .cie-feather:hover, .cie-feather:focus-visible {
       color: #d9c1ff;
-      opacity: 1;
+      opacity: .9;
+      transform: scale(1.08);
       text-shadow: 0 0 7px rgba(177,138,255,.75);
       outline: 1px solid rgba(217,193,255,.45);
     }
-    .cie-feather.found { color: rgba(197,160,255,.48); opacity: .58; }
+    .cie-feather.found { color: rgba(197,160,255,.48); opacity: .4; }
     .cie-feather--tag { width: 16px; height: 16px; font-size: 7px; margin-left: 1px; }
     .photo { position: relative; }
-    .cie-feather--photo { position: absolute; top: 8px; right: 8px; bottom: auto; z-index: 10; width: 28px; height: 28px; font-size: 12px; opacity: .96; color: #f2eaff; background: rgba(16,9,29,.88); border: 1px solid rgba(217,193,255,.72); box-shadow: 0 1px 7px rgba(0,0,0,.65); }
+    .cie-feather--photo { position: absolute; top: 8px; right: 8px; bottom: auto; z-index: 10; width: 28px; height: 28px; font-size: 12px; opacity: .32; color: #f2eaff; background: rgba(16,9,29,.45); border: 1px solid rgba(217,193,255,.24); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+    .cie-feather--photo:hover, .cie-feather--photo:focus-visible { opacity: .95; background: rgba(16,9,29,.88); border-color: rgba(217,193,255,.72); }
     .social { position: relative; }
-    .cie-feather--social { position: absolute; right: 4px; top: calc(50% + 17px); z-index: 2; }
+    .cie-feather--social { position: absolute; right: 4px; top: calc(50% + 17px); z-index: 2; opacity: .28; }
     .cie-feather--footer { margin-left: 2px; }
 
     .cie-feather-hint { color: var(--muted); font-size: .9rem; }
@@ -702,7 +720,7 @@
     .fact-card h3 { margin:0 0 6px; font-size:1.05rem; color:var(--light); }
     .fact-card p { margin:0; color:var(--muted); }
     @media (min-width:700px) { .facts-grid { grid-template-columns:1fr 1fr; } .fact-card:last-child:nth-child(odd) { grid-column:1 / -1; } }
-    .codex-corner-button { position:fixed; z-index:1000; top:58px; left:12px; padding:6px 11px; color:#f5e6c0; background:rgba(22,13,36,.92); border:1px solid rgba(245,215,122,.5); border-radius:999px; font:inherit; font-size:.75rem; cursor:pointer; backdrop-filter:blur(8px); box-shadow:0 3px 18px rgba(0,0,0,.25); }
+    .codex-corner-button { position:fixed; z-index:1000; top:58px; left:12px; padding:6px 11px; color:#f5e6c0; background:rgba(22,13,36,.92); border:1px solid rgba(245,215,122,.5); border-radius:999px; font:inherit; font-size:.75rem; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.22); }
     .codex-corner-button:hover, .codex-corner-button:focus-visible { border-color:#f5d77b; outline:none; }
     body[data-equipped-title="codex"] { --border:rgba(245,215,122,.4); --purple:#ead08c; background:radial-gradient(ellipse at 50% 0%, #4d3520 0%, transparent 54%), radial-gradient(ellipse at 50% 100%, rgba(105,57,155,.35) 0%, transparent 55%), var(--bg); }
     body[data-equipped-title="codex"] h1 { font-family:Georgia,"Times New Roman",serif; color:#f8e6b4; letter-spacing:.14em; text-shadow:0 0 10px rgba(245,215,122,.5), 0 2px 0 #4a2f12; }
@@ -762,9 +780,11 @@
     #artifact-fx * { pointer-events:none; }
     .fx-glow { position:absolute; inset:0; opacity:0; background:radial-gradient(circle at 50% 50%, var(--c) 0%, transparent 58%); animation:fxGlow var(--t,1s) ease-out var(--gd,0s) forwards; }
     @keyframes fxGlow { 0% { opacity:0; } 18% { opacity:1; } 100% { opacity:0; } }
-    /* Égide : boucliers concentriques qui s'élargissent */
-    .fx-shield { position:absolute; left:50%; top:50%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:0; transform:scale(.2); filter:drop-shadow(0 0 10px #78cfff); animation:fxShield 1.5s cubic-bezier(.2,.7,.3,1) var(--d,0s) forwards; }
-    @keyframes fxShield { 0% { opacity:0; transform:scale(.2); } 15% { opacity:.95; } 100% { opacity:0; transform:scale(2.3); } }
+    /* Égide : pulsation légère, sans filtre ni effet plein écran coûteux. */
+    .fx-egide-pulse { position:absolute; left:50%; top:50%; width:clamp(84px,22vmin,150px); height:clamp(84px,22vmin,150px); transform:translate(-50%,-50%) scale(.78); display:grid; place-items:center; border:2px solid rgba(120,207,255,.85); border-radius:50%; background:rgba(120,207,255,.08); animation:fxEgidePulse .32s ease-out forwards; contain:layout paint; }
+    .fx-egide-pulse span { color:#78cfff; font-size:clamp(42px,12vmin,76px); line-height:1; }
+    @keyframes fxEgidePulse { 0% { opacity:0; transform:translate(-50%,-50%) scale(.78); } 25% { opacity:1; transform:translate(-50%,-50%) scale(1); } 100% { opacity:0; transform:translate(-50%,-50%) scale(1.06); } }
+    @media (prefers-reduced-motion: reduce) { .fx-egide-pulse { animation:none; opacity:.85; } }
     /* Marteau : impact sec, étincelles, secousse de la fenêtre */
     .fx-impact { position:absolute; left:50%; top:55%; width:20vmin; height:20vmin; margin:-10vmin 0 0 -10vmin; border-radius:50%; background:radial-gradient(circle,#fff 0%,#ffd08a 30%,transparent 70%); opacity:0; animation:fxImpact .35s ease-out forwards; }
     @keyframes fxImpact { 0% { opacity:1; transform:scale(.2); } 100% { opacity:0; transform:scale(2.4); } }
@@ -808,9 +828,11 @@
     .tfx { position:absolute; inset:0; display:none; }
     body[data-equipped-title="artefact-egide"] .tfx--egide, body[data-equipped-title="artefact-marteau"] .tfx--marteau, body[data-equipped-title="artefact-chapelet"] .tfx--chapelet,
     body[data-equipped-title="artefact-plume"] .tfx--plume, body[data-equipped-title="artefact-sceau"] .tfx--sceau, body[data-equipped-title="artefact-epee"] .tfx--epee { display:block; }
-    /* Égide : boucliers qui s'élargissent lentement */
-    .tfx-shield { position:absolute; left:50%; top:46%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:0; transform:scale(.25); filter:drop-shadow(0 0 8px #78cfff); animation:tfxShield 7.2s ease-out var(--d) infinite; }
-    @keyframes tfxShield { 0% { opacity:0; transform:scale(.25); } 12% { opacity:.4; } 100% { opacity:0; transform:scale(2.8); } }
+    /* Égide : halo oscillant très léger. Seule l'opacité varie, sans filtre,
+       déplacement ni changement d'échelle pour préserver le défilement mobile. */
+    .tfx-shield { position:absolute; left:50%; top:46%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:.10; transform:scale(1.25); filter:none; animation:tfxShieldHalo 4.8s ease-in-out infinite; will-change:opacity; }
+    @keyframes tfxShieldHalo { 0%,100% { opacity:.07; } 50% { opacity:.20; } }
+    @media (prefers-reduced-motion: reduce) { .tfx-shield { animation:none; opacity:.12; will-change:auto; } }
     /* Marteau : braises de forge qui montent */
     .tfx-forge { position:absolute; left:0; right:0; bottom:0; height:38vh; background:radial-gradient(ellipse at 50% 100%,rgba(255,130,30,.4),transparent 70%); animation:tfxForge 4.4s ease-in-out infinite; }
     @keyframes tfxForge { 0%,100% { opacity:.45; } 50% { opacity:1; } }
@@ -1237,7 +1259,7 @@
     <section class="modal-window">
       <div class="modal-header"><h2 class="modal-title" id="title-titres">✧ Galerie des titres</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
       <div class="modal-content"><p>Chaque quête laisse une marque. Débloque les titres, puis équipe celui qui représente le mieux ton parcours. Le titre équipé modifie certains détails de l'accueil.</p>
-        <p id="title-collection-progress" aria-live="polite">0 titre débloqué.</p><ul id="title-collection-list" class="title-list"></ul>
+        <p id="title-collection-progress" aria-live="polite">0 titre débloqué.</p><div id="title-collection-list" class="title-list"></div>
         <p><small>Les titres débloqués et le titre équipé sont conservés sur cet appareil.</small></p></div>
     </section>
   </div>
@@ -1404,15 +1426,18 @@
         if (content) content.scrollTop = 0;
       }
 
-      function closeModal() {
-        if (!activeModal) return;
+      function closeModal(targetModal = activeModal) {
+        if (!targetModal) return;
 
-        activeModal.classList.remove("is-open");
-        activeModal.setAttribute("aria-hidden", "true");
-        activeModal = null;
-        document.body.classList.remove("modal-open");
+        targetModal.classList.remove("is-open");
+        targetModal.setAttribute("aria-hidden", "true");
+        if (activeModal === targetModal) activeModal = null;
 
-        if (previousFocus && typeof previousFocus.focus === "function") {
+        // Ne déverrouille le défilement que lorsqu'aucune autre fenêtre n'est ouverte.
+        const anotherOpenModal = [...modals].some(modal => modal.classList.contains("is-open"));
+        document.body.classList.toggle("modal-open", anotherOpenModal);
+
+        if (!anotherOpenModal && previousFocus && typeof previousFocus.focus === "function") {
           previousFocus.focus();
         }
       }
@@ -1579,24 +1604,51 @@
       ];
       let equippedTitle = "";
       try { equippedTitle = localStorage.getItem("lipoip-equipped-title-v1") || ""; } catch (_) {}
+      const titleGroupDefinitions = [
+        { id:"cie", name:"Quête de la CIE", description:"Constellation et chasse aux plumes", match:t=>["etoiles","plumes"].includes(t.id) },
+        { id:"reliques", name:"Reliques de la Confrérie", description:"Les artefacts éveillés cinq fois", match:t=>t.source.startsWith("__artifact:") },
+        { id:"origines", name:"Origines et codex", description:"Les traces de Lipoip, Leuzh et de la Confrérie", match:t=>["codex","chercheur","scribe","leuzh"].includes(t.id) },
+        { id:"exploration", name:"Exploration et énigmes", description:"Les secrets découverts au fil du site", match:t=>["aria","couronne","konami","boulder-dash","babel","zodiaque"].includes(t.id) },
+        { id:"parcours", name:"Parcours et accomplissements", description:"Les étapes majeures de ta visite", match:t=>["eclaireur","complet"].includes(t.id) }
+      ];
+      const titleGroupOpen = Object.create(null);
       function renderTitleCollection() {
         const list=document.getElementById("title-collection-list"), progress=document.getElementById("title-collection-progress"), badge=document.getElementById("equipped-title-badge");
         const hasAllSecrets=secretIds.every(id=>discoveredSecrets.has(id));
         const isUnlocked=t=>t.source==="__all__" ? hasAllSecrets : (t.source==="__tabs__" ? allTabsVisited() : (t.source==="__codex__" ? allCodexVisited() : (t.source.startsWith("__artifact:") ? artifactCount(t.source.slice(11,-2))>=5 : discoveredSecrets.has(t.source))));
-        const equipped=titleDefinitions.find(t=>t.id===equippedTitle && isUnlocked(t));
+        const unlockedTitles=titleDefinitions.filter(isUnlocked);
+        const equipped=unlockedTitles.find(t=>t.id===equippedTitle);
         document.body.dataset.equippedTitle=equipped ? equipped.id : "";
         if(badge){badge.hidden=!equipped;badge.textContent=equipped ? `✧ ${equipped.name} ✧` : "";}
-        const count=titleDefinitions.filter(isUnlocked).length;
-        if(progress) progress.textContent=`${count} titre${count===1?"":"s"} débloqué${count===1?"":"s"} sur ${titleDefinitions.length}.`;
-        if(!list)return; list.innerHTML="";
-        titleDefinitions.forEach(t=>{
-          const unlocked=isUnlocked(t), card=document.createElement("li"); card.className="title-card"+(unlocked?"":" is-locked");
-          const h=document.createElement("h3"); h.textContent=unlocked?`✧ ${t.name}`:"Titre verrouillé";
-          const d=document.createElement("p"); d.textContent=unlocked?t.desc:"Termine la quête associée pour le découvrir.";
-          const b=document.createElement("button"); b.type="button"; b.textContent=!unlocked?"Non débloqué":(equippedTitle===t.id?"Déséquiper ce titre ✓":"Équiper ce titre"); b.disabled=!unlocked;
-          b.addEventListener("click",()=>{equippedTitle=equippedTitle===t.id?"":t.id;try{if(equippedTitle)localStorage.setItem("lipoip-equipped-title-v1",equippedTitle);else localStorage.removeItem("lipoip-equipped-title-v1");}catch(_){}renderTitleCollection();});
-          card.append(h,d,b);list.appendChild(card);
+        if(progress) progress.textContent=`${unlockedTitles.length} titre${unlockedTitles.length===1?"":"s"} débloqué${unlockedTitles.length===1?"":"s"} sur ${titleDefinitions.length}. Les titres inconnus restent cachés.`;
+        if(!list)return;
+        list.innerHTML="";
+        const groupsRoot=document.createElement("div"); groupsRoot.className="title-groups";
+        titleGroupDefinitions.forEach(group=>{
+          const titles=unlockedTitles.filter(group.match);
+          if(!titles.length)return;
+          const section=document.createElement("section"); section.className="title-group";
+          const toggle=document.createElement("button"); toggle.type="button"; toggle.className="title-group-toggle";
+          toggle.setAttribute("aria-expanded",String(!!titleGroupOpen[group.id]));
+          const label=document.createElement("span"); label.textContent=`${group.name}  ›`;
+          const count=document.createElement("span"); count.className="title-group-count"; count.textContent=`${titles.length} titre${titles.length===1?"":"s"}`;
+          toggle.append(label,count);
+          const panel=document.createElement("div"); panel.hidden=!titleGroupOpen[group.id];
+          const sublist=document.createElement("ul"); sublist.className="title-list";
+          titles.forEach(t=>{
+            const card=document.createElement("li"); card.className="title-card";
+            const h=document.createElement("h3"); h.textContent=`✧ ${t.name}`;
+            const d=document.createElement("p"); d.textContent=t.desc;
+            const b=document.createElement("button"); b.type="button"; b.textContent=equippedTitle===t.id?"Déséquiper ce titre ✓":"Équiper ce titre";
+            b.addEventListener("click",()=>{equippedTitle=equippedTitle===t.id?"":t.id;try{if(equippedTitle)localStorage.setItem("lipoip-equipped-title-v1",equippedTitle);else localStorage.removeItem("lipoip-equipped-title-v1");}catch(_){}renderTitleCollection();});
+            card.append(h,d,b); sublist.appendChild(card);
+          });
+          panel.appendChild(sublist);
+          toggle.addEventListener("click",()=>{titleGroupOpen[group.id]=!titleGroupOpen[group.id];panel.hidden=!titleGroupOpen[group.id];toggle.setAttribute("aria-expanded",String(!!titleGroupOpen[group.id]));});
+          section.append(toggle,panel); groupsRoot.appendChild(section);
         });
+        if(!groupsRoot.childElementCount){const empty=document.createElement("p");empty.textContent="Aucun titre débloqué pour le moment. Les titres apparaîtront ici au fil de tes découvertes."; list.appendChild(empty);return;}
+        list.appendChild(groupsRoot);
       }
 
       function updateSecretRegistry() {
@@ -1702,11 +1754,11 @@
 
       modals.forEach(modal => {
         const closeButton = modal.querySelector(".close-modal");
-        if (closeButton) closeButton.addEventListener("click", closeModal);
+        if (closeButton) closeButton.addEventListener("click", () => closeModal(modal));
 
         // Ferme seulement si l'utilisateur clique sur le fond sombre.
         modal.addEventListener("click", event => {
-          if (event.target === modal) closeModal();
+          if (event.target === modal) closeModal(modal);
         });
       });
 
@@ -1806,7 +1858,7 @@
       const featherHunt = document.getElementById("cie-feather-hunt");
       const featherFeedback = document.getElementById("cie-feather-feedback");
       const finalButton = document.getElementById("cie-final-button");
-      const foundFeathers = new Set();
+      const foundFeathers = new Set((Array.isArray(cieProgress.p) ? cieProgress.p : []).map(String));
 
       const featherHint = document.getElementById("cie-feather-hint");
       const featherHints = {
@@ -1827,7 +1879,17 @@
       function unlockFeathers() {
         if (foundFeathers.size === featherButtons.length) return;
         featherHunt.hidden = false;
-        featherButtons.forEach(button => { button.hidden = false; });
+        featherButtons.forEach(button => {
+          button.hidden = false;
+          // Décale légèrement chaque fragment à chaque nouvelle découverte de la chasse.
+          // Le déplacement reste borné pour éviter les débordements sur téléphone.
+          if (!button.disabled && !button.dataset.featherPositioned) {
+            const dx = Math.round((Math.random() * 2 - 1) * 9);
+            const dy = Math.round((Math.random() * 2 - 1) * 7);
+            button.style.translate = `${dx}px ${dy}px`;
+            button.dataset.featherPositioned = "true";
+          }
+        });
         featherFeedback.textContent = foundFeathers.size ? `${foundFeathers.size} plume${foundFeathers.size > 1 ? "s" : ""} sur 5 retrouvée${foundFeathers.size > 1 ? "s" : ""}.` : "0 plume sur 5 retrouvée.";
         updateFeatherHint();
       }
@@ -1951,8 +2013,11 @@
         if (!secondDone) return;
         const secondFeedback = document.getElementById("cie-final-feedback");
         if (secondFeedback) secondFeedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur.";
-        const ids = feathersDone ? featherButtons.map(button => button.dataset.feather) : cieProgress.p;
-        ids.forEach(id => foundFeathers.add(String(id)));
+        const validFeatherIds = new Set(featherButtons.map(button => button.dataset.feather));
+        const ids = feathersDone ? [...validFeatherIds] : (Array.isArray(cieProgress.p) ? cieProgress.p : []);
+        ids.map(String).filter(id => validFeatherIds.has(id)).forEach(id => foundFeathers.add(id));
+        cieProgress.p = [...foundFeathers];
+        cieSave();
         unlockFeathers();
         featherButtons.forEach(button => {
           if (foundFeathers.has(button.dataset.feather)) { button.classList.add("found"); button.disabled = true; button.setAttribute("aria-label", "Plume retrouvée"); }
@@ -2315,7 +2380,7 @@
       let artifactBusy = false, fxShake = null;
       function fxClear() {
         if (fxShake) { try { fxShake.cancel(); } catch (_) {} fxShake = null; }
-        if (fxLayer) fxLayer.textContent = "";
+        if (fxLayer) { fxLayer.replaceChildren(); }
       }
       const fxPlume = [
         ["M20 28 C50 8 70 48 100 26 S150 8 180 28 S240 44 280 24", 0, "❦", 24, 18],
@@ -2325,9 +2390,9 @@
       ];
       const fxBuilders = {
         egide(layer) {
-          const shield = '<svg class="fx-shield" style="--d:DELAY" viewBox="0 0 32 38" aria-hidden="true"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
-          layer.innerHTML = '<div class="fx-glow" style="--c:rgba(120,207,255,.5);--t:1.2s"></div>' + [0, .25, .5].map(d => shield.replace("DELAY", d + "s")).join("");
-          return 2100;
+          // Effet volontairement léger sur mobile : pas de filtre, pas de dégradé plein écran.
+          layer.innerHTML = '<div class="fx-egide-pulse" aria-hidden="true"><span>⬡</span></div>';
+          return 320;
         },
         marteau(layer) {
           let html = '<div class="fx-glow" style="--c:rgba(255,154,46,.55);--t:.45s"></div><div class="fx-impact"></div>';
