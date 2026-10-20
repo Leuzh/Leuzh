@@ -669,6 +669,14 @@
     body[data-equipped-title="babel"] .symbol { text-shadow:0 0 12px rgba(177,138,255,.55); opacity:.85; }
     @keyframes babelInk { 0%,100% { opacity:1; filter:blur(0); } 50% { opacity:.4; filter:blur(1.4px); } }
     @media (prefers-reduced-motion: reduce) { body[data-equipped-title="babel"] h1 { animation:none; opacity:.65; filter:blur(.6px); } }
+    /* ===== Titre « Éclaireur » (quatre fenêtres principales visitées) ===== */
+    .site-toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:3000; width:min(92vw,420px); padding:12px 16px; text-align:center; font-size:.95rem; line-height:1.5; color:var(--light); background:rgba(22,13,36,.97); border:1px solid rgba(255,226,160,.6); border-radius:14px; box-shadow:0 0 26px rgba(255,226,160,.25); }
+    body[data-equipped-title="eclaireur"] { --bg:#2b1b47; --panel:#3b2663; --muted:#e3d6f5; --border:rgba(255,226,160,.45); --purple:#dcc3ff; background:radial-gradient(ellipse at 50% -8%, rgba(255,238,196,.6) 0%, rgba(255,214,140,.16) 40%, transparent 64%), var(--bg); }
+    body[data-equipped-title="eclaireur"] h1 { color:#fff6dc; text-shadow:0 0 10px rgba(255,238,196,.85), 0 0 32px rgba(255,214,140,.5); }
+    body[data-equipped-title="eclaireur"] .symbol { color:#ffe9b0; text-shadow:0 0 16px #ffe9b0, 0 0 38px rgba(255,214,140,.6); }
+    body[data-equipped-title="eclaireur"] .subtitle { color:#ffe3a6; }
+    body[data-equipped-title="eclaireur"] .welcome-panel, body[data-equipped-title="eclaireur"] .modal-window { box-shadow:0 0 28px rgba(255,226,160,.18); }
+    body[data-equipped-title="eclaireur"] .equipped-title-badge { color:#fff3cf; border-color:#ffe3a6; box-shadow:0 0 18px rgba(255,226,160,.5); }
   </style>
 </head>
 
@@ -1249,6 +1257,38 @@
         }).observe(codeModal, { attributes: true, attributeFilter: ["class"] });
       }
 
+      // ===== Fenêtres principales visitées (titre « Éclaireur », indépendant des secrets) =====
+      const mainTabs = ["moi", "passions", "album", "reseaux"];
+      const visitedTabsKey = "lipoip-visited-tabs-v1";
+      let visitedTabs = new Set();
+      try { visitedTabs = new Set(JSON.parse(localStorage.getItem(visitedTabsKey) || "[]")); } catch (_) {}
+      function allTabsVisited() { return mainTabs.every(id => visitedTabs.has(id)); }
+      function showSiteToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "site-toast"; toast.setAttribute("role", "status"); toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 8000);
+      }
+      function trackMainVisit(id) {
+        if (!mainTabs.includes(id) || visitedTabs.has(id)) return;
+        const hadAll = allTabsVisited();
+        visitedTabs.add(id);
+        try { localStorage.setItem(visitedTabsKey, JSON.stringify([...visitedTabs])); } catch (_) {}
+        if (!hadAll && allTabsVisited()) {
+          renderTitleCollection();
+          showSiteToast("✧ Tu as parcouru toutes les fenêtres. Un nouveau titre t’attend dans « Mes titres »… et de nombreux secrets t’attendent encore.");
+        }
+      }
+
+      // ===== Progression de la quête CIE (énigmes, étoiles, plumes), enregistrée sur l'appareil =====
+      const cieProgressKey = "lipoip-cie-progress-v1";
+      let cieProgress = { r: 0, s: 0, g: 0, p: [] };
+      try {
+        const saved = JSON.parse(localStorage.getItem(cieProgressKey) || "null");
+        if (saved && typeof saved === "object") cieProgress = { r: saved.r ? 1 : 0, s: Math.min(5, Math.max(0, parseInt(saved.s, 10) || 0)), g: saved.g ? 1 : 0, p: Array.isArray(saved.p) ? saved.p.map(String) : [] };
+      } catch (_) {}
+      function cieSave() { try { localStorage.setItem(cieProgressKey, JSON.stringify(cieProgress)); } catch (_) {} }
+
       // Réinitialisation volontaire de la progression secrète et des titres.
       const resetProgressButton = document.getElementById("reset-all-progress");
       if (resetProgressButton) resetProgressButton.addEventListener("click", () => {
@@ -1258,7 +1298,8 @@
           secretStorageKey, "lipoip-equipped-title-v1", "lipoip-seven-symbols-v2",
           "lipoip-couronne-stage-v2", "lipoip-origin-lipoip-v1", "lipoip-origin-leuzh-v1",
           "lipoip-folie-unlocked", "lipoip-cat-secret-v1", "lipoip-cat-unlocked-v1",
-          "lipoip-babel-found-v1", "lipoip-babel-stage-v1"
+          "lipoip-babel-found-v1", "lipoip-babel-stage-v1",
+          "lipoip-visited-tabs-v1", "lipoip-cie-progress-v1"
         ];
         keysToReset.forEach(key => { try { localStorage.removeItem(key); } catch (_) {} });
         // Retire aussi les anciennes clés de la chasse CIE/album pour repartir proprement.
@@ -1266,6 +1307,7 @@
         window.location.reload();
       });
       const titleDefinitions = [
+        {id:"eclaireur",name:"Éclaireur",desc:"Tu as parcouru les quatre fenêtres principales du site, et il s’éclaire. De nombreux secrets t’attendent encore, cachés un peu partout…",source:"__tabs__"},
         {id:"chercheur",name:"Chercheur de l'invisible",desc:"L’accueil souligne ton nom et encadre le message de bienvenue.",source:"folie"},
         {id:"scribe",name:"Scribe des origines",desc:"Le nom et le symbole prennent une signature dorée.",source:"lipoip"},
         {id:"leuzh",name:"Héritier de la Confrérie",desc:"Le sous-titre se déploie avec une ligne qui rappelle la marque de la Confrérie.",source:"leuzh"},
@@ -1283,7 +1325,7 @@
       function renderTitleCollection() {
         const list=document.getElementById("title-collection-list"), progress=document.getElementById("title-collection-progress"), badge=document.getElementById("equipped-title-badge");
         const hasAllSecrets=secretIds.every(id=>discoveredSecrets.has(id));
-        const isUnlocked=t=>t.source==="__all__" ? hasAllSecrets : discoveredSecrets.has(t.source);
+        const isUnlocked=t=>t.source==="__all__" ? hasAllSecrets : (t.source==="__tabs__" ? allTabsVisited() : discoveredSecrets.has(t.source));
         const equipped=titleDefinitions.find(t=>t.id===equippedTitle && isUnlocked(t));
         document.body.dataset.equippedTitle=equipped ? equipped.id : "";
         if(badge){badge.hidden=!equipped;badge.textContent=equipped ? `✧ ${equipped.name} ✧` : "";}
@@ -1396,6 +1438,7 @@
           event.preventDefault();
           openModal(link.dataset.modal);
           if (link.dataset.modal === "cie-archive") markSecret("cie-archive");
+          trackMainVisit(link.dataset.modal);
         });
       });
 
@@ -1427,6 +1470,7 @@
             feedback.textContent = "La serrure cède. Une archive s'ouvre…";
             reveal.hidden = false;
             markSecret("cie-livre");
+            cieProgress.r = 1; cieSave();
           } else {
             feedback.textContent = "La serrure reste close. Relis l'énigme et cherche ce qui conserve les pensées.";
             reveal.hidden = true;
@@ -1443,8 +1487,9 @@
       let starsUnlocked = false;
 
       function unlockStars() {
+        if (starProgress >= starOrder.length) return;
         starsUnlocked = true;
-        starButtons.forEach(button => { button.hidden = false; button.disabled = false; });
+        starButtons.forEach(button => { button.hidden = false; button.disabled = button.classList.contains("found"); });
       }
 
       starButtons.forEach(button => {
@@ -1457,8 +1502,10 @@
             const step = document.getElementById(`cie-step-${starProgress + 1}`);
             if (step) step.textContent = "✦";
             starProgress += 1;
+            cieProgress.s = starProgress; cieSave();
             if (starProgress === starOrder.length) {
               starFeedback.textContent = "La constellation est complète. Une seconde archive s'ouvre…";
+              starButtons.forEach(item => { item.hidden = true; });
               finalRiddle.hidden = false;
               markSecret("cie-etoiles");
             } else {
@@ -1466,6 +1513,7 @@
             }
           } else {
             starProgress = 0;
+            cieProgress.s = 0; cieSave();
             starButtons.forEach(item => { item.classList.remove("found"); item.disabled = false; });
             for (let i = 1; i <= 5; i++) {
               const step = document.getElementById(`cie-step-${i}`);
@@ -1488,6 +1536,7 @@
             feedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur. Quelque chose de léger s'est dispersé dans le site…";
             unlockFeathers();
             markSecret("cie-gardien");
+            cieProgress.g = 1; cieSave();
           } else {
             feedback.textContent = "La porte reste close. Pense à ce qui voyage à travers les siècles et change selon celui qui le découvre.";
           }
@@ -1518,9 +1567,10 @@
       }
 
       function unlockFeathers() {
+        if (foundFeathers.size === featherButtons.length) return;
         featherHunt.hidden = false;
         featherButtons.forEach(button => { button.hidden = false; });
-        featherFeedback.textContent = "0 plume sur 5 retrouvée.";
+        featherFeedback.textContent = foundFeathers.size ? `${foundFeathers.size} plume${foundFeathers.size > 1 ? "s" : ""} sur 5 retrouvée${foundFeathers.size > 1 ? "s" : ""}.` : "0 plume sur 5 retrouvée.";
         updateFeatherHint();
       }
 
@@ -1528,6 +1578,7 @@
         button.addEventListener("click", () => {
           if (button.hidden || foundFeathers.has(button.dataset.feather)) return;
           foundFeathers.add(button.dataset.feather);
+          cieProgress.p = [...foundFeathers]; cieSave();
           button.classList.add("found");
           button.disabled = true;
           button.setAttribute("aria-label", "Plume retrouvée");
@@ -1536,6 +1587,7 @@
           if (foundFeathers.size === featherButtons.length) {
             featherFeedback.textContent = "Les cinq plumes sont réunies. La dernière archive est maintenant accessible.";
             finalButton.hidden = false;
+            featherButtons.forEach(item => { item.hidden = true; });
             markSecret("cie-plumes");
           }
         });
@@ -1609,6 +1661,54 @@
           if (["livre", "un livre", "le livre"].includes(answer)) unlockStars();
         });
       }
+
+      // Restaure la quête CIE enregistrée (déduite aussi des secrets déjà découverts).
+      (function restoreCieProgress() {
+        const has = id => discoveredSecrets.has(id);
+        const feathersDone = has("cie-plumes");
+        const secondDone = cieProgress.g || has("cie-gardien") || feathersDone;
+        const starsDone = cieProgress.s >= starOrder.length || has("cie-etoiles") || secondDone;
+        const firstDone = cieProgress.r || has("cie-livre") || starsDone;
+        if (!firstDone) return;
+        document.getElementById("cie-reveal").hidden = false;
+        const firstFeedback = document.getElementById("cie-feedback");
+        if (firstFeedback) firstFeedback.textContent = "La serrure cède. Une archive s'ouvre…";
+        if (starsDone) {
+          starProgress = starOrder.length; starsUnlocked = true;
+          starButtons.forEach(button => { button.classList.add("found"); button.disabled = true; button.hidden = true; });
+          for (let i = 1; i <= 5; i++) { const step = document.getElementById(`cie-step-${i}`); if (step) step.textContent = "✦"; }
+          starFeedback.textContent = "La constellation est complète. Une seconde archive s'ouvre…";
+          finalRiddle.hidden = false;
+        } else {
+          unlockStars();
+          const count = Math.min(cieProgress.s, starOrder.length - 1);
+          starProgress = count;
+          starOrder.slice(0, count).forEach((name, index) => {
+            const button = starButtons.find(item => item.dataset.star === name);
+            if (button) { button.classList.add("found"); button.disabled = true; }
+            const step = document.getElementById(`cie-step-${index + 1}`); if (step) step.textContent = "✦";
+          });
+          if (count > 0) starFeedback.textContent = `${count} étoile${count > 1 ? "s" : ""} sur 5 retrouvée${count > 1 ? "s" : ""}.`;
+        }
+        if (!secondDone) return;
+        const secondFeedback = document.getElementById("cie-final-feedback");
+        if (secondFeedback) secondFeedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur.";
+        const ids = feathersDone ? featherButtons.map(button => button.dataset.feather) : cieProgress.p;
+        ids.forEach(id => foundFeathers.add(String(id)));
+        unlockFeathers();
+        featherButtons.forEach(button => {
+          if (foundFeathers.has(button.dataset.feather)) { button.classList.add("found"); button.disabled = true; button.setAttribute("aria-label", "Plume retrouvée"); }
+        });
+        updateFeatherHint();
+        if (foundFeathers.size === featherButtons.length) {
+          featherButtons.forEach(button => { button.hidden = true; });
+          featherHunt.hidden = false;
+          featherFeedback.textContent = "Les cinq plumes sont réunies. La dernière archive est maintenant accessible.";
+          finalButton.hidden = false;
+        } else {
+          featherFeedback.textContent = `${foundFeathers.size} plume${foundFeathers.size > 1 ? "s" : ""} sur 5 retrouvée${foundFeathers.size > 1 ? "s" : ""}.`;
+        }
+      })();
 
       // Bouton qui active ou désactive la surbrillance du message d'accueil.
       const highlightButton = document.getElementById("highlight-button");
