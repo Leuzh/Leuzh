@@ -696,6 +696,158 @@
     body[data-equipped-title="zodiaque"] .subtitle { color:#c9d1ff; }
     body[data-equipped-title="zodiaque"] .equipped-title-badge { color:#e6e9ff; border-color:#aab6ff; box-shadow:0 0 18px rgba(130,145,255,.55); }
     @media (prefers-reduced-motion: reduce) { .shooting-star { animation:none; top:var(--y); opacity:.3; transform:rotate(35deg); } }
+    /* ===== Quelques faits sur moi + Codex de la Confrérie Euzhienne ===== */
+    .facts-grid { display:grid; grid-template-columns:1fr; gap:12px; }
+    .fact-card { padding:14px 16px; border:1px solid var(--border); border-radius:14px; background:rgba(27,16,43,.78); }
+    .fact-card h3 { margin:0 0 6px; font-size:1.05rem; color:var(--light); }
+    .fact-card p { margin:0; color:var(--muted); }
+    @media (min-width:700px) { .facts-grid { grid-template-columns:1fr 1fr; } .fact-card:last-child:nth-child(odd) { grid-column:1 / -1; } }
+    .codex-corner-button { position:fixed; z-index:1000; top:58px; left:12px; padding:6px 11px; color:#f5e6c0; background:rgba(22,13,36,.92); border:1px solid rgba(245,215,122,.5); border-radius:999px; font:inherit; font-size:.75rem; cursor:pointer; backdrop-filter:blur(8px); box-shadow:0 3px 18px rgba(0,0,0,.25); }
+    .codex-corner-button:hover, .codex-corner-button:focus-visible { border-color:#f5d77b; outline:none; }
+    body[data-equipped-title="codex"] { --border:rgba(245,215,122,.4); --purple:#ead08c; background:radial-gradient(ellipse at 50% 0%, #4d3520 0%, transparent 54%), radial-gradient(ellipse at 50% 100%, rgba(105,57,155,.35) 0%, transparent 55%), var(--bg); }
+    body[data-equipped-title="codex"] h1 { font-family:Georgia,"Times New Roman",serif; color:#f8e6b4; letter-spacing:.14em; text-shadow:0 0 10px rgba(245,215,122,.5), 0 2px 0 #4a2f12; }
+    body[data-equipped-title="codex"] .symbol { color:#f5d77b; text-shadow:0 0 14px rgba(245,215,122,.7); }
+    body[data-equipped-title="codex"] .subtitle { font-family:Georgia,"Times New Roman",serif; color:#ead08c; letter-spacing:.2em; }
+    body[data-equipped-title="codex"] header { border-bottom:1px solid rgba(245,215,122,.4); }
+    body[data-equipped-title="codex"] .equipped-title-badge { color:#fff0c4; border-color:#f5d77b; box-shadow:0 0 18px rgba(245,215,122,.45); }
+    .codex-window .modal-content { font-family:Georgia,"Times New Roman",serif; }
+    .codex-tabs { position:sticky; top:-20px; z-index:3; display:flex; flex-wrap:wrap; gap:6px; margin:-4px -4px 14px; padding:8px 4px; background:var(--panel); border-bottom:1px solid var(--border); }
+    .codex-tab { padding:7px 11px; color:var(--light); font:inherit; font-size:.88rem; cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:999px; }
+    .codex-tab.is-active { color:#2a1840; background:#f5d77b; border-color:#f5d77b; }
+    .codex-panel[hidden] { display:none; }
+    .codex-heading { margin:6px 0 12px; font-size:1.25rem; letter-spacing:.05em; color:#f5d77b; }
+    .codex-heading::after { content:"✦  ✧  ✦"; display:block; margin-top:4px; font-size:.7rem; letter-spacing:8px; color:var(--purple); }
+    .codex-chronicle p { margin:0 0 12px; color:var(--light); }
+    .codex-chronicle p:first-child::first-letter { float:left; margin:2px 8px 0 0; font-size:2.6rem; line-height:.9; color:#f5d77b; }
+    .codex-member, .codex-poem { margin:0 0 10px; border:1px solid var(--border); border-radius:12px; background:rgba(27,16,43,.7); }
+    .codex-member summary, .codex-poem summary { padding:11px 14px; cursor:pointer; list-style:none; color:var(--light); }
+    .codex-member summary::-webkit-details-marker, .codex-poem summary::-webkit-details-marker { display:none; }
+    .codex-member summary::before, .codex-poem summary::before { content:"✧ "; color:var(--purple); }
+    .codex-member[open] summary, .codex-poem[open] summary { color:#f5d77b; border-bottom:1px solid var(--border); }
+    .codex-member ul { margin:10px 0 6px; padding:0 14px 0 32px; color:var(--muted); }
+    .codex-poem-link { margin:4px 14px 12px; padding:7px 12px; color:var(--light); font:inherit; font-size:.88rem; cursor:pointer; background:rgba(105,57,155,.3); border:1px solid var(--border); border-radius:999px; }
+    .codex-poem-intro { margin:10px 14px 0; color:var(--muted); }
+    .codex-stanza { margin:0; padding:12px 14px 0; color:var(--light); line-height:1.65; }
+    .codex-poem[open] { padding-bottom:12px; }
+    .codex-poem { scroll-margin-top:118px; }
+    .codex-relic { padding:14px 16px; border:1px solid rgba(245,215,122,.5); border-radius:14px; background:rgba(60,38,96,.45); }
+    .codex-relic h4 { margin:0 0 6px; color:#f5d77b; font-size:1.05rem; }
+    .codex-relic p, .codex-note { margin:0; color:var(--muted); }
+    .codex-note { margin-top:12px; font-size:.9rem; font-style:italic; }
+    .codex-code { margin:0; padding:0; list-style:none; counter-reset:codex; }
+    .codex-code li { position:relative; margin:0 0 10px; padding:12px 14px 12px 50px; border:1px solid var(--border); border-radius:12px; background:rgba(27,16,43,.7); counter-increment:codex; }
+    .codex-code li::before { content:counter(codex); position:absolute; left:12px; top:12px; width:28px; height:28px; display:grid; place-items:center; color:#2a1840; font-weight:bold; background:#f5d77b; border-radius:50%; }
+    .codex-code strong { display:block; color:var(--light); }
+    .codex-code span { color:var(--muted); }
+    /* ===== Titres à symbole : un mouvement propre à chacun ===== */
+    @keyframes symTwinkle { 0%,100% { transform:scale(1.4); opacity:1; } 22% { transform:scale(1.15); opacity:.3; } 30% { transform:scale(1.5); opacity:1; text-shadow:0 0 36px #d8f8ff; } 58% { opacity:.55; } 64% { opacity:1; } }
+    @keyframes symSway { 0%,100% { transform:rotate(0deg) scale(1.3); } 50% { transform:rotate(24deg) scale(1.3); } }
+    @keyframes symFloat { 0%,100% { transform:translateY(0) rotate(-8deg) scale(1.35); } 50% { transform:translateY(-10px) rotate(-20deg) scale(1.35); } }
+    @keyframes symInk { 0%,100% { transform:rotate(-12deg) scale(1.18); text-shadow:0 0 4px rgba(245,215,122,.25); } 50% { transform:rotate(-12deg) scale(1.32); text-shadow:0 0 24px rgba(245,215,122,.95); } }
+    body[data-equipped-title="etoiles"] .symbol { animation:symTwinkle 3.6s ease-in-out infinite; }
+    body[data-equipped-title="aria"] .symbol { transform-origin:50% 90%; animation:symSway 5s ease-in-out infinite; }
+    body[data-equipped-title="plumes"] .symbol { animation:symFloat 6.5s ease-in-out infinite; }
+    body[data-equipped-title="scribe"] .symbol { animation:symInk 2.8s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { body[data-equipped-title="etoiles"] .symbol, body[data-equipped-title="aria"] .symbol, body[data-equipped-title="plumes"] .symbol, body[data-equipped-title="scribe"] .symbol { animation:none; } }
+
+    /* ===== Artefacts de la Confrérie : fiches et effets ===== */
+    .codex-relic { margin-bottom:12px; }
+    .artifact-head { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .artifact-head h4 { margin:0; }
+    .artifact-glyph { display:inline-flex; width:34px; height:34px; align-items:center; justify-content:center; color:#f5d77b; border:1px solid rgba(245,215,122,.45); border-radius:50%; background:rgba(20,12,35,.6); flex:0 0 auto; }
+    .codex-relic.is-activated { box-shadow:0 0 22px rgba(245,215,122,.45); border-color:#f5d77b; }
+    .site-toast--title { border-color:#f5d77b; background:linear-gradient(110deg,rgba(40,24,62,.98) 30%,rgba(110,80,40,.98) 50%,rgba(40,24,62,.98) 70%); background-size:240% 100%; box-shadow:0 0 30px rgba(245,215,122,.5); animation:toastTitle 5.5s ease-out forwards; }
+    @keyframes toastTitle { 0% { opacity:0; transform:translateX(-50%) translateY(24px) scale(.9); background-position:100% 0; } 12% { opacity:1; transform:translateX(-50%) translateY(0) scale(1.04); } 20% { transform:translateX(-50%) scale(1); } 60% { background-position:0 0; } 90% { opacity:1; } 100% { opacity:0; transform:translateX(-50%) translateY(0); } }
+    #artifact-fx { position:fixed; inset:0; z-index:2500; pointer-events:none; overflow:hidden; --c:rgba(255,255,255,.4); }
+    #artifact-fx * { pointer-events:none; }
+    .fx-glow { position:absolute; inset:0; opacity:0; background:radial-gradient(circle at 50% 50%, var(--c) 0%, transparent 58%); animation:fxGlow var(--t,1s) ease-out var(--gd,0s) forwards; }
+    @keyframes fxGlow { 0% { opacity:0; } 18% { opacity:1; } 100% { opacity:0; } }
+    /* Égide : boucliers concentriques qui s'élargissent */
+    .fx-shield { position:absolute; left:50%; top:50%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:0; transform:scale(.2); filter:drop-shadow(0 0 10px #78cfff); animation:fxShield 1.5s cubic-bezier(.2,.7,.3,1) var(--d,0s) forwards; }
+    @keyframes fxShield { 0% { opacity:0; transform:scale(.2); } 15% { opacity:.95; } 100% { opacity:0; transform:scale(2.3); } }
+    /* Marteau : impact sec, étincelles, secousse de la fenêtre */
+    .fx-impact { position:absolute; left:50%; top:55%; width:20vmin; height:20vmin; margin:-10vmin 0 0 -10vmin; border-radius:50%; background:radial-gradient(circle,#fff 0%,#ffd08a 30%,transparent 70%); opacity:0; animation:fxImpact .35s ease-out forwards; }
+    @keyframes fxImpact { 0% { opacity:1; transform:scale(.2); } 100% { opacity:0; transform:scale(2.4); } }
+    .fx-spark { position:absolute; left:50%; top:55%; width:4px; height:var(--l); margin-left:-2px; border-radius:2px; background:linear-gradient(#fff3c4,#ff9a2e 60%,transparent); opacity:0; transform-origin:50% 0; animation:fxSpark .85s cubic-bezier(.1,.8,.3,1) forwards; }
+    @keyframes fxSpark { 0% { opacity:1; transform:rotate(var(--a)) translateY(0) scaleY(.4); } 25% { opacity:1; } 100% { opacity:0; transform:rotate(var(--a)) translateY(var(--r)) scaleY(1); } }
+    /* Chapelet : perles qui s'allument une à une, puis pulsation */
+    .fx-rosary { position:absolute; left:50%; top:50%; width:0; height:0; --R:min(30vmin,140px); animation:fxRosaryEnd 1s ease-in-out 2.2s forwards; }
+    @keyframes fxRosaryEnd { 0% { transform:scale(1); opacity:1; } 40% { transform:scale(1.14); opacity:1; } 100% { transform:scale(1.14); opacity:0; } }
+    .fx-bead { position:absolute; left:-9px; top:-9px; width:18px; height:18px; border-radius:50%; background:#8a6cc8; box-shadow:0 0 8px rgba(166,108,255,.6); transform:rotate(var(--a)) translateY(calc(-1 * var(--R))); animation:fxBead .9s ease-out var(--d) both; }
+    @keyframes fxBead { 0% { background:#8a6cc8; box-shadow:0 0 8px rgba(166,108,255,.6); } 35% { background:#fff0c4; box-shadow:0 0 24px 8px #f5d77b; transform:rotate(var(--a)) translateY(calc(-1 * var(--R))) scale(1.6); } 100% { background:#e6c36a; box-shadow:0 0 10px 3px rgba(245,215,122,.55); transform:rotate(var(--a)) translateY(calc(-1 * var(--R))) scale(1); } }
+    /* Plume : lignes d'encre tracées et glyphes qui apparaissent */
+    .fx-ink { position:absolute; left:50%; top:50%; width:88vmin; max-width:96vw; margin:-24vmin 0 0 -44vmin; color:#d6baff; overflow:visible; filter:drop-shadow(0 0 6px #a66cff); animation:fxInkOut .5s ease 2.8s forwards; }
+    @keyframes fxInkOut { to { opacity:0; } }
+    .fx-ink path { fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; animation:fxWrite .9s ease-in-out var(--d) forwards; }
+    @keyframes fxWrite { to { stroke-dashoffset:0; } }
+    .fx-ink text { fill:#f2e8ff; font-size:15px; opacity:0; animation:fxGlyph .6s ease-out var(--d) forwards; }
+    @keyframes fxGlyph { 0% { opacity:0; filter:blur(4px); transform:translateY(6px); } 100% { opacity:1; filter:blur(0); transform:translateY(0); } }
+    /* Sceau : figure géométrique tracée, puis verrouillage doré */
+    .fx-seal { position:absolute; left:50%; top:50%; width:62vmin; height:62vmin; margin:-31vmin 0 0 -31vmin; color:#f5d77b; filter:drop-shadow(0 0 8px #f5d77b); animation:fxSealOut .5s ease 2.7s forwards; }
+    @keyframes fxSealOut { to { opacity:0; } }
+    .fx-seal path, .fx-seal circle.fx-ring { fill:none; stroke:currentColor; stroke-width:3; stroke-dasharray:1; stroke-dashoffset:1; animation:fxWrite .8s ease-in-out var(--d) forwards; }
+    .fx-seal g { transform-origin:100px 100px; animation:fxSealLock .4s cubic-bezier(.3,1.6,.5,1) 2.2s both; }
+    @keyframes fxSealLock { 0% { transform:scale(1); } 40% { transform:scale(1.14); } 100% { transform:scale(1); } }
+    .fx-seal circle.fx-fill { fill:#f5d77b; stroke:none; opacity:0; animation:fxSealFill .5s ease-out 2.2s forwards; }
+    @keyframes fxSealFill { to { opacity:.35; } }
+    /* Lumière d'Éternité : lame de lumière qui se dresse et jaillit */
+    .fx-blade-wrap { position:absolute; left:50%; top:18vh; width:14vmin; height:70vh; margin-left:-7vmin; filter:drop-shadow(0 0 16px #fff1b8); opacity:0; transform:translateY(80vh); animation:fxBlade 2.1s ease-out forwards; }
+    .fx-blade { width:100%; height:100%; background:linear-gradient(to top,rgba(255,243,196,.25),#fff7d6 55%,#fff); clip-path:polygon(50% 0,64% 9%,58% 100%,42% 100%,36% 9%); }
+    @keyframes fxBlade { 0% { opacity:0; transform:translateY(80vh); } 25% { opacity:1; transform:translateY(0); } 70% { opacity:1; transform:translateY(0); } 100% { opacity:0; transform:translateY(-26vh); } }
+    .fx-flare { position:absolute; left:50%; top:18vh; width:0; height:0; }
+    .fx-flare::before, .fx-flare::after { content:""; position:absolute; background:linear-gradient(90deg,transparent,#fff,transparent); opacity:0; animation:fxFlare .9s ease-out .5s forwards; }
+    .fx-flare::before { left:-20vmin; top:-1px; width:40vmin; height:2px; }
+    .fx-flare::after { left:-1px; top:-20vmin; width:2px; height:40vmin; background:linear-gradient(0deg,transparent,#fff,transparent); }
+    @keyframes fxFlare { 0% { opacity:0; transform:scale(.1); } 40% { opacity:1; transform:scale(1); } 100% { opacity:0; transform:scale(1.2); } }
+    /* ===== Relique : zone cliquable discrète (les cinq touchers restent secrets) ===== */
+    button.artifact-glyph { padding:0; font:inherit; cursor:default; -webkit-tap-highlight-color:transparent; transition:box-shadow .25s, transform .25s; }
+    button.artifact-glyph:focus-visible { outline:1px solid rgba(245,215,122,.5); outline-offset:2px; }
+    button.artifact-glyph.is-tap { transform:scale(1.1); box-shadow:0 0 14px rgba(245,215,122,.7); }
+    /* ===== Effets de fond liés aux titres des reliques (visibles derrière le menu) ===== */
+    #title-fx { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+    .tfx { position:absolute; inset:0; display:none; }
+    body[data-equipped-title="artefact-egide"] .tfx--egide, body[data-equipped-title="artefact-marteau"] .tfx--marteau, body[data-equipped-title="artefact-chapelet"] .tfx--chapelet,
+    body[data-equipped-title="artefact-plume"] .tfx--plume, body[data-equipped-title="artefact-sceau"] .tfx--sceau, body[data-equipped-title="artefact-epee"] .tfx--epee { display:block; }
+    /* Égide : boucliers qui s'élargissent lentement */
+    .tfx-shield { position:absolute; left:50%; top:46%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:0; transform:scale(.25); filter:drop-shadow(0 0 8px #78cfff); animation:tfxShield 7.2s ease-out var(--d) infinite; }
+    @keyframes tfxShield { 0% { opacity:0; transform:scale(.25); } 12% { opacity:.4; } 100% { opacity:0; transform:scale(2.8); } }
+    /* Marteau : braises de forge qui montent */
+    .tfx-forge { position:absolute; left:0; right:0; bottom:0; height:38vh; background:radial-gradient(ellipse at 50% 100%,rgba(255,130,30,.4),transparent 70%); animation:tfxForge 4.4s ease-in-out infinite; }
+    @keyframes tfxForge { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+    .tfx-ember { position:absolute; left:var(--x); bottom:-12px; width:var(--s); height:var(--s); border-radius:50%; background:#ffb347; box-shadow:0 0 8px 2px #ff9a2e; opacity:0; animation:tfxEmber var(--t) linear var(--d) infinite; }
+    @keyframes tfxEmber { 0% { opacity:0; transform:translate(0,0); } 10% { opacity:.9; } 50% { opacity:.6; transform:translate(14px,-55vh); } 100% { opacity:0; transform:translate(-10px,-108vh); } }
+    /* Chapelet : cercle de perles qui s'allument en rythme */
+    .tfx-rosary { position:absolute; left:50%; top:46%; width:0; height:0; --R:min(34vmin,170px); animation:tfxTurn 70s linear infinite; }
+    @keyframes tfxTurn { to { transform:rotate(360deg); } }
+    .tfx-bead { position:absolute; left:-9px; top:-9px; width:18px; height:18px; border-radius:50%; background:#e6c36a; opacity:.15; transform:rotate(var(--a)) translateY(calc(-1 * var(--R))); animation:tfxBead 4.8s ease-in-out var(--d) infinite; }
+    @keyframes tfxBead { 0%,100% { opacity:.15; box-shadow:none; } 25% { opacity:.85; box-shadow:0 0 22px 7px rgba(245,215,122,.7); } 55% { opacity:.2; } }
+    /* Plume : lignes d'encre qui s'écrivent puis s'effacent */
+    .tfx--plume svg { position:absolute; left:0; top:6vh; width:100%; height:62vh; color:#d6baff; filter:drop-shadow(0 0 5px #a66cff); }
+    .tfx--plume path { fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; opacity:0; animation:tfxWrite 10s ease-in-out var(--d) infinite; }
+    @keyframes tfxWrite { 0% { stroke-dashoffset:1; opacity:0; } 6% { opacity:.55; } 30% { stroke-dashoffset:0; opacity:.55; } 70% { stroke-dashoffset:0; opacity:.55; } 88% { stroke-dashoffset:0; opacity:0; } 100% { stroke-dashoffset:1; opacity:0; } }
+    .tfx--plume text { fill:#f2e8ff; font-size:10px; opacity:0; animation:tfxGlyph 10s ease-in-out var(--d) infinite; }
+    @keyframes tfxGlyph { 0%,8% { opacity:0; } 20% { opacity:.7; } 70% { opacity:.7; } 88%,100% { opacity:0; } }
+    /* Sceau : figure tracée, éclat doré, effacement */
+    .tfx--sceau svg { position:absolute; left:50%; top:46%; width:84vmin; height:84vmin; margin:-42vmin 0 0 -42vmin; color:#f5d77b; filter:drop-shadow(0 0 7px #f5d77b); }
+    .tfx-line { fill:none; stroke:currentColor; stroke-width:1.6; stroke-dasharray:1; stroke-dashoffset:1; opacity:0; animation:tfxSeal 11s ease-in-out var(--d) infinite; }
+    @keyframes tfxSeal { 0% { stroke-dashoffset:1; opacity:0; } 5% { opacity:.5; } 26% { stroke-dashoffset:0; opacity:.5; } 78% { stroke-dashoffset:0; opacity:.5; } 92% { stroke-dashoffset:0; opacity:0; } 100% { stroke-dashoffset:1; opacity:0; } }
+    .tfx-fill { fill:#f5d77b; stroke:none; opacity:0; animation:tfxSealFill 11s ease-out 3.6s infinite; }
+    @keyframes tfxSealFill { 0% { opacity:0; } 6% { opacity:.3; } 22% { opacity:.08; } 34%,100% { opacity:0; } }
+    /* Épée : lame de lumière qui ondule et éclat en croix */
+    .tfx-halo { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%,rgba(255,243,196,.28),transparent 60%); animation:tfxHalo 8s ease-in-out infinite; }
+    @keyframes tfxHalo { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+    .tfx-blade { position:absolute; left:50%; top:14vh; width:12vmin; height:78vh; margin-left:-6vmin; background:linear-gradient(to top,rgba(255,243,196,.04),rgba(255,247,214,.5) 55%,rgba(255,255,255,.7)); clip-path:polygon(50% 0,64% 9%,58% 100%,42% 100%,36% 9%); opacity:.25; animation:tfxBlade 8s ease-in-out infinite; }
+    @keyframes tfxBlade { 0%,100% { transform:translateY(3vh); opacity:.18; } 50% { transform:translateY(-3vh); opacity:.42; } }
+    .tfx-flare { position:absolute; left:50%; top:14vh; width:0; height:0; }
+    .tfx-flare::before, .tfx-flare::after { content:""; position:absolute; opacity:0; background:linear-gradient(90deg,transparent,#fff,transparent); animation:tfxFlare 8s ease-out infinite; }
+    .tfx-flare::before { left:-18vmin; top:-1px; width:36vmin; height:2px; }
+    .tfx-flare::after { left:-1px; top:-18vmin; width:2px; height:36vmin; background:linear-gradient(0deg,transparent,#fff,transparent); }
+    @keyframes tfxFlare { 0%,40% { opacity:0; transform:scale(.1); } 50% { opacity:.9; transform:scale(1); } 65%,100% { opacity:0; transform:scale(1.2); } }
+    @media (prefers-reduced-motion: reduce) {
+      #title-fx .tfx, #title-fx .tfx * , .tfx--plume path, .tfx--plume text, .tfx-line, .tfx-fill { animation:none !important; }
+      .tfx--plume path, .tfx-line { stroke-dashoffset:0; opacity:.3; }
+      .tfx--plume text { opacity:.4; } .tfx-shield { opacity:.16; transform:scale(1.3); } .tfx-ember { opacity:.35; bottom:calc(var(--x) * 0.8); } .tfx-bead { opacity:.4; } .tfx-fill { opacity:.06; }
+    }
   </style>
 </head>
 
@@ -703,6 +855,7 @@
   <div id="shooting-stars" aria-hidden="true"><span class="shooting-star" style="--x:92%;--d:7s;--delay:0s;--y:8%"></span><span class="shooting-star" style="--x:78%;--d:9s;--delay:2.5s;--y:22%"></span><span class="shooting-star" style="--x:64%;--d:8s;--delay:5s;--y:35%"></span><span class="shooting-star" style="--x:50%;--d:10s;--delay:1.2s;--y:12%"></span><span class="shooting-star" style="--x:36%;--d:7.5s;--delay:6.5s;--y:28%"></span><span class="shooting-star" style="--x:22%;--d:9.5s;--delay:3.8s;--y:18%"></span><span class="shooting-star" style="--x:8%;--d:8.5s;--delay:8s;--y:40%"></span><span class="shooting-star" style="--x:58%;--d:11s;--delay:9.5s;--y:50%"></span><span class="shooting-star" style="--x:84%;--d:10.5s;--delay:4.5s;--y:60%"></span></div>
   <header>
     <button class="titles-corner-button" type="button" data-modal="titres">✧ Mes titres</button>
+    <button class="codex-corner-button" type="button" data-modal="codex" aria-label="Ouvrir le codex de la Confrérie Euzhienne">📜 Codex</button>
     <button class="symbol star-code-trigger" id="star-code-trigger" type="button" data-modal="code-secret" aria-label="Une étoile au-dessus de Lipoip">✧</button>
     <h1 id="main-title">Lipoip</h1>
     <div class="subtitle">Entre ombre et imagination</div>
@@ -718,6 +871,7 @@
     <a href="#passions" data-modal="passions">Mes passions</a>
     <a href="#album" data-modal="album">Mon album</a>
     <a href="#reseaux" data-modal="reseaux">Mes réseaux</a>
+    <a href="#faits" data-modal="faits">Quelques faits sur moi</a>
   </nav>
 
   <main>
@@ -733,6 +887,43 @@
       <p>Choisis un chapitre dans la navigation pour en découvrir davantage.</p>
     </div>
   </main>
+
+  <div id="title-fx" aria-hidden="true"><div class="tfx tfx--egide"><svg class="tfx-shield" style="--d:0s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:2.4s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:4.8s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div class="tfx tfx--marteau"><div class="tfx-forge"></div><i class="tfx-ember" style="--x:13%;--d:0.0s;--t:5.0s;--s:3px"></i><i class="tfx-ember" style="--x:50%;--d:0.8s;--t:5.9s;--s:5px"></i><i class="tfx-ember" style="--x:87%;--d:1.7s;--t:6.8s;--s:7px"></i><i class="tfx-ember" style="--x:28%;--d:2.5s;--t:7.7s;--s:3px"></i><i class="tfx-ember" style="--x:65%;--d:3.3s;--t:8.6s;--s:5px"></i><i class="tfx-ember" style="--x:6%;--d:4.1s;--t:5.5s;--s:7px"></i><i class="tfx-ember" style="--x:43%;--d:5.0s;--t:6.4s;--s:3px"></i><i class="tfx-ember" style="--x:80%;--d:5.8s;--t:7.3s;--s:5px"></i><i class="tfx-ember" style="--x:21%;--d:0.6s;--t:8.2s;--s:7px"></i><i class="tfx-ember" style="--x:58%;--d:1.5s;--t:5.1s;--s:3px"></i><i class="tfx-ember" style="--x:95%;--d:2.3s;--t:6.0s;--s:5px"></i><i class="tfx-ember" style="--x:36%;--d:3.1s;--t:6.9s;--s:7px"></i><i class="tfx-ember" style="--x:73%;--d:4.0s;--t:7.8s;--s:3px"></i><i class="tfx-ember" style="--x:14%;--d:4.8s;--t:8.7s;--s:5px"></i><i class="tfx-ember" style="--x:51%;--d:5.6s;--t:5.6s;--s:7px"></i><i class="tfx-ember" style="--x:88%;--d:0.4s;--t:6.5s;--s:3px"></i></div><div class="tfx tfx--chapelet"><div class="tfx-rosary"><span class="tfx-bead" style="--a:0deg;--d:0.0s"></span><span class="tfx-bead" style="--a:30deg;--d:0.4s"></span><span class="tfx-bead" style="--a:60deg;--d:0.8s"></span><span class="tfx-bead" style="--a:90deg;--d:1.2s"></span><span class="tfx-bead" style="--a:120deg;--d:1.6s"></span><span class="tfx-bead" style="--a:150deg;--d:2.0s"></span><span class="tfx-bead" style="--a:180deg;--d:2.4s"></span><span class="tfx-bead" style="--a:210deg;--d:2.8s"></span><span class="tfx-bead" style="--a:240deg;--d:3.2s"></span><span class="tfx-bead" style="--a:270deg;--d:3.6s"></span><span class="tfx-bead" style="--a:300deg;--d:4.0s"></span><span class="tfx-bead" style="--a:330deg;--d:4.4s"></span></div></div><div class="tfx tfx--plume"><svg viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice"><path d="M10 30 C40 10 70 50 100 28 S150 8 180 30 S240 46 290 24" pathLength="1" style="--d:0s"/><path d="M10 70 C45 52 75 88 110 66 S170 50 205 70 S255 86 290 66" pathLength="1" style="--d:1.6s"/><path d="M10 110 C50 92 80 128 120 106 S175 90 215 110 S260 124 290 106" pathLength="1" style="--d:3.2s"/><text x="24" y="22" style="--d:1.2s">❦</text><text x="230" y="60" style="--d:2.8s">✎</text><text x="40" y="100" style="--d:4.4s">§</text></svg></div><div class="tfx tfx--sceau"><svg viewBox="0 0 200 200"><circle class="tfx-fill" cx="100" cy="100" r="84"/><circle class="tfx-line" cx="100" cy="100" r="84" pathLength="1" style="--d:0s"/><path class="tfx-line" d="M100 28 L162 64 L162 136 L100 172 L38 136 L38 64 Z" pathLength="1" style="--d:1.2s"/><path class="tfx-line" d="M100 48 L152 138 L48 138 Z" pathLength="1" style="--d:2.4s"/></svg></div><div class="tfx tfx--epee"><div class="tfx-halo"></div><div class="tfx-blade"></div><div class="tfx-flare"></div></div></div>
+
+  <div id="artifact-fx" aria-hidden="true"></div>
+
+  <!-- Fenêtre : Quelques faits sur moi -->
+  <div class="modal" id="modal-faits" role="dialog" aria-modal="true" aria-labelledby="title-faits" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-faits">Quelques faits sur moi</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <div class="facts-grid"><article class="fact-card"><h3>👻 Un Pokémon de cœur</h3><p>Branette fait partie de mes Pokémon préférés. Les fantômes ont visiblement une place réservée dans mon équipe.</p></article><article class="fact-card"><h3>⚪⚫ Mon côté stratégique</h3><p>Côté Magic: The Gathering, j’ai un faible pour les decks Orzhov. Le blanc et le noir, c’est une affaire de goût… et de stratégie.</p></article><article class="fact-card"><h3>📦 Collectionneur en série</h3><p>Environ 150 Funko dans ma collection. Non, je n’ai pas un problème de rangement. J’ai un problème de place.</p></article><article class="fact-card"><h3>🐙 Une passion tentaculaire</h3><p>J’ai une collection de peluches poulpes. Certains ont même leur propre prénom. Oui, ils font partie de la famille.</p></article><article class="fact-card"><h3>🐈 Le véritable boss de la maison</h3><p>J’ai une chatte appelée Aria. Officiellement, je m’occupe d’elle. Officieusement, je vis chez elle.</p></article><article class="fact-card"><h3>🃏 Collectionneur de cartes</h3><p>Pokémon, Magic, Yu-Gi-Oh! et Lorcana. Apparemment, une seule collection ne suffisait pas.</p></article><article class="fact-card"><h3>🧩 Pourquoi faire simple ?</h3><p>J’aime les énigmes, les secrets et les systèmes à découvrir.</p></article></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Fenêtre : Codex de la Confrérie Euzhienne (espace distinct des onglets ordinaires) -->
+  <div class="modal" id="modal-codex" role="dialog" aria-modal="true" aria-labelledby="title-codex" aria-hidden="true">
+    <section class="modal-window codex-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-codex">📜 Codex de la Confrérie Euzhienne</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <div class="codex-tabs" role="tablist" aria-label="Rubriques du codex">
+          <button type="button" role="tab" class="codex-tab is-active" aria-selected="true" data-codex-tab="chroniques">Les Chroniques</button>
+          <button type="button" role="tab" class="codex-tab" aria-selected="false" data-codex-tab="membres">Les Membres</button>
+          <button type="button" role="tab" class="codex-tab" aria-selected="false" data-codex-tab="reliques">Les Reliques</button>
+          <button type="button" role="tab" class="codex-tab" aria-selected="false" data-codex-tab="code">Le Code</button>
+          <button type="button" role="tab" class="codex-tab" aria-selected="false" data-codex-tab="poemes">Les Poèmes</button>
+        </div>
+        <section class="codex-panel" role="tabpanel" data-codex-panel="chroniques"><h3 class="codex-heading">Les Chroniques</h3><div class="codex-chronicle"><p>Il était une fois, dans un monde magique appelé Symphony, un jeune et courageux guerrier nommé Euzh. Euzh avait toujours été fasciné par les légendes épiques de héros et de confréries légendaires. Inspiré par leur courage et leur dévouement, il a décidé de créer sa propre confrérie, qui continue sous le nom de « Confrérie Euzhienne ».</p><p>Euzh était un homme de grande sagesse et de force indéniable. Il possédait une épée enchantée, forgée par les plus grands artisans du royaume. Cette épée, nommée Lumière d’Eternité, brillait d’une lueur mystique et renfermait le pouvoir de protéger les innocents et de repousser les forces du mal.</p><p>Il entreprit un voyage périlleux à travers les terres de Symphony pour recruter des compagnons dignes de rejoindre sa confrérie. Il cherchait des individus possédant un courage inébranlable, des compétences exceptionnelles et un cœur noble. De nombreux défis se dressaient devant Euzh, mais sa détermination était sans faille.</p><p>Finalement, après de nombreuses épreuves, Euzh a réussi à rassembler un groupe hétéroclite mais puissant de guerriers, de mages, de voleurs, ainsi qu’un scribe pour recenser les faits de la confrérie et bien d’autres aventuriers talentueux. Chacun d’entre eux possédait une compétence unique et une histoire qui les avait forgés. Ensemble, ils formaient la Confrérie Euzhienne, une force unie dans le but de protéger les faibles, de rétablir la justice et d’éradiquer les ténèbres qui menaçaient Symphony.</p><p>Les Euzhiens parcouraient le royaume, accomplissant des quêtes nobles et aidant les opprimés. Ils défendaient les villages contre les monstres, affrontaient les seigneurs maléfiques et rétablissaient l’harmonie dans les terres ravagées par la guerre. Leur réputation grandissait rapidement, et leur nom inspirait espoir et confiance.</p><p>Mais le plus grand défi auquel la Confrérie Euzhienne dut faire face fut la montée d’un mal ancien et puissant : le sorcier noir Arkanos. Il avait l’intention de plonger Symphonie dans les ténèbres éternelles et de s’emparer du trône du royaume. Euzh et ses compagnons savaient que c’était leur plus grand test, mais ils étaient prêts à tout risquer pour sauver leur monde.</p><p>La bataille finale entre la Confrérie Euzhienne et Arkanos fut épique. Les sortes magiques s’entrechoquaient, les épées scintillaient et les flèches volaient dans les airs. Finalement, grâce à la détermination sans faille d’Euzh et à la coopération sans précédent de ses compagnons, Arkanos fut vaincu et Symphony fut sauvé de la destruction imminente.</p><p>La Confrérie Euzhienne fut acclamée comme des héros dans tout le royaume. Euzh et ses compagnons avaient prouvé que l’union, la bravoure et la loyauté pouvaient triompher de l’obscurité. Leur légende se propagea dans toutes les contrées, et ils continuèrent de protéger et de servir Symphonie avec dévouement et honneur.</p><p>La Confrérie Euzhienne ne se contentait pas seulement de combattre les forces du mal. La vision d’Euzh était bien plus profonde. Il voulait que les membres de sa confrérie inspirent les autres à devenir la meilleure version d’eux-mêmes. Il croyait que chacun avait le potentiel de grandir, de vaincre ses peurs et d’atteindre des sommets insoupçonnés.</p><p>Ainsi, en plus de leurs exploits héroïques, les Euzhiens passaient du temps à enseigner, à guider et à inspirer les habitants de Symphony. Ils organisaient des ateliers, des entraînements et des conférences pour partager leurs connaissances et encourager les autres à cultiver leurs talents et leurs vertus.</p><p>Euzh lui-même était un modèle de persévérance et de bienveillance. Il utilise le temps d’écouter les histoires et les préoccupations des gens, leur offrant des conseils et les encourage à poursuivre leurs rêves. Il savait que le véritable héros se trouvait en chacun de nous, et il était déterminé à le révéler.</p><p>La volonté d’Euzh était contagieuse, et Symphony commença à se transformer. Les habitants, inspirés par la Confrérie Euzhienne, découvrent leur véritable potentiel. Ils apprirent à dépasser leurs limites, à embrasser le courage et à faire preuve de compassion envers les autres.</p><p>La Confrérie Euzhienne est devenue non seulement une force protectrice, mais aussi un symbole d’espoir et de croissance personnelle. Les membres de la confrérie et les habitants de Symphony travaillaient main dans la main pour construire un monde meilleur, où la justice, la compassion et la volonté de s’améliorer régnaient en maîtres.</p><p>L’histoire d’Euzh et de sa confrérie se perpétue au fil des générations. Les nouvelles recrues rejoignaient les rangs, portant l’héritage des Euzhiens et poursuivant la mission d’inspirer les autres à atteindre leur plein potentiel.</p><p>Ainsi, la Confrérie Euzhienne est devenue bien plus qu’un groupe de guerriers héroïques. C’était une source d’inspiration, un rappel constant que chacun avait le pouvoir de devenir la meilleure version de soi-même. Et grâce à la vision et à la détermination d’Euzh, Symphonie connue une ère de prospérité, de croissance personnelle et de solidarité sans précédent.</p><p>C’est ainsi que se termine le préambule épique de la Confrérie Euzhienne, une confrérie qui non seulement combatie les ténèbres, mais qui inspire toute une nation à embrasser sa véritable nature et à devenir la meilleure version d’elle-même.</p></div></section>
+        <section class="codex-panel" role="tabpanel" data-codex-panel="membres" hidden><h3 class="codex-heading">Les Membres</h3><details class="codex-member"><summary><strong>Euzh</strong> · Le fondateur et le guide</summary><ul><li>Chef et fondateur de la Confrérie.</li><li>Guerrier sage, bienveillant et courageux.</li><li>Porteur de l’épée Lumière d’Éternité.</li><li>Guide spirituel et moral de ses compagnons.</li><li>Incarnation de la fraternité, de la sagesse, de la connaissance et de la force intérieure.</li></ul><button class="codex-poem-link" type="button" data-codex-poem="euzh">Lire le poème</button></details><details class="codex-member"><summary><strong>Weuzh</strong> · Le guerrier</summary><ul><li>Combattant valeureux.</li><li>Maître des arts martiaux.</li><li>Protecteur des faibles.</li><li>Courageux, loyal et redoutable au combat.</li><li>Admiré par ses compagnons.</li></ul><button class="codex-poem-link" type="button" data-codex-poem="weuzh">Lire le poème</button></details><details class="codex-member"><summary><strong>Beuzh</strong> · L’architecte et le forgeron</summary><ul><li>Grand constructeur et maître architecte.</li><li>Conçoit des bâtiments majestueux, des palais et des tours.</li><li>Travaille également comme forgeron et crée des armes et des pièces exceptionnelles.</li><li>Représente la créativité, la construction et le savoir-faire.</li></ul><button class="codex-poem-link" type="button" data-codex-poem="beuzh">Lire le poème</button></details><details class="codex-member"><summary><strong>Zeuzh</strong> · Le diplomate et le bras droit</summary><ul><li>Bras droit éclairé d’Euzh.</li><li>Conseiller et porte-parole.</li><li>Transmet les enseignements d’Euzh.</li><li>Diplomate sage et loyal.</li><li>Favorise l’équilibre, la confiance et la compréhension.</li><li>Associé à la préservation des enseignements dans les textes qui lui sont consacrés.</li></ul><button class="codex-poem-link" type="button" data-codex-poem="zeuzh">Lire le poème</button></details><details class="codex-member"><summary><strong>Aurèleuzh</strong> · Le moine ermite</summary><ul><li>Ermite sage et humble moine.</li><li>Gardien des textes sacrés.</li><li>Transmet les enseignements spirituels d’Euzh.</li><li>Représente la foi, la méditation, la spiritualité et le savoir sacré.</li></ul><button class="codex-poem-link" type="button" data-codex-poem="aureleuzh">Lire le poème</button></details><details class="codex-member"><summary><strong>Leuzh</strong> · Le scribe</summary><ul><li>Scribe et gardien des écrits de la Confrérie.</li><li>Archiviste chargé de consigner les événements, les récits et les enseignements.</li><li>Préserve la mémoire de la Confrérie et transmet son histoire aux générations futures.</li><li>Associé à l’écriture, aux connaissances, aux récits, aux archives et à la mémoire historique.</li></ul><button class="codex-poem-link" type="button" data-codex-poem="leuzh">Lire le poème</button></details></section>
+        <section class="codex-panel" role="tabpanel" data-codex-panel="reliques" hidden><h3 class="codex-heading">Les Reliques</h3>
+          <article class="codex-relic" data-artifact="epee"><div class="artifact-head"><button class="artifact-glyph" type="button" data-artifact-tap aria-label="Examiner la relique"><svg viewBox="0 0 32 32" width="28" height="28"><path d="M16 2 L19 20 H13 Z" fill="currentColor"/><rect x="8" y="20" width="16" height="3" rx="1" fill="currentColor"/><rect x="14.5" y="23" width="3" height="7" rx="1" fill="currentColor"/></svg></button><h4>⚔️ Lumière d’Éternité</h4></div><p>Épée enchantée d’Euzh, forgée par de grands artisans. Elle brille d’une lueur mystique, protège les innocents et repousse le mal.</p></article><article class="codex-relic" data-artifact="egide"><div class="artifact-head"><button class="artifact-glyph" type="button" data-artifact-tap aria-label="Examiner la relique"><svg viewBox="0 0 32 38" width="26" height="30"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 9 V30 M8 16 H24" stroke="currentColor" stroke-width="1.6"/></svg></button><h4>L’Égide · Weuzh</h4></div><p>Un bouclier représentant la protection, le courage et la défense des autres.</p></article><article class="codex-relic" data-artifact="marteau"><div class="artifact-head"><button class="artifact-glyph" type="button" data-artifact-tap aria-label="Examiner la relique"><svg viewBox="0 0 32 32" width="28" height="28"><g transform="rotate(-35 16 16)"><rect x="6" y="4" width="20" height="9" rx="2" fill="currentColor"/><rect x="14" y="12" width="4" height="18" rx="1.5" fill="currentColor"/></g></svg></button><h4>Le Marteau · Beuzh</h4></div><p>Un marteau représentant la création, la construction et le savoir-faire.</p></article><article class="codex-relic" data-artifact="chapelet"><div class="artifact-head"><button class="artifact-glyph" type="button" data-artifact-tap aria-label="Examiner la relique"><svg viewBox="0 0 32 32" width="28" height="28"><circle cx="16.0" cy="3.0" r="2.2" fill="currentColor"/><circle cx="23.1" cy="5.6" r="2.2" fill="currentColor"/><circle cx="26.8" cy="12.1" r="2.2" fill="currentColor"/><circle cx="25.5" cy="19.5" r="2.2" fill="currentColor"/><circle cx="19.8" cy="24.3" r="2.2" fill="currentColor"/><circle cx="12.2" cy="24.3" r="2.2" fill="currentColor"/><circle cx="6.5" cy="19.5" r="2.2" fill="currentColor"/><circle cx="5.2" cy="12.1" r="2.2" fill="currentColor"/><circle cx="8.9" cy="5.6" r="2.2" fill="currentColor"/><path d="M16 25 V30" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="29.5" r="2.2" fill="currentColor"/></svg></button><h4>Le Chapelet · Aurèleuzh</h4></div><p>Un chapelet représentant la spiritualité, la méditation et la transmission des enseignements.</p></article><article class="codex-relic" data-artifact="plume"><div class="artifact-head"><button class="artifact-glyph" type="button" data-artifact-tap aria-label="Examiner la relique"><svg viewBox="0 0 32 32" width="28" height="28"><path d="M27 4 C15 5 8 13 6 26 C15 23 23 17 27 4 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 27 L17 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><h4>La Plume · Leuzh</h4></div><p>Une plume représentant l’écriture, les chroniques, la mémoire et la préservation du savoir.</p></article><article class="codex-relic" data-artifact="sceau"><div class="artifact-head"><button class="artifact-glyph" type="button" data-artifact-tap aria-label="Examiner la relique"><svg viewBox="0 0 32 32" width="28" height="28"><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 6 L25 11 V21 L16 26 L7 21 V11 Z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><h4>Le Sceau de l’Éloquence · Zeuzh</h4></div><p>Un sceau représentant la diplomatie, la confiance, la parole transmise et l’union entre les membres.</p></article>
+</section>
+        <section class="codex-panel" role="tabpanel" data-codex-panel="code" hidden><h3 class="codex-heading">Le Code</h3><ol class="codex-code"><li><strong>Poursuivre la quête de l’amélioration personnelle</strong><span>Engage-toi à toujours chercher à devenir une meilleure version de toi-même, en cultivant tes talents, en développant tes compétences et en travaillant sur tes faiblesses.</span></li><li><strong>Favoriser l’entraide et la collaboration</strong><span>Soutiens tes frères et sœurs de la confrérie dans leur cheminement personnel, offrant encouragement et assistance quand nécessaire.</span></li><li><strong>Respecter la vie privée d’autrui</strong><span>Ne cherche jamais à violer l’intimité des autres membres de la confrérie. Abstiens-toi de fouiller dans leurs affaires ou d’espionner leur vie privée sans permission.</span></li><li><strong>Établir des frontières claires</strong><span>Respecte les limites établies par tes pairs et sois conscient de ne pas franchir ces limites sans accord mutuel.</span></li><li><strong>Favoriser une communication ouverte et honnête</strong><span>Encourage la transparence et l’honnêteté dans les échanges avec tes confrères, sans jugement ni critique destructrice.</span></li><li><strong>Accepter les critiques constructives</strong><span>Sois ouvert aux commentaires constructifs des autres membres de la confrérie, car ils peuvent t’aider à grandir et à t’améliorer.</span></li><li><strong>Préserver la confidentialité</strong><span>Ne divulgue pas d’informations personnelles ou sensibles partagées en confiance par d’autres membres de la confrérie.</span></li><li><strong>Respecter les différences et les opinions</strong><span>Reconnais que chacun a ses propres croyances, valeurs et opinions, et respecte-les même s’ils diffèrent des tiennes.</span></li><li><strong>Favoriser la tolérance et l’inclusion</strong><span>Crée un environnement où chacun se sent accepté et inclus, indépendamment de son origine, de son orientation sexuelle, de sa religion ou de toute autre caractéristique personnelle.</span></li><li><strong>Contribuer au bien-être collectif</strong><span>Efforce-toi de contribuer positivement à la confrérie et à la société dans son ensemble, en faisant preuve d’empathie, de compassion et de solidarité envers ceux qui en ont besoin.</span></li></ol></section>
+        <section class="codex-panel" role="tabpanel" data-codex-panel="poemes" hidden><h3 class="codex-heading">Les Poèmes</h3><details class="codex-poem" id="codex-poem-euzh"><summary>Euzh et la Confrérie</summary><p class="codex-poem-intro"><em>Petit poème pour la gloire de la confrérie et de Euzh</em></p><p class="codex-stanza">Au sein de la Confrérie, Euzh règne en maître,<br>Tel un guide éclairé, sa sagesse est le phare,<br>Gardien des mystères, il éclaire leur être,<br>Dans les arcanes sacrés, son esprit s’égare.</p><p class="codex-stanza">Les disciples de la confrérie, tels des étoiles,<br>Suivent sa lumière, sa parole idéale,<br>Ensemble, ils forment un cercle sans égale,<br>Sous la bannière d’Euzh, leur esprit s’envole.</p><p class="codex-stanza">Il enseigne la voie de la sérénité,<br>La force de l’esprit, la paix intérieure,<br>Dans l’union des cœurs, la fraternité,<br>La magie du savoir, pure et éclairée.</p><p class="codex-stanza">Face à l’ombre d’Arkanos, ils ont résisté,<br>Fiers gardiens de la lumière, ils se sont dressés,<br>Dans la quête du bien, ils sont engagés,<br>Pour préserver l’harmonie, ils sont déterminés.</p><p class="codex-stanza">La gloire de la Confrérie, c’est celle d’un savoir,<br>Dans la quête de l’âme, ils avancent sans déchoir,<br>Euzh, maître bienveillant, guide spirituel,<br>Leur chemin éclairé, vers un destin immortel.</p><p class="codex-stanza">Dans leur honneur, brille une étoile dans le ciel,<br>La Confrérie Euzhienne, gardienne de l’essentiel,<br>Fidèles à leur mission, ensemble, ils s’unissent,<br>Pour que perdure, toujours, la magie qui les unit.</p></details><details class="codex-poem" id="codex-poem-weuzh"><summary>Weuzh</summary><p class="codex-stanza">Weuzh, combattant valeureux, par ses pairs admiré,<br>Tel un éclair de courage, il se dresse sans défaillir,<br>Dans la Confrérie, son nom est chanté,<br>Une étoile guerrière, prête à affronter l’avenir.</p><p class="codex-stanza">Au cœur des batailles, il est un roc inébranlable,<br>Son épée étincelle, tranchant les ténèbres de la nuit,<br>Au sein de la Confrérie, son courage est indomptable,<br>Protecteur des faibles, guerrier des âmes éprises de l’ennemi.</p><p class="codex-stanza">Sa maîtrise de l’art martial est une source d’inspiration,<br>Dans la défense du bien, il excelle avec détermination,<br>Par ses exploits, il gagne le respect de la nation,<br>Weuzh, un symbole de vaillance et de protection.</p><p class="codex-stanza">Les épreuves, il les affronte avec honneur et dévotion,<br>Toujours prêt à se battre, à défendre la Confrérie,<br>Dans le combat, il puise sa force et son émotion,<br>Un guerrier respecté, au cœur de l’harmonie.</p><p class="codex-stanza">Sous l’œil bienveillant d’Euzh, il s’épanouit,<br>Un pilier solide, toujours prêt à l’action,<br>Dans leur quête de justice, il les conduit,<br>Weuzh, gardien fier, de la magie et de l’affection.</p><p class="codex-stanza">Dans leur honneur, brille une étoile dans le ciel,<br>La Confrérie Euzhienne, gardienne de l’essentiel,<br>Grâce à Weuzh, leur destinée s’illumine,<br>Vers un avenir glorieux, où leur étoile brille et culmine.</p></details><details class="codex-poem" id="codex-poem-beuzh"><summary>Beuzh</summary><p class="codex-stanza">Beuzh, le grand constructeur, maître architecte,<br>Un génie créatif, aux talents multiples élite,<br>Des édifices majestueux, il fait naître de l’abstrait,<br>Un créateur d’univers, bâtisseur d’une beauté inédite.</p><p class="codex-stanza">De l’imaginaire, il tire sa puissante inspiration,<br>Dans les cieux, ses édifices s’élèvent en communion,<br>Des palais célestes, aux tours de perfection,<br>Beuzh, l’architecte, transforme l’illusion en réalisation.</p><p class="codex-stanza">Sa forge est un sanctuaire, où naissent des merveilles,<br>Des armes d’exception, des pièces uniques éternelles,<br>Le métal prend vie, sous son marteau habile,<br>Beuzh, le forgeron, donne à l’acier une âme docile.</p><p class="codex-stanza">Au sein de la Confrérie, ses créations brillent,<br>Des cités enchanteresses, où la magie scintille,<br>Bâtisseur de rêves, il emplit les cœurs d’émoi,<br>Un architecte vénéré, par ses pairs et ses sujets rois.</p><p class="codex-stanza">Dans ses mains habiles, les édifices prennent forme,<br>Un monde nouveau, où la magie se transforme,<br>De l’acier et de la pierre, il sculpte l’essence,<br>Beuzh, le grand constructeur, un artisan d’excellence.</p><p class="codex-stanza">Sous l’œil bienveillant d’Euzh, il s’épanouit,<br>Un pilier solide, toujours prêt à la construction,<br>Dans leur quête d’harmonie, il les conduit,<br>Beuzh, gardien fier, de la magie et de la construction.</p><p class="codex-stanza">Dans leur honneur, brille une étoile dans le ciel,<br>La Confrérie Euzhienne, gardienne de l’essentiel,<br>Grâce à Beuzh, leur destinée s’illumine,<br>Vers un avenir grandiose, où leur étoile brille et culmine.</p></details><details class="codex-poem" id="codex-poem-zeuzh"><summary>Zeuzh</summary><p class="codex-stanza">Zeuzh, bras droit éclairé, porte-parole de Euzh,<br>Telle une étoile brillante, il répand sa vertu,<br>Dans la Confrérie, sa présence est une lumière,<br>Guidant les pas des disciples, vers l’équilibre et la clarté.</p><p class="codex-stanza">Au cœur des mystères, il se tient avec fierté,<br>Le gardien vigilant des enseignements sacrés,<br>Sa voix résonne, telle une douce mélodie,<br>Portant les mots d’Euzh, empreints de poésie.</p><p class="codex-stanza">Sage conseiller, il inspire la confiance,<br>La force de l’esprit, l’amour de la bienveillance,<br>Tel un phare dans la nuit, il montre la voie,<br>Éclairant le chemin, où s’épanouissent les émois.</p><p class="codex-stanza">Face aux défis, il se dresse avec bravoure,<br>Dans l’adversité, son esprit ne se perd jamais,<br>Protégeant la confrérie avec ferveur,<br>Un roc solide, au cœur de chaque combat qu’il mène.</p><p class="codex-stanza">Sous le regard bienveillant d’Euzh, il grandit,<br>Sa loyauté inébranlable, vers les sommets le conduit,<br>Au sein de la Confrérie, il est un pilier,<br>Témoin de la gloire, de la magie qui les unit.</p><p class="codex-stanza">Zeuzh, étoile éclatante, fidèle serviteur,<br>Dans la quête du bien, il est le pourvoyeur,<br>Porte-parole inspiré, il parle avec le cœur,<br>Glorieuse est la Confrérie, guidée par son ardeur.</p><p class="codex-stanza">Dans leur honneur, brille une étoile dans le ciel,<br>La Confrérie Euzhienne, gardienne de l’essentiel,<br>Grâce à Zeuzh, leur destinée s’illumine,<br>Vers un avenir de paix, leur étoile les amène.</p></details><details class="codex-poem" id="codex-poem-aureleuzh"><summary>Aurèleuzh</summary><p class="codex-stanza">Aurèleuzh, ermite sage et humble moine,<br>Gardien des textes saints, en sa cabane de bois,<br>Il puise la sagesse dans chaque mot qu’il moissonne,<br>Un gardien du savoir, messager de la foi.</p><p class="codex-stanza">Au sein de la Confrérie, il est le canal sacré,<br>Transmettant les enseignements du grand Euzh,<br>Dans chaque page, une lumière étoilée,<br>Les paroles divines, un trésor précieux.</p><p class="codex-stanza">Dans sa retraite, il médite avec ferveur,<br>Guidé par la magie, par l’essence céleste,<br>Aurèleuzh, gardien des écrits, bâtisseur de valeurs,<br>Un maître spirituel, un phare qui nous investe.</p><p class="codex-stanza">Il délivre les mots, telle une brise céleste,<br>Les paroles du grand Euzh, l’écho d’une voix suprême,<br>Chaque membre de la Confrérie les investit de leur geste,<br>Une communauté unie, portée par un même thème.</p><p class="codex-stanza">Sous l’œil bienveillant d’Euzh, il s’épanouit,<br>Un pilier solide, toujours prêt à la transmission,<br>Dans leur quête d’éveil, il les conduit,<br>Aurèleuzh, gardien fier, de la magie et de l’illumination.</p><p class="codex-stanza">Dans leur honneur, brille une étoile dans le ciel,<br>La Confrérie Euzhienne, gardienne de l’essentiel,<br>Grâce à Aurèleuzh, leur destinée s’illumine,<br>Vers un avenir éclairé, où leur étoile brille et culmine.</p></details><details class="codex-poem" id="codex-poem-leuzh"><summary>Leuzh</summary><p class="codex-stanza">Leuzh, scribe, gardien des écrits,<br>Une plume inspirée, dans ses mains habiles,<br>Des parchemins anciens, où la sagesse est gravée,<br>Un érudit dévoué, aux connaissances multiples.</p><p class="codex-stanza">Dans les recoins secrets de la Confrérie,<br>Il recueille les mots, les enseignements d’Euzh,<br>Comme une étoile brillante dans le ciel éclairci,<br>Leuzh, gardien des écrits, éclaire nos vies de lumière.</p><p class="codex-stanza">L’encre écoulé, les grimoire consigner,<br>Il écrit avec ardeur, le quotidien,<br>Dans l’union des âmes, l’harmonie est scellée,<br>Leuzh, scribe bienveillant, cœur empli de bonté.</p><p class="codex-stanza">Dans ses yeux paisibles, réside une connaissance,<br>Un savoir millénaire, un lien avec l’essence,<br>Des secrets mystiques, des légendes et des romances,<br>Leuzh, scribe vénéré, source d’inspiration immense.</p><p class="codex-stanza">Sous l’œil bienveillant d’Euzh, il s’épanouit,<br>Un pilier solide, toujours prêt à guider,<br>Dans leur quête spirituelle, il les conduit,<br>Leuzh, gardien fier, de la magie et de l’équilibre recherché.</p><p class="codex-stanza">Dans leur honneur, brille une étoile dans le ciel,<br>La Confrérie Euzhienne, gardienne de l’essentiel,<br>Grâce à Leuzh, leur destinée s’illumine,<br>Vers un avenir béni, où leur étoile brille et culmine.</p></details></section>
+      </div>
+    </section>
+  </div>
 
   <!-- Fenêtre : Qui je suis -->
   <div class="modal" id="modal-moi" role="dialog" aria-modal="true" aria-labelledby="title-moi" aria-hidden="true">
@@ -1292,11 +1483,27 @@
       }
 
       // ===== Fenêtres principales visitées (titre « Éclaireur », indépendant des secrets) =====
-      const mainTabs = ["moi", "passions", "album", "reseaux"];
+      const mainTabs = ["moi", "passions", "album", "reseaux", "faits"];
       const visitedTabsKey = "lipoip-visited-tabs-v1";
       let visitedTabs = new Set();
       try { visitedTabs = new Set(JSON.parse(localStorage.getItem(visitedTabsKey) || "[]")); } catch (_) {}
       function allTabsVisited() { return mainTabs.every(id => visitedTabs.has(id)); }
+      // Titre « Lecteur du Codex » : les cinq rubriques du codex de la Confrérie vues au moins une fois.
+      const codexTabNames = ["chroniques", "membres", "reliques", "code", "poemes"];
+      const visitedCodexKey = "lipoip-visited-codex-v1";
+      let visitedCodex = new Set();
+      try { visitedCodex = new Set(JSON.parse(localStorage.getItem(visitedCodexKey) || "[]")); } catch (_) {}
+      function allCodexVisited() { return codexTabNames.every(name => visitedCodex.has(name)); }
+      function trackCodexTab(name) {
+        if (!codexTabNames.includes(name) || visitedCodex.has(name)) return;
+        const hadAll = allCodexVisited();
+        visitedCodex.add(name);
+        try { localStorage.setItem(visitedCodexKey, JSON.stringify([...visitedCodex])); } catch (_) {}
+        if (!hadAll && allCodexVisited()) {
+          renderTitleCollection();
+          showSiteToast("✧ Tu as feuilleté tout le codex. Un nouveau titre t’attend dans « Mes titres ».");
+        }
+      }
       function showSiteToast(message) {
         const toast = document.createElement("div");
         toast.className = "site-toast"; toast.setAttribute("role", "status"); toast.textContent = message;
@@ -1312,6 +1519,12 @@
           renderTitleCollection();
           showSiteToast("✧ Tu as parcouru toutes les fenêtres. Un nouveau titre t’attend dans « Mes titres »… et de nombreux secrets t’attendent encore.");
         }
+      }
+
+      // ===== Artefacts de la Confrérie : compteurs indépendants (0 à 5) =====
+      const artifactKey = id => `lipoip-artifact-${id}-v1`;
+      function artifactCount(id) {
+        try { const n = parseInt(localStorage.getItem(artifactKey(id)) || "0", 10); return n > 0 ? Math.min(5, n) : 0; } catch (_) { return 0; }
       }
 
       // ===== Progression de la quête CIE (énigmes, étoiles, plumes), enregistrée sur l'appareil =====
@@ -1333,7 +1546,8 @@
           "lipoip-couronne-stage-v2", "lipoip-origin-lipoip-v1", "lipoip-origin-leuzh-v1",
           "lipoip-folie-unlocked", "lipoip-cat-secret-v1", "lipoip-cat-unlocked-v1",
           "lipoip-babel-found-v1", "lipoip-babel-stage-v1",
-          "lipoip-visited-tabs-v1", "lipoip-cie-progress-v1",
+          "lipoip-visited-tabs-v1", "lipoip-visited-codex-v1", "lipoip-cie-progress-v1",
+          "lipoip-artifact-egide-v1", "lipoip-artifact-marteau-v1", "lipoip-artifact-chapelet-v1", "lipoip-artifact-plume-v1", "lipoip-artifact-sceau-v1", "lipoip-artifact-epee-v1",
           "lipoip-zodiac-found-v1", "lipoip-zodiac-stage-v1", "lipoip-zodiac-final-v1"
         ];
         keysToReset.forEach(key => { try { localStorage.removeItem(key); } catch (_) {} });
@@ -1342,7 +1556,14 @@
         window.location.reload();
       });
       const titleDefinitions = [
-        {id:"eclaireur",name:"Éclaireur",desc:"Tu as parcouru les quatre fenêtres principales du site, et il s’éclaire. De nombreux secrets t’attendent encore, cachés un peu partout…",source:"__tabs__"},
+        {id:"eclaireur",name:"Éclaireur",desc:"Tu as parcouru les cinq fenêtres principales du site, et il s’éclaire. De nombreux secrets t’attendent encore, cachés un peu partout…",source:"__tabs__"},
+        {id:"artefact-egide",name:"Rempart de l’Égide",desc:"Pour avoir éveillé cinq fois l’Égide de Weuzh.",source:"__artifact:egide__"},
+        {id:"artefact-marteau",name:"Maître du Marteau",desc:"Pour avoir fait résonner cinq fois le Marteau de Beuzh.",source:"__artifact:marteau__"},
+        {id:"artefact-chapelet",name:"Gardien des Perles",desc:"Pour avoir égrené cinq fois le Chapelet d’Aurèleuzh.",source:"__artifact:chapelet__"},
+        {id:"artefact-plume",name:"Chroniqueur à l’encre vive",desc:"Pour avoir fait courir cinq fois la Plume de Leuzh.",source:"__artifact:plume__"},
+        {id:"artefact-sceau",name:"Voix du Sceau",desc:"Pour avoir scellé cinq fois le Sceau de l’Éloquence de Zeuzh.",source:"__artifact:sceau__"},
+        {id:"artefact-epee",name:"Gardien de la Lumière",desc:"Pour avoir éveillé cinq fois Lumière d’Éternité, l’épée d’Euzh.",source:"__artifact:epee__"},
+        {id:"codex",name:"Lecteur du Codex",desc:"Tu as feuilleté chaque rubrique du codex de la Confrérie Euzhienne. Le site prend la teinte d’un vieux parchemin doré.",source:"__codex__"},
         {id:"chercheur",name:"Chercheur de l'invisible",desc:"L’accueil souligne ton nom et encadre le message de bienvenue.",source:"folie"},
         {id:"scribe",name:"Scribe des origines",desc:"Le nom et le symbole prennent une signature dorée.",source:"lipoip"},
         {id:"leuzh",name:"Héritier de la Confrérie",desc:"Le sous-titre se déploie avec une ligne qui rappelle la marque de la Confrérie.",source:"leuzh"},
@@ -1361,7 +1582,7 @@
       function renderTitleCollection() {
         const list=document.getElementById("title-collection-list"), progress=document.getElementById("title-collection-progress"), badge=document.getElementById("equipped-title-badge");
         const hasAllSecrets=secretIds.every(id=>discoveredSecrets.has(id));
-        const isUnlocked=t=>t.source==="__all__" ? hasAllSecrets : (t.source==="__tabs__" ? allTabsVisited() : discoveredSecrets.has(t.source));
+        const isUnlocked=t=>t.source==="__all__" ? hasAllSecrets : (t.source==="__tabs__" ? allTabsVisited() : (t.source==="__codex__" ? allCodexVisited() : (t.source.startsWith("__artifact:") ? artifactCount(t.source.slice(11,-2))>=5 : discoveredSecrets.has(t.source))));
         const equipped=titleDefinitions.find(t=>t.id===equippedTitle && isUnlocked(t));
         document.body.dataset.equippedTitle=equipped ? equipped.id : "";
         if(badge){badge.hidden=!equipped;badge.textContent=equipped ? `✧ ${equipped.name} ✧` : "";}
@@ -1475,6 +1696,7 @@
           openModal(link.dataset.modal);
           if (link.dataset.modal === "cie-archive") markSecret("cie-archive");
           trackMainVisit(link.dataset.modal);
+          if (link.dataset.modal === "codex") { const activeTab = document.querySelector(".codex-tab.is-active"); if (activeTab) trackCodexTab(activeTab.dataset.codexTab); }
         });
       });
 
@@ -2074,6 +2296,129 @@
       }
       renderZodiac();
       if (zodiacFinalDone) markSecret("zodiaque");
+
+      // ===== Codex de la Confrérie Euzhienne : onglets internes et liens vers les poèmes =====
+      const codexTabs = [...document.querySelectorAll("[data-codex-tab]")];
+      const codexPanels = [...document.querySelectorAll("[data-codex-panel]")];
+      function showCodexTab(name) {
+        codexTabs.forEach(tab => { const on = tab.dataset.codexTab === name; tab.classList.toggle("is-active", on); tab.setAttribute("aria-selected", String(on)); });
+        codexPanels.forEach(panel => { panel.hidden = panel.dataset.codexPanel !== name; });
+        const content = document.querySelector("#modal-codex .modal-content"); if (content) content.scrollTop = 0;
+        trackCodexTab(name);
+      }
+      codexTabs.forEach(tab => tab.addEventListener("click", () => showCodexTab(tab.dataset.codexTab)));
+
+      // ===== Artefacts : activation, titres et effets visuels =====
+      const artifactTitleNames = {egide:"Rempart de l’Égide", marteau:"Maître du Marteau", chapelet:"Gardien des Perles", plume:"Chroniqueur à l’encre vive", sceau:"Voix du Sceau", epee:"Gardien de la Lumière"};
+      const fxLayer = document.getElementById("artifact-fx");
+      const prefersReducedFx = () => !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      let artifactBusy = false, fxShake = null;
+      function fxClear() {
+        if (fxShake) { try { fxShake.cancel(); } catch (_) {} fxShake = null; }
+        if (fxLayer) fxLayer.textContent = "";
+      }
+      const fxPlume = [
+        ["M20 28 C50 8 70 48 100 26 S150 8 180 28 S240 44 280 24", 0, "❦", 24, 18],
+        ["M20 62 C45 44 75 80 110 58 S170 42 205 62 S250 78 280 58", .45, "✎", 150, 46],
+        ["M20 96 C55 78 80 114 120 92 S175 76 215 96 S255 110 280 92", .9, "§", 52, 80],
+        ["M20 130 C60 112 85 148 125 126 S180 110 220 130 S255 142 280 126", 1.35, "¶", 232, 114]
+      ];
+      const fxBuilders = {
+        egide(layer) {
+          const shield = '<svg class="fx-shield" style="--d:DELAY" viewBox="0 0 32 38" aria-hidden="true"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+          layer.innerHTML = '<div class="fx-glow" style="--c:rgba(120,207,255,.5);--t:1.2s"></div>' + [0, .25, .5].map(d => shield.replace("DELAY", d + "s")).join("");
+          return 2100;
+        },
+        marteau(layer) {
+          let html = '<div class="fx-glow" style="--c:rgba(255,154,46,.55);--t:.45s"></div><div class="fx-impact"></div>';
+          for (let i = 0; i < 16; i++) {
+            const angle = Math.round(i * (360 / 16) + (Math.random() * 14 - 7));
+            html += `<span class="fx-spark" style="--a:${angle}deg;--l:${14 + Math.round(Math.random() * 14)}px;--r:${Math.round(70 + Math.random() * 90)}px"></span>`;
+          }
+          layer.innerHTML = html;
+          const win = document.querySelector(".modal.is-open .modal-window");
+          if (win && win.animate) {
+            fxShake = win.animate([
+              { transform: "translate(0,0)" }, { transform: "translate(-7px,5px)" }, { transform: "translate(6px,-5px)" },
+              { transform: "translate(-4px,3px)" }, { transform: "translate(3px,-2px)" }, { transform: "translate(0,0)" }
+            ], { duration: 420, easing: "ease-out" });
+          }
+          return 1000;
+        },
+        chapelet(layer) {
+          let html = '<div class="fx-glow" style="--c:rgba(245,215,122,.32);--t:3.4s"></div><div class="fx-rosary">';
+          for (let i = 0; i < 12; i++) html += `<span class="fx-bead" style="--a:${i * 30}deg;--d:${(i * .17).toFixed(2)}s"></span>`;
+          layer.innerHTML = html + "</div>";
+          return 3300;
+        },
+        plume(layer) {
+          let html = '<svg class="fx-ink" viewBox="0 0 300 160" aria-hidden="true">';
+          fxPlume.forEach(([d, delay, glyph, x, y]) => {
+            html += `<path d="${d}" pathLength="1" style="--d:${delay}s"/><text x="${x}" y="${y}" style="--d:${(delay + .6).toFixed(2)}s">${glyph}</text>`;
+          });
+          layer.innerHTML = html + "</svg>";
+          return 3400;
+        },
+        sceau(layer) {
+          layer.innerHTML = '<div class="fx-glow" style="--c:rgba(245,215,122,.6);--t:.9s;--gd:2.2s"></div>' +
+            '<svg class="fx-seal" viewBox="0 0 200 200" aria-hidden="true"><g><circle class="fx-fill" cx="100" cy="100" r="84"/>' +
+            '<circle class="fx-ring" cx="100" cy="100" r="84" pathLength="1" style="--d:0s"/>' +
+            '<path d="M100 28 L162 64 L162 136 L100 172 L38 136 L38 64 Z" pathLength="1" style="--d:.7s"/>' +
+            '<path d="M100 48 L152 138 L48 138 Z" pathLength="1" style="--d:1.35s"/></g></svg>';
+          return 3300;
+        },
+        epee(layer) {
+          layer.innerHTML = '<div class="fx-glow" style="--c:rgba(255,243,196,.5);--t:1.6s"></div><div class="fx-blade-wrap"><div class="fx-blade"></div></div><div class="fx-flare"></div>';
+          return 2200;
+        }
+      };
+      function showTitleToast(name) {
+        document.querySelectorAll(".site-toast--title").forEach(node => node.remove());
+        const toast = document.createElement("div");
+        toast.className = "site-toast site-toast--title"; toast.setAttribute("role", "status");
+        toast.textContent = `✧ Titre obtenu : « ${name} » ✧`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 6000);
+      }
+      // Les cinq touchers restent secrets : aucun compteur ni bouton visible. Un petit éclat confirme chaque toucher valide.
+      function tapArtifact(card) {
+        if (artifactBusy) return;
+        const id = card.dataset.artifact;
+        if (!fxBuilders[id]) return;
+        artifactBusy = true;
+        const glyph = card.querySelector("[data-artifact-tap]");
+        let count = artifactCount(id), justUnlocked = false, playFull = false;
+        if (count < 5) {
+          count += 1;
+          try { localStorage.setItem(artifactKey(id), String(count)); } catch (_) {}
+          justUnlocked = count === 5 && artifactCount(id) === 5;
+          playFull = justUnlocked;
+        } else playFull = true;
+        if (glyph) glyph.classList.add("is-tap");
+        let duration = 420;
+        if (playFull) {
+          try {
+            fxClear();
+            if (fxLayer && !prefersReducedFx()) duration = fxBuilders[id](fxLayer);
+            else { card.classList.add("is-activated"); duration = 900; }
+          } catch (_) { duration = 300; }
+        }
+        setTimeout(() => {
+          fxClear(); card.classList.remove("is-activated");
+          if (glyph) glyph.classList.remove("is-tap");
+          artifactBusy = false;
+          if (justUnlocked) { renderTitleCollection(); showTitleToast(artifactTitleNames[id]); }
+        }, duration + 80);
+      }
+      document.querySelectorAll("[data-artifact]").forEach(card => {
+        const glyph = card.querySelector("[data-artifact-tap]");
+        if (glyph) glyph.addEventListener("click", () => tapArtifact(card));
+      });
+      document.querySelectorAll("[data-codex-poem]").forEach(button => button.addEventListener("click", () => {
+        showCodexTab("poemes");
+        const poem = document.getElementById("codex-poem-" + button.dataset.codexPoem);
+        if (poem) { poem.open = true; poem.scrollIntoView({ block: "start" }); }
+      }));
     })();
   </script>
 </body>
