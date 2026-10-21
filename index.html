@@ -758,14 +758,14 @@
     .codex-code strong { display:block; color:var(--light); }
     .codex-code span { color:var(--muted); }
     /* ===== Titres à symbole : un mouvement propre à chacun ===== */
-    @keyframes symTwinkle { 0%,100% { transform:scale(1.4); opacity:1; } 22% { transform:scale(1.15); opacity:.3; } 30% { transform:scale(1.5); opacity:1; text-shadow:0 0 36px #d8f8ff; } 58% { opacity:.55; } 64% { opacity:1; } }
+    @keyframes symTwinkle { 0%,100% { transform:scale(1.4); opacity:1; } 22% { transform:scale(1.15); opacity:.3; } 30% { transform:scale(1.5); opacity:1; } 58% { opacity:.55; } 64% { opacity:1; } }
     @keyframes symSway { 0%,100% { transform:rotate(0deg) scale(1.3); } 50% { transform:rotate(24deg) scale(1.3); } }
     @keyframes symFloat { 0%,100% { transform:translateY(0) rotate(-8deg) scale(1.35); } 50% { transform:translateY(-10px) rotate(-20deg) scale(1.35); } }
-    @keyframes symInk { 0%,100% { transform:rotate(-12deg) scale(1.18); text-shadow:0 0 4px rgba(245,215,122,.25); } 50% { transform:rotate(-12deg) scale(1.32); text-shadow:0 0 24px rgba(245,215,122,.95); } }
+    @keyframes symInk { 0%,100% { transform:rotate(-12deg) scale(1.18); opacity:.72; } 50% { transform:rotate(-12deg) scale(1.32); opacity:1; } }
     body[data-equipped-title="etoiles"] .symbol { animation:symTwinkle 3.6s ease-in-out infinite; }
     body[data-equipped-title="aria"] .symbol { transform-origin:50% 90%; animation:symSway 5s ease-in-out infinite; }
     body[data-equipped-title="plumes"] .symbol { animation:symFloat 6.5s ease-in-out infinite; }
-    body[data-equipped-title="scribe"] .symbol { animation:symInk 2.8s ease-in-out infinite; }
+    body[data-equipped-title="scribe"] .symbol { text-shadow:0 0 14px rgba(245,215,122,.85); animation:symInk 2.8s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce) { body[data-equipped-title="etoiles"] .symbol, body[data-equipped-title="aria"] .symbol, body[data-equipped-title="plumes"] .symbol, body[data-equipped-title="scribe"] .symbol { animation:none; } }
 
     /* ===== Artefacts de la Confrérie : fiches et effets ===== */
@@ -830,46 +830,104 @@
     body[data-equipped-title="artefact-plume"] .tfx--plume, body[data-equipped-title="artefact-sceau"] .tfx--sceau, body[data-equipped-title="artefact-epee"] .tfx--epee { display:block; }
     /* Égide : halo oscillant très léger. Seule l'opacité varie, sans filtre,
        déplacement ni changement d'échelle pour préserver le défilement mobile. */
-    .tfx-shield { position:absolute; left:50%; top:46%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:.10; transform:scale(1.25); filter:none; animation:tfxShieldHalo 4.8s ease-in-out infinite; will-change:opacity; }
-    @keyframes tfxShieldHalo { 0%,100% { opacity:.07; } 50% { opacity:.20; } }
-    @media (prefers-reduced-motion: reduce) { .tfx-shield { animation:none; opacity:.12; will-change:auto; } }
+    .tfx-shield { position:absolute; left:50%; top:46%; width:44vmin; height:52vmin; margin:-26vmin 0 0 -22vmin; color:#78cfff; opacity:.05; transform:scale(1.25); filter:none; animation:tfxShieldHalo 4.8s ease-in-out infinite; will-change:opacity; }
+    @keyframes tfxShieldHalo { 0%,100% { opacity:.03; } 50% { opacity:.07; } }
+    @media (prefers-reduced-motion: reduce) { .tfx-shield { animation:none; opacity:.07; will-change:auto; } }
     /* Marteau : braises de forge qui montent */
-    .tfx-forge { position:absolute; left:0; right:0; bottom:0; height:38vh; background:radial-gradient(ellipse at 50% 100%,rgba(255,130,30,.4),transparent 70%); animation:tfxForge 4.4s ease-in-out infinite; }
+    .tfx-forge { position:absolute; left:0; right:0; bottom:0; height:38vh; background:radial-gradient(ellipse at 50% 100%,rgba(255,130,30,.22),transparent 70%); animation:tfxForge 4.4s ease-in-out infinite; }
     @keyframes tfxForge { 0%,100% { opacity:.45; } 50% { opacity:1; } }
-    .tfx-ember { position:absolute; left:var(--x); bottom:-12px; width:var(--s); height:var(--s); border-radius:50%; background:#ffb347; box-shadow:0 0 8px 2px #ff9a2e; opacity:0; animation:tfxEmber var(--t) linear var(--d) infinite; }
-    @keyframes tfxEmber { 0% { opacity:0; transform:translate(0,0); } 10% { opacity:.9; } 50% { opacity:.6; transform:translate(14px,-55vh); } 100% { opacity:0; transform:translate(-10px,-108vh); } }
+    .tfx-ember { position:absolute; left:var(--x); bottom:-12px; width:var(--s); height:var(--s); border-radius:50%; background:#ffb347; box-shadow:0 0 6px 1px #ff9a2e; opacity:0; animation:tfxEmber var(--t) linear var(--d) infinite; }
+    @keyframes tfxEmber { 0% { opacity:0; transform:translate(0,0); } 10% { opacity:.6; } 50% { opacity:.4; transform:translate(14px,-55vh); } 100% { opacity:0; transform:translate(-10px,-108vh); } }
     /* Chapelet : cercle de perles qui s'allument en rythme */
     .tfx-rosary { position:absolute; left:50%; top:46%; width:0; height:0; --R:min(34vmin,170px); animation:tfxTurn 70s linear infinite; }
     @keyframes tfxTurn { to { transform:rotate(360deg); } }
-    .tfx-bead { position:absolute; left:-9px; top:-9px; width:18px; height:18px; border-radius:50%; background:#e6c36a; opacity:.15; transform:rotate(var(--a)) translateY(calc(-1 * var(--R))); animation:tfxBead 4.8s ease-in-out var(--d) infinite; }
-    @keyframes tfxBead { 0%,100% { opacity:.15; box-shadow:none; } 25% { opacity:.85; box-shadow:0 0 22px 7px rgba(245,215,122,.7); } 55% { opacity:.2; } }
+    .tfx-bead { position:absolute; left:-9px; top:-9px; width:18px; height:18px; border-radius:50%; background:#e6c36a; opacity:.1; transform:rotate(var(--a)) translateY(calc(-1 * var(--R))); animation:tfxBead 4.8s ease-in-out var(--d) infinite; }
+    @keyframes tfxBead { 0%,100% { opacity:.1; box-shadow:none; } 25% { opacity:.36; box-shadow:0 0 9px 2px rgba(245,215,122,.32); } 55% { opacity:.14; } }
     /* Plume : lignes d'encre qui s'écrivent puis s'effacent */
-    .tfx--plume svg { position:absolute; left:0; top:6vh; width:100%; height:62vh; color:#d6baff; filter:drop-shadow(0 0 5px #a66cff); }
+    .tfx--plume svg { position:absolute; left:0; top:6vh; width:100%; height:62vh; color:#d6baff; }
     .tfx--plume path { fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; opacity:0; animation:tfxWrite 10s ease-in-out var(--d) infinite; }
-    @keyframes tfxWrite { 0% { stroke-dashoffset:1; opacity:0; } 6% { opacity:.55; } 30% { stroke-dashoffset:0; opacity:.55; } 70% { stroke-dashoffset:0; opacity:.55; } 88% { stroke-dashoffset:0; opacity:0; } 100% { stroke-dashoffset:1; opacity:0; } }
+    @keyframes tfxWrite { 0% { stroke-dashoffset:1; opacity:0; } 6% { opacity:.2; } 30% { stroke-dashoffset:0; opacity:.2; } 70% { stroke-dashoffset:0; opacity:.2; } 88% { stroke-dashoffset:0; opacity:0; } 100% { stroke-dashoffset:1; opacity:0; } }
     .tfx--plume text { fill:#f2e8ff; font-size:10px; opacity:0; animation:tfxGlyph 10s ease-in-out var(--d) infinite; }
-    @keyframes tfxGlyph { 0%,8% { opacity:0; } 20% { opacity:.7; } 70% { opacity:.7; } 88%,100% { opacity:0; } }
+    @keyframes tfxGlyph { 0%,8% { opacity:0; } 20% { opacity:.28; } 70% { opacity:.28; } 88%,100% { opacity:0; } }
     /* Sceau : figure tracée, éclat doré, effacement */
-    .tfx--sceau svg { position:absolute; left:50%; top:46%; width:84vmin; height:84vmin; margin:-42vmin 0 0 -42vmin; color:#f5d77b; filter:drop-shadow(0 0 7px #f5d77b); }
+    .tfx--sceau svg { position:absolute; left:50%; top:46%; width:84vmin; height:84vmin; margin:-42vmin 0 0 -42vmin; color:#f5d77b; }
     .tfx-line { fill:none; stroke:currentColor; stroke-width:1.6; stroke-dasharray:1; stroke-dashoffset:1; opacity:0; animation:tfxSeal 11s ease-in-out var(--d) infinite; }
-    @keyframes tfxSeal { 0% { stroke-dashoffset:1; opacity:0; } 5% { opacity:.5; } 26% { stroke-dashoffset:0; opacity:.5; } 78% { stroke-dashoffset:0; opacity:.5; } 92% { stroke-dashoffset:0; opacity:0; } 100% { stroke-dashoffset:1; opacity:0; } }
+    @keyframes tfxSeal { 0% { stroke-dashoffset:1; opacity:0; } 5% { opacity:.2; } 26% { stroke-dashoffset:0; opacity:.2; } 78% { stroke-dashoffset:0; opacity:.2; } 92% { stroke-dashoffset:0; opacity:0; } 100% { stroke-dashoffset:1; opacity:0; } }
     .tfx-fill { fill:#f5d77b; stroke:none; opacity:0; animation:tfxSealFill 11s ease-out 3.6s infinite; }
-    @keyframes tfxSealFill { 0% { opacity:0; } 6% { opacity:.3; } 22% { opacity:.08; } 34%,100% { opacity:0; } }
+    @keyframes tfxSealFill { 0% { opacity:0; } 6% { opacity:.12; } 22% { opacity:.04; } 34%,100% { opacity:0; } }
     /* Épée : lame de lumière qui ondule et éclat en croix */
-    .tfx-halo { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%,rgba(255,243,196,.28),transparent 60%); animation:tfxHalo 8s ease-in-out infinite; }
+    .tfx-halo { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%,rgba(255,243,196,.08),transparent 60%); animation:tfxHalo 8s ease-in-out infinite; }
     @keyframes tfxHalo { 0%,100% { opacity:.4; } 50% { opacity:1; } }
-    .tfx-blade { position:absolute; left:50%; top:14vh; width:12vmin; height:78vh; margin-left:-6vmin; background:linear-gradient(to top,rgba(255,243,196,.04),rgba(255,247,214,.5) 55%,rgba(255,255,255,.7)); clip-path:polygon(50% 0,64% 9%,58% 100%,42% 100%,36% 9%); opacity:.25; animation:tfxBlade 8s ease-in-out infinite; }
-    @keyframes tfxBlade { 0%,100% { transform:translateY(3vh); opacity:.18; } 50% { transform:translateY(-3vh); opacity:.42; } }
+    .tfx-blade { position:absolute; left:50%; top:14vh; width:12vmin; height:78vh; margin-left:-6vmin; background:linear-gradient(to top,rgba(255,243,196,.04),rgba(255,247,214,.5) 55%,rgba(255,255,255,.7)); clip-path:polygon(50% 0,64% 9%,58% 100%,42% 100%,36% 9%); opacity:.12; animation:tfxBlade 8s ease-in-out infinite; }
+    @keyframes tfxBlade { 0%,100% { transform:translateY(3vh); opacity:.06; } 50% { transform:translateY(-3vh); opacity:.14; } }
     .tfx-flare { position:absolute; left:50%; top:14vh; width:0; height:0; }
     .tfx-flare::before, .tfx-flare::after { content:""; position:absolute; opacity:0; background:linear-gradient(90deg,transparent,#fff,transparent); animation:tfxFlare 8s ease-out infinite; }
     .tfx-flare::before { left:-18vmin; top:-1px; width:36vmin; height:2px; }
     .tfx-flare::after { left:-1px; top:-18vmin; width:2px; height:36vmin; background:linear-gradient(0deg,transparent,#fff,transparent); }
-    @keyframes tfxFlare { 0%,40% { opacity:0; transform:scale(.1); } 50% { opacity:.9; transform:scale(1); } 65%,100% { opacity:0; transform:scale(1.2); } }
+    @keyframes tfxFlare { 0%,40% { opacity:0; transform:scale(.1); } 50% { opacity:.5; transform:scale(1); } 65%,100% { opacity:0; transform:scale(1.2); } }
     @media (prefers-reduced-motion: reduce) {
       #title-fx .tfx, #title-fx .tfx * , .tfx--plume path, .tfx--plume text, .tfx-line, .tfx-fill { animation:none !important; }
       .tfx--plume path, .tfx-line { stroke-dashoffset:0; opacity:.3; }
-      .tfx--plume text { opacity:.4; } .tfx-shield { opacity:.16; transform:scale(1.3); } .tfx-ember { opacity:.35; bottom:calc(var(--x) * 0.8); } .tfx-bead { opacity:.4; } .tfx-fill { opacity:.06; }
+      .tfx--plume text { opacity:.4; } .tfx-shield { opacity:.08; transform:scale(1.3); } .tfx-ember { opacity:.35; bottom:calc(var(--x) * 0.8); } .tfx-bead { opacity:.4; } .tfx-fill { opacity:.06; }
     }
+    /* ===== Refonte des effets de titres : système (pause + réglage) ===== */
+    .fx-setting { margin:6px 0 10px; }
+    #fx-toggle { padding:7px 14px; color:var(--light); font:inherit; font-size:.88rem; cursor:pointer; background:rgba(105,57,155,.3); border:1px solid var(--border); border-radius:999px; }
+    body.fx-off #title-fx, body.fx-off #shooting-stars { display:none; }
+    body.modal-open #title-fx *, body.modal-open #title-fx *::before, body.modal-open #title-fx *::after, body.modal-open #shooting-stars .shooting-star,
+    body.fx-paused #title-fx *, body.fx-paused #title-fx *::before, body.fx-paused #title-fx *::after, body.fx-paused #shooting-stars .shooting-star { animation-play-state:paused !important; }
+    body[data-equipped-title="chercheur"] .tfx--chercheur, body[data-equipped-title="scribe"] .tfx--scribe, body[data-equipped-title="leuzh"] .tfx--leuzh,
+    body[data-equipped-title="etoiles"] .tfx--etoiles, body[data-equipped-title="plumes"] .tfx--plumes, body[data-equipped-title="aria"] .tfx--aria,
+    body[data-equipped-title="couronne"] .tfx--couronne { display:block; }
+    /* Chercheur de l'invisible : poussières de lumière qui dérivent */
+    .tfx-mote { position:absolute; left:var(--x); top:var(--y); width:var(--s); height:var(--s); border-radius:50%; background:#efe6ff; box-shadow:0 0 7px 2px rgba(200,180,255,.5); opacity:.35; animation:tfxMote var(--t) ease-in-out var(--d) infinite both; }
+    @keyframes tfxMote { 0%,100% { opacity:0; transform:translate(0,0); } 30% { opacity:.7; } 60% { opacity:.45; transform:translate(18px,-28px); } }
+    /* Scribe des origines : lignes de parchemin qui montent */
+    .tfx-ruled { position:absolute; left:0; right:0; top:-60px; bottom:-60px; background:repeating-linear-gradient(to bottom,transparent 0 59px,rgba(245,215,122,.10) 59px 60px); animation:tfxRule 14s linear infinite; }
+    @keyframes tfxRule { to { transform:translateY(-60px); } }
+    .tfx-margin { position:absolute; top:0; bottom:0; left:9%; width:1px; background:rgba(214,120,120,.10); }
+    /* Héritier de la Confrérie : lueurs de bougies qui vacillent */
+    .tfx-candle { position:absolute; bottom:-8vmin; width:70vmin; height:70vmin; border-radius:50%; background:radial-gradient(circle,rgba(255,170,70,.24),transparent 62%); opacity:.4; animation:tfxCandle var(--t) ease-in-out infinite; }
+    .tfx-candle--l { left:-22vmin; --t:3.3s; }
+    .tfx-candle--r { right:-22vmin; --t:4.1s; animation-delay:-1.4s; }
+    @keyframes tfxCandle { 0%,100% { opacity:.35; transform:scale(1); } 18% { opacity:.55; transform:scale(1.04); } 33% { opacity:.3; } 52% { opacity:.6; transform:scale(1.07); } 74% { opacity:.38; transform:scale(1.02); } }
+    /* Cartographe des étoiles : constellation qui scintille et se relie */
+    .tfx-const { position:absolute; left:50%; top:24%; width:56vmin; height:56vmin; margin:-28vmin 0 0 -28vmin; }
+    .tfx-star { position:absolute; left:var(--x); top:var(--y); width:5px; height:5px; margin:-2px 0 0 -2px; border-radius:50%; background:#cfeeff; box-shadow:0 0 6px 1px rgba(150,220,255,.45); opacity:.3; animation:tfxTwinkle var(--t) ease-in-out var(--d) infinite both; }
+    @keyframes tfxTwinkle { 0%,100% { opacity:.12; transform:scale(.8); } 50% { opacity:.55; transform:scale(1.15); } }
+    .tfx-link { position:absolute; left:var(--x); top:var(--y); height:1px; width:calc(var(--len) * .56vmin); transform-origin:0 50%; transform:rotate(var(--a)); background:linear-gradient(90deg,rgba(170,230,255,.5),rgba(170,230,255,.25)); opacity:.25; animation:tfxLink 13s ease-in-out var(--d) infinite both; }
+    @keyframes tfxLink { 0% { opacity:0; } 8% { opacity:.4; } 70% { opacity:.4; } 88%,100% { opacity:0; } }
+    /* Messager des cinq plumes : plumes qui tombent en se balançant */
+    .tfx-feather { position:absolute; left:var(--x); top:calc(var(--y) * 1vh); width:10px; height:30px; opacity:.3; animation:tfxFall var(--t) linear var(--d) infinite both; }
+    .tfx-feather i { display:block; width:100%; height:100%; border-radius:50% 50% 50% 50% / 70% 70% 30% 30%; background:linear-gradient(100deg,rgba(214,186,255,.1),rgba(214,186,255,.5) 50%,rgba(214,186,255,.1)); transform-origin:50% 0; animation:tfxSway calc(var(--t) / 4) ease-in-out var(--d) infinite alternate both; }
+    @keyframes tfxFall { 0% { transform:translateY(calc(-1 * var(--y) * 1vh - 6vh)); opacity:0; } 8% { opacity:.45; } 90% { opacity:.4; } 100% { transform:translateY(calc(112vh - var(--y) * 1vh)); opacity:0; } }
+    @keyframes tfxSway { from { transform:rotate(-28deg) translateX(-8px); } to { transform:rotate(28deg) translateX(8px); } }
+    /* Ami d'Aria : paires d'yeux qui s'ouvrent et clignent dans l'ombre */
+    .tfx-eyes { position:absolute; left:var(--x); top:var(--y); width:52px; height:12px; }
+    .tfx-eyes i { position:absolute; top:0; width:18px; height:11px; border-radius:50%; background:#d6ffa8; box-shadow:0 0 8px 2px rgba(190,255,140,.45); opacity:.35; animation:tfxEye var(--t) ease-in-out var(--d) infinite both; }
+    .tfx-eyes i:first-child { left:0; } .tfx-eyes i:last-child { right:0; }
+    @keyframes tfxEye { 0%,8% { opacity:0; transform:scaleY(1); } 14% { opacity:.55; } 40% { transform:scaleY(1); } 42% { transform:scaleY(.08); } 46% { transform:scaleY(1); } 62% { opacity:.55; } 70%,100% { opacity:0; } }
+    /* Tisseur d'indices : fils croisés qui glissent */
+    .tfx-weave { position:absolute; inset:-60px; opacity:.10; }
+    .tfx-weave--a { background:repeating-linear-gradient(60deg,rgba(214,190,255,.9) 0 1px,transparent 1px 48px); animation:tfxWeaveA 16s linear infinite; }
+    .tfx-weave--b { background:repeating-linear-gradient(-60deg,rgba(245,215,122,.9) 0 1px,transparent 1px 48px); animation:tfxWeaveB 20s linear infinite; }
+    @keyframes tfxWeaveA { to { transform:translate(41.6px,-24px); } }
+    @keyframes tfxWeaveB { to { transform:translate(-41.6px,-24px); } }
+    /* ===== Séries FNAF et Pokémon ===== */
+    .series-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:14px 0; }
+    .series-chip { min-width:38px; padding:7px 10px; text-align:center; font-size:.95rem; color:var(--muted); border:1px dashed var(--border); border-radius:12px; opacity:.5; }
+    .series-chip.is-lit { opacity:1; border-style:solid; color:#ffe9b0; background:rgba(255,226,160,.07); }
+    body[data-equipped-title="fnaf"] .tfx--fnaf, body[data-equipped-title="pokemon"] .tfx--pokemon { display:block; }
+    /* Gardien de nuit : balayage de caméra de surveillance et voyant REC */
+    .tfx-scan { position:absolute; left:0; right:0; top:0; height:18vh; background:linear-gradient(to bottom,transparent,rgba(190,210,255,.07),transparent); transform:translateY(-20vh); animation:tfxScan 9s linear infinite; }
+    @keyframes tfxScan { to { transform:translateY(105vh); } }
+    .tfx-rec { position:absolute; right:12px; top:14px; display:flex; align-items:center; gap:6px; font:600 11px/1 monospace; letter-spacing:.14em; color:rgba(255,130,130,.5); }
+    .tfx-rec i { width:8px; height:8px; border-radius:50%; background:#e33; opacity:.6; animation:tfxRec 1.8s steps(1) infinite; }
+    @keyframes tfxRec { 0%,55% { opacity:.7; } 56%,100% { opacity:.08; } }
+    /* Maître du Pokédex : Poké Balls qui montent en tournant */
+    .tfx-ball { position:absolute; left:var(--x); bottom:-40px; width:26px; height:26px; border-radius:50%; background:radial-gradient(circle,#fff 0 18%,#222 19% 26%,transparent 27%),linear-gradient(#e0443e 0 46%,#222 46% 54%,#f4f4f4 54%); opacity:.2; animation:tfxBall var(--t) linear var(--d) infinite both; }
+    @keyframes tfxBall { 0% { transform:translateY(0) rotate(0); opacity:0; } 8% { opacity:.22; } 90% { opacity:.18; } 100% { transform:translateY(-112vh) rotate(360deg); opacity:0; } }
+    @media (prefers-reduced-motion: reduce) { .tfx-scan { transform:translateY(40vh); } .tfx-ball { bottom:var(--y); } }
   </style>
 </head>
 
@@ -910,7 +968,7 @@
     </div>
   </main>
 
-  <div id="title-fx" aria-hidden="true"><div class="tfx tfx--egide"><svg class="tfx-shield" style="--d:0s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:2.4s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:4.8s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div class="tfx tfx--marteau"><div class="tfx-forge"></div><i class="tfx-ember" style="--x:13%;--d:0.0s;--t:5.0s;--s:3px"></i><i class="tfx-ember" style="--x:50%;--d:0.8s;--t:5.9s;--s:5px"></i><i class="tfx-ember" style="--x:87%;--d:1.7s;--t:6.8s;--s:7px"></i><i class="tfx-ember" style="--x:28%;--d:2.5s;--t:7.7s;--s:3px"></i><i class="tfx-ember" style="--x:65%;--d:3.3s;--t:8.6s;--s:5px"></i><i class="tfx-ember" style="--x:6%;--d:4.1s;--t:5.5s;--s:7px"></i><i class="tfx-ember" style="--x:43%;--d:5.0s;--t:6.4s;--s:3px"></i><i class="tfx-ember" style="--x:80%;--d:5.8s;--t:7.3s;--s:5px"></i><i class="tfx-ember" style="--x:21%;--d:0.6s;--t:8.2s;--s:7px"></i><i class="tfx-ember" style="--x:58%;--d:1.5s;--t:5.1s;--s:3px"></i><i class="tfx-ember" style="--x:95%;--d:2.3s;--t:6.0s;--s:5px"></i><i class="tfx-ember" style="--x:36%;--d:3.1s;--t:6.9s;--s:7px"></i><i class="tfx-ember" style="--x:73%;--d:4.0s;--t:7.8s;--s:3px"></i><i class="tfx-ember" style="--x:14%;--d:4.8s;--t:8.7s;--s:5px"></i><i class="tfx-ember" style="--x:51%;--d:5.6s;--t:5.6s;--s:7px"></i><i class="tfx-ember" style="--x:88%;--d:0.4s;--t:6.5s;--s:3px"></i></div><div class="tfx tfx--chapelet"><div class="tfx-rosary"><span class="tfx-bead" style="--a:0deg;--d:0.0s"></span><span class="tfx-bead" style="--a:30deg;--d:0.4s"></span><span class="tfx-bead" style="--a:60deg;--d:0.8s"></span><span class="tfx-bead" style="--a:90deg;--d:1.2s"></span><span class="tfx-bead" style="--a:120deg;--d:1.6s"></span><span class="tfx-bead" style="--a:150deg;--d:2.0s"></span><span class="tfx-bead" style="--a:180deg;--d:2.4s"></span><span class="tfx-bead" style="--a:210deg;--d:2.8s"></span><span class="tfx-bead" style="--a:240deg;--d:3.2s"></span><span class="tfx-bead" style="--a:270deg;--d:3.6s"></span><span class="tfx-bead" style="--a:300deg;--d:4.0s"></span><span class="tfx-bead" style="--a:330deg;--d:4.4s"></span></div></div><div class="tfx tfx--plume"><svg viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice"><path d="M10 30 C40 10 70 50 100 28 S150 8 180 30 S240 46 290 24" pathLength="1" style="--d:0s"/><path d="M10 70 C45 52 75 88 110 66 S170 50 205 70 S255 86 290 66" pathLength="1" style="--d:1.6s"/><path d="M10 110 C50 92 80 128 120 106 S175 90 215 110 S260 124 290 106" pathLength="1" style="--d:3.2s"/><text x="24" y="22" style="--d:1.2s">❦</text><text x="230" y="60" style="--d:2.8s">✎</text><text x="40" y="100" style="--d:4.4s">§</text></svg></div><div class="tfx tfx--sceau"><svg viewBox="0 0 200 200"><circle class="tfx-fill" cx="100" cy="100" r="84"/><circle class="tfx-line" cx="100" cy="100" r="84" pathLength="1" style="--d:0s"/><path class="tfx-line" d="M100 28 L162 64 L162 136 L100 172 L38 136 L38 64 Z" pathLength="1" style="--d:1.2s"/><path class="tfx-line" d="M100 48 L152 138 L48 138 Z" pathLength="1" style="--d:2.4s"/></svg></div><div class="tfx tfx--epee"><div class="tfx-halo"></div><div class="tfx-blade"></div><div class="tfx-flare"></div></div></div>
+  <div id="title-fx" aria-hidden="true"><div class="tfx tfx--egide"><svg class="tfx-shield" style="--d:0s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:2.4s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:4.8s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div class="tfx tfx--marteau"><div class="tfx-forge"></div><i class="tfx-ember" style="--x:13%;--d:0.0s;--t:5.0s;--s:3px"></i><i class="tfx-ember" style="--x:50%;--d:0.8s;--t:5.9s;--s:5px"></i><i class="tfx-ember" style="--x:87%;--d:1.7s;--t:6.8s;--s:7px"></i><i class="tfx-ember" style="--x:28%;--d:2.5s;--t:7.7s;--s:3px"></i><i class="tfx-ember" style="--x:65%;--d:3.3s;--t:8.6s;--s:5px"></i><i class="tfx-ember" style="--x:6%;--d:4.1s;--t:5.5s;--s:7px"></i><i class="tfx-ember" style="--x:43%;--d:5.0s;--t:6.4s;--s:3px"></i><i class="tfx-ember" style="--x:80%;--d:5.8s;--t:7.3s;--s:5px"></i><i class="tfx-ember" style="--x:21%;--d:0.6s;--t:8.2s;--s:7px"></i><i class="tfx-ember" style="--x:58%;--d:1.5s;--t:5.1s;--s:3px"></i><i class="tfx-ember" style="--x:95%;--d:2.3s;--t:6.0s;--s:5px"></i><i class="tfx-ember" style="--x:36%;--d:3.1s;--t:6.9s;--s:7px"></i><i class="tfx-ember" style="--x:73%;--d:4.0s;--t:7.8s;--s:3px"></i><i class="tfx-ember" style="--x:14%;--d:4.8s;--t:8.7s;--s:5px"></i><i class="tfx-ember" style="--x:51%;--d:5.6s;--t:5.6s;--s:7px"></i><i class="tfx-ember" style="--x:88%;--d:0.4s;--t:6.5s;--s:3px"></i></div><div class="tfx tfx--chapelet"><div class="tfx-rosary"><span class="tfx-bead" style="--a:0deg;--d:0.0s"></span><span class="tfx-bead" style="--a:30deg;--d:0.4s"></span><span class="tfx-bead" style="--a:60deg;--d:0.8s"></span><span class="tfx-bead" style="--a:90deg;--d:1.2s"></span><span class="tfx-bead" style="--a:120deg;--d:1.6s"></span><span class="tfx-bead" style="--a:150deg;--d:2.0s"></span><span class="tfx-bead" style="--a:180deg;--d:2.4s"></span><span class="tfx-bead" style="--a:210deg;--d:2.8s"></span><span class="tfx-bead" style="--a:240deg;--d:3.2s"></span><span class="tfx-bead" style="--a:270deg;--d:3.6s"></span><span class="tfx-bead" style="--a:300deg;--d:4.0s"></span><span class="tfx-bead" style="--a:330deg;--d:4.4s"></span></div></div><div class="tfx tfx--plume"><svg viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice"><path d="M10 30 C40 10 70 50 100 28 S150 8 180 30 S240 46 290 24" pathLength="1" style="--d:0s"/><path d="M10 70 C45 52 75 88 110 66 S170 50 205 70 S255 86 290 66" pathLength="1" style="--d:1.6s"/><path d="M10 110 C50 92 80 128 120 106 S175 90 215 110 S260 124 290 106" pathLength="1" style="--d:3.2s"/><text x="24" y="22" style="--d:1.2s">❦</text><text x="230" y="60" style="--d:2.8s">✎</text><text x="40" y="100" style="--d:4.4s">§</text></svg></div><div class="tfx tfx--sceau"><svg viewBox="0 0 200 200"><circle class="tfx-fill" cx="100" cy="100" r="84"/><circle class="tfx-line" cx="100" cy="100" r="84" pathLength="1" style="--d:0s"/><path class="tfx-line" d="M100 28 L162 64 L162 136 L100 172 L38 136 L38 64 Z" pathLength="1" style="--d:1.2s"/><path class="tfx-line" d="M100 48 L152 138 L48 138 Z" pathLength="1" style="--d:2.4s"/></svg></div><div class="tfx tfx--epee"><div class="tfx-halo"></div><div class="tfx-blade"></div><div class="tfx-flare"></div></div><div class="tfx tfx--chercheur"><i class="tfx-mote" style="--x:10%;--y:17%;--s:4px;--t:7.0s;--d:0.0s"></i><i class="tfx-mote" style="--x:39%;--y:64%;--s:5px;--t:8.3s;--d:7.3s"></i><i class="tfx-mote" style="--x:68%;--y:23%;--s:5px;--t:9.6s;--d:5.6s"></i><i class="tfx-mote" style="--x:5%;--y:70%;--s:4px;--t:10.9s;--d:3.9s"></i><i class="tfx-mote" style="--x:34%;--y:29%;--s:5px;--t:7.2s;--d:2.2s"></i><i class="tfx-mote" style="--x:63%;--y:76%;--s:5px;--t:8.5s;--d:0.5s"></i><i class="tfx-mote" style="--x:92%;--y:35%;--s:4px;--t:9.8s;--d:7.8s"></i><i class="tfx-mote" style="--x:29%;--y:82%;--s:5px;--t:11.1s;--d:6.1s"></i><i class="tfx-mote" style="--x:58%;--y:41%;--s:5px;--t:7.4s;--d:4.4s"></i><i class="tfx-mote" style="--x:87%;--y:88%;--s:4px;--t:8.7s;--d:2.7s"></i><i class="tfx-mote" style="--x:24%;--y:47%;--s:5px;--t:10.0s;--d:1.0s"></i><i class="tfx-mote" style="--x:53%;--y:6%;--s:5px;--t:11.3s;--d:8.3s"></i></div><div class="tfx tfx--scribe"><div class="tfx-ruled"></div><div class="tfx-margin"></div></div><div class="tfx tfx--leuzh"><div class="tfx-candle tfx-candle--l"></div><div class="tfx-candle tfx-candle--r"></div></div><div class="tfx tfx--etoiles"><div class="tfx-const"><i class="tfx-link" style="--x:10%;--y:70%;--len:35.0;--a:-59.0deg;--d:0.0s"></i><i class="tfx-link" style="--x:28%;--y:40%;--len:22.7;--a:41.4deg;--d:1.3s"></i><i class="tfx-link" style="--x:45%;--y:55%;--len:33.5;--a:-63.4deg;--d:2.6s"></i><i class="tfx-link" style="--x:60%;--y:25%;--len:26.9;--a:48.0deg;--d:3.9s"></i><i class="tfx-link" style="--x:78%;--y:45%;--len:31.6;--a:-71.6deg;--d:5.2s"></i><i class="tfx-link" style="--x:88%;--y:15%;--len:65.5;--a:105.9deg;--d:6.5s"></i><i class="tfx-star" style="--x:10%;--y:70%;--t:3.00s;--d:0.0s"></i><i class="tfx-star" style="--x:28%;--y:40%;--t:3.45s;--d:-0.6s"></i><i class="tfx-star" style="--x:45%;--y:55%;--t:3.90s;--d:-1.2s"></i><i class="tfx-star" style="--x:60%;--y:25%;--t:4.35s;--d:-1.8s"></i><i class="tfx-star" style="--x:78%;--y:45%;--t:4.80s;--d:-2.4s"></i><i class="tfx-star" style="--x:88%;--y:15%;--t:5.25s;--d:-3.0s"></i><i class="tfx-star" style="--x:70%;--y:78%;--t:5.70s;--d:-3.6s"></i></div></div><div class="tfx tfx--plumes"><span class="tfx-feather" style="--x:12%;--y:8;--t:17s;--d:-3s"><i></i></span><span class="tfx-feather" style="--x:32%;--y:30;--t:21s;--d:-11s"><i></i></span><span class="tfx-feather" style="--x:55%;--y:12;--t:19s;--d:-6s"><i></i></span><span class="tfx-feather" style="--x:74%;--y:40;--t:23s;--d:-15s"><i></i></span><span class="tfx-feather" style="--x:90%;--y:20;--t:18s;--d:-9s"><i></i></span></div><div class="tfx tfx--aria"><span class="tfx-eyes" style="--x:5%;--y:44%;--t:11s;--d:-2s"><i></i><i></i></span><span class="tfx-eyes" style="--x:76%;--y:22%;--t:13s;--d:-7s"><i></i><i></i></span><span class="tfx-eyes" style="--x:58%;--y:91%;--t:12s;--d:-4s"><i></i><i></i></span></div><div class="tfx tfx--couronne"><div class="tfx-weave tfx-weave--a"></div><div class="tfx-weave tfx-weave--b"></div></div><div class="tfx tfx--fnaf"><div class="tfx-scan"></div><div class="tfx-rec"><i></i>REC</div></div><div class="tfx tfx--pokemon"><span class="tfx-ball" style="--x:10%;--y:70%;--t:19s;--d:-4s"></span><span class="tfx-ball" style="--x:30%;--y:45%;--t:23s;--d:-13s"></span><span class="tfx-ball" style="--x:52%;--y:60%;--t:21s;--d:-8s"></span><span class="tfx-ball" style="--x:72%;--y:35%;--t:25s;--d:-18s"></span><span class="tfx-ball" style="--x:90%;--y:55%;--t:20s;--d:-11s"></span></div></div>
 
   <div id="artifact-fx" aria-hidden="true"></div>
 
@@ -1139,6 +1197,8 @@
           <button class="cie-secret-trigger album-quest-button" type="button" id="open-album-quest" data-modal="piste-chat" hidden>...</button>
           <button class="cie-secret-trigger" type="button" id="open-babel-quest" data-modal="babel" hidden>📖 Le Livre de Babel</button>
           <button class="cie-secret-trigger" type="button" id="open-zodiac-quest" data-modal="zodiaque" hidden>🌌 Le Ciel du zodiaque</button>
+          <button class="cie-secret-trigger" type="button" id="open-fnaf-quest" data-modal="fnaf" hidden>🔦 Les nuits de la pizzeria</button>
+          <button class="cie-secret-trigger" type="button" id="open-pokemon-quest" data-modal="pokemon" hidden>🔴 Le Pokédex national</button>
           <button class="cie-secret-trigger reset-progress-button" type="button" id="reset-all-progress">↺ Réinitialiser secrets et titres</button>
         </div>
         <button class="lipoip-clue" type="button" data-clue="7" aria-label="Découvrir le septième symbole">🐾</button>
@@ -1259,7 +1319,7 @@
     <section class="modal-window">
       <div class="modal-header"><h2 class="modal-title" id="title-titres">✧ Galerie des titres</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
       <div class="modal-content"><p>Chaque quête laisse une marque. Débloque les titres, puis équipe celui qui représente le mieux ton parcours. Le titre équipé modifie certains détails de l'accueil.</p>
-        <p id="title-collection-progress" aria-live="polite">0 titre débloqué.</p><div id="title-collection-list" class="title-list"></div>
+        <div class="fx-setting"><button id="fx-toggle" type="button" aria-pressed="true">Effets de fond : activés</button></div><p id="title-collection-progress" aria-live="polite">0 titre débloqué.</p><div id="title-collection-list" class="title-list"></div>
         <p><small>Les titres débloqués et le titre équipé sont conservés sur cet appareil.</small></p></div>
     </section>
   </div>
@@ -1273,7 +1333,7 @@
         <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
         <p id="secret-percent"><strong>0 %</strong> exploré</p>
         <ul id="secret-list" style="padding-left:22px">
-          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li><li data-secret-item="babel">Le Livre de Babel</li><li data-secret-item="zodiaque">Le Ciel du zodiaque</li>
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li><li data-secret-item="couronne">La Couronne oubliée</li><li data-secret-item="konami">Le code venu d’ailleurs</li><li data-secret-item="boulder-dash">Le code des grottes</li><li data-secret-item="babel">Le Livre de Babel</li><li data-secret-item="zodiaque">Le Ciel du zodiaque</li><li data-secret-item="fnaf">Les nuits de la pizzeria</li><li data-secret-item="pokemon">Le Pokédex national</li>
         </ul>
         <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
         <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
@@ -1353,6 +1413,32 @@
     <button class="cie-secret-trigger" type="button" data-modal="cie" aria-label="Découvrir un secret étoilé">✦ Un éclat étrange</button>
     <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled hidden>✦</button>
   </footer>
+
+  <!-- Série : 🔦 Les nuits de la pizzeria -->
+  <div class="modal" id="modal-fnaf" role="dialog" aria-modal="true" aria-labelledby="title-fnaf" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-fnaf">🔦 Les nuits de la pizzeria</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Une lumière faible s’allume : une pizzeria, la nuit. Sept énigmes pour tenir jusqu’au matin.</p>
+        <div id="fnaf-chips" class="series-chips" aria-live="polite"></div>
+        <div id="fnaf-stage"></div>
+        <div id="fnaf-final" class="cie-reveal" hidden></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Série : 🔴 Le Pokédex national -->
+  <div class="modal" id="modal-pokemon" role="dialog" aria-modal="true" aria-labelledby="title-pokemon" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-pokemon">🔴 Le Pokédex national</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Une Poké Ball s’ouvre sur un Pokédex presque vide. Huit entrées attendent leur nom.</p>
+        <div id="pokemon-chips" class="series-chips" aria-live="polite"></div>
+        <div id="pokemon-stage"></div>
+        <div id="pokemon-final" class="cie-reveal" hidden></div>
+      </div>
+    </section>
+  </div>
 
   <!-- Quête : Le Ciel du zodiaque (déclenchée par un appui long sur la phrase du pied de page) -->
   <div class="modal" id="modal-zodiaque" role="dialog" aria-modal="true" aria-labelledby="title-zodiaque" aria-hidden="true">
@@ -1443,7 +1529,7 @@
       }
 
       // Registre des secrets : chaque découverte est conservée sur cet appareil.
-      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash", "babel", "zodiaque"];
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash", "babel", "zodiaque", "fnaf", "pokemon"];
       const secretStorageKey = "lipoip-secret-registry-v1";
       let discoveredSecrets = new Set();
       try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
@@ -1573,7 +1659,8 @@
           "lipoip-babel-found-v1", "lipoip-babel-stage-v1",
           "lipoip-visited-tabs-v1", "lipoip-visited-codex-v1", "lipoip-cie-progress-v1",
           "lipoip-artifact-egide-v1", "lipoip-artifact-marteau-v1", "lipoip-artifact-chapelet-v1", "lipoip-artifact-plume-v1", "lipoip-artifact-sceau-v1", "lipoip-artifact-epee-v1",
-          "lipoip-zodiac-found-v1", "lipoip-zodiac-stage-v1", "lipoip-zodiac-final-v1"
+          "lipoip-zodiac-found-v1", "lipoip-zodiac-stage-v1", "lipoip-zodiac-final-v1",
+          "lipoip-fnaf-found-v1", "lipoip-fnaf-stage-v1", "lipoip-pokemon-found-v1", "lipoip-pokemon-stage-v1"
         ];
         keysToReset.forEach(key => { try { localStorage.removeItem(key); } catch (_) {} });
         // Retire aussi les anciennes clés de la chasse CIE/album pour repartir proprement.
@@ -1600,7 +1687,9 @@
         {id:"boulder-dash",name:"Survivant des grottes",desc:"Les rochers tombent, mais tu avances : un code des grottes réchauffe tout le site de braise.",source:"boulder-dash"},
         {id:"babel",name:"Lecteur de Babel",desc:"Pour avoir reconstitué le livre de la Bibliothèque de Babel. Le titre de la page s’estompe comme une encre pas encore sèche.",source:"babel"},
         {id:"zodiaque",name:"Voyageur du zodiaque",desc:"Pour avoir reconnu les douze constellations du zodiaque. Une pluie d’étoiles filantes traverse le fond du site.",source:"zodiaque"},
-        {id:"complet",name:"L'Âme de l'Univers",desc:"Titre ultime : découvre tous les secrets actuellement définis. Si de nouveaux secrets sont ajoutés, il se verrouille de nouveau jusqu’à leur découverte. Une fois équipé, il transforme l’ambiance entière du site.",source:"__all__"}
+        {id:"fnaf",name:"Gardien de nuit",desc:"Pour avoir tenu les sept nuits de la pizzeria. Un voyant REC clignote et une caméra balaie le fond du site.",source:"fnaf"},
+        {id:"pokemon",name:"Maître du Pokédex",desc:"Pour avoir reconnu huit Pokémon grâce à leur numéro de Pokédex. Des Poké Balls montent doucement dans le fond du site.",source:"pokemon"},
+        {id:"complet",name:"L\'Âme de l\'Univers",desc:"Titre ultime : découvre tous les secrets actuellement définis. Si de nouveaux secrets sont ajoutés, il se verrouille de nouveau jusqu’à leur découverte. Une fois équipé, il transforme l’ambiance entière du site.",source:"__all__"}
       ];
       let equippedTitle = "";
       try { equippedTitle = localStorage.getItem("lipoip-equipped-title-v1") || ""; } catch (_) {}
@@ -1608,7 +1697,7 @@
         { id:"cie", name:"Quête de la CIE", description:"Constellation et chasse aux plumes", match:t=>["etoiles","plumes"].includes(t.id) },
         { id:"reliques", name:"Reliques de la Confrérie", description:"Les artefacts éveillés cinq fois", match:t=>t.source.startsWith("__artifact:") },
         { id:"origines", name:"Origines et codex", description:"Les traces de Lipoip, Leuzh et de la Confrérie", match:t=>["codex","chercheur","scribe","leuzh"].includes(t.id) },
-        { id:"exploration", name:"Exploration et énigmes", description:"Les secrets découverts au fil du site", match:t=>["aria","couronne","konami","boulder-dash","babel","zodiaque"].includes(t.id) },
+        { id:"exploration", name:"Exploration et énigmes", description:"Les secrets découverts au fil du site", match:t=>["aria","couronne","konami","boulder-dash","babel","zodiaque","fnaf","pokemon"].includes(t.id) },
         { id:"parcours", name:"Parcours et accomplissements", description:"Les étapes majeures de ta visite", match:t=>["eclaireur","complet"].includes(t.id) }
       ];
       const titleGroupOpen = Object.create(null);
@@ -2478,6 +2567,111 @@
       document.querySelectorAll("[data-artifact]").forEach(card => {
         const glyph = card.querySelector("[data-artifact-tap]");
         if (glyph) glyph.addEventListener("click", () => tapArtifact(card));
+      });
+      // ===== Effets de fond des titres : réglage et pause =====
+      const fxOffKey = "lipoip-fx-off-v1";
+      const fxToggle = document.getElementById("fx-toggle");
+      function applyFxSetting() {
+        let off = false;
+        try { off = localStorage.getItem(fxOffKey) === "1"; } catch (_) {}
+        document.body.classList.toggle("fx-off", off);
+        if (fxToggle) { fxToggle.textContent = off ? "Effets de fond : désactivés" : "Effets de fond : activés"; fxToggle.setAttribute("aria-pressed", String(!off)); }
+      }
+      if (fxToggle) fxToggle.addEventListener("click", () => {
+        const off = !document.body.classList.contains("fx-off");
+        try { if (off) localStorage.setItem(fxOffKey, "1"); else localStorage.removeItem(fxOffKey); } catch (_) {}
+        applyFxSetting();
+      });
+      applyFxSetting();
+      document.addEventListener("visibilitychange", () => document.body.classList.toggle("fx-paused", document.hidden));
+
+      // ===== Séries d'énigmes FNAF et Pokémon : déclenchées depuis « Mes passions » =====
+      const quizSeries = {
+        fnaf: {
+          foundKey: "lipoip-fnaf-found-v1", stageKey: "lipoip-fnaf-stage-v1", secret: "fnaf", button: "open-fnaf-quest", tag: "jeux video",
+          label: n => `Nuit ${n} sur 7`, chipOn: "☾", chipOff: "◌", placeholder: "Ta réponse",
+          final: "Six heures du matin. Tu as tenu les sept nuits, et la pizzeria s’est tue.",
+          stages: [
+            ["« En quelle année a eu lieu la Morsure évoquée au téléphone dans le premier jeu ? »", ["1987"]],
+            ["« Dans le troisième jeu, quelle attraction d’horreur remplace la pizzeria, trente ans après sa fermeture ? »", ["Fazbear's Fright", "Fazbears Fright", "Fazbear Fright"]],
+            ["« Quel nom figure sur le chèque du gardien de nuit du premier jeu ? »", ["Mike Schmidt", "Mike", "Schmidt"]],
+            ["« Quel animatronique en lambeaux, enfermé dans un costume à ressorts, est la vedette du troisième jeu ? »", ["Springtrap", "Spring Trap"]],
+            ["« Quel personnage laisse des messages enregistrés pendant les premières nuits du premier jeu ? »", ["Phone Guy", "Phoneguy", "Gars du téléphone", "Type au téléphone"]],
+            ["« Quel jeu de la série se déroule dans le Mega Pizzaplex ? »", ["Security Breach", "FNAF Security Breach", "Five Nights at Freddy's Security Breach"]],
+            ["« En quelle année est sorti le tout premier jeu ? »", ["2014"]]
+          ]
+        },
+        pokemon: {
+          foundKey: "lipoip-pokemon-found-v1", stageKey: "lipoip-pokemon-stage-v1", secret: "pokemon", button: "open-pokemon-quest", tag: "pokemon",
+          label: n => `Entrée ${n} sur 8`, chipOn: "◓", chipOff: "◌", placeholder: "Nom du Pokémon",
+          final: "Les huit entrées sont complétées. Chaque numéro avait son nom, et tu les connaissais.",
+          stages: [
+            ["« Quel est le nom du numéro 25 du Pokédex national ? »", ["Pikachu"]],
+            ["« Quel est le nom du numéro 1 du Pokédex national ? »", ["Bulbizarre", "Bulbasaur"]],
+            ["« Quel est le nom du numéro 133 du Pokédex national ? »", ["Évoli", "Eevee"]],
+            ["« Quel est le nom du numéro 52 du Pokédex national ? »", ["Miaouss", "Meowth"]],
+            ["« Quel est le nom du numéro 143 du Pokédex national ? »", ["Ronflex", "Snorlax"]],
+            ["« Quel est le nom du numéro 6 du Pokédex national ? »", ["Dracaufeu", "Charizard"]],
+            ["« Quel est le nom du numéro 94 du Pokédex national ? »", ["Ectoplasma", "Gengar"]],
+            ["« Quel est le nom du numéro 354 du Pokédex national ? »", ["Branette", "Banette"]]
+          ]
+        }
+      };
+      Object.keys(quizSeries).forEach(id => {
+        const cfg = quizSeries[id];
+        const chips = document.getElementById(`${id}-chips`), stageBox = document.getElementById(`${id}-stage`), finalBox = document.getElementById(`${id}-final`);
+        const reopen = document.getElementById(cfg.button);
+        if (reopen && babelRead(cfg.foundKey) === "1") reopen.hidden = false;
+        const accepted = cfg.stages.map(([, answers]) => answers.map(babelNormalize));
+        let stage = parseInt(babelRead(cfg.stageKey) || "0", 10);
+        if (!(stage >= 0 && stage <= cfg.stages.length)) stage = 0;
+        function render() {
+          if (!chips || !stageBox) return;
+          chips.innerHTML = "";
+          cfg.stages.forEach((_, index) => {
+            const chip = document.createElement("span");
+            chip.className = "series-chip" + (index < stage ? " is-lit" : "");
+            chip.textContent = index < stage ? cfg.chipOn : cfg.chipOff;
+            chips.appendChild(chip);
+          });
+          stageBox.innerHTML = "";
+          if (finalBox) { finalBox.hidden = stage < cfg.stages.length; finalBox.textContent = stage < cfg.stages.length ? "" : cfg.final; }
+          if (stage >= cfg.stages.length) return;
+          const block = document.createElement("div"); block.className = "cie-riddle";
+          const title = document.createElement("p"); const strong = document.createElement("strong"); strong.textContent = cfg.label(stage + 1); title.appendChild(strong);
+          const riddle = document.createElement("p"); riddle.textContent = cfg.stages[stage][0];
+          const form = document.createElement("form"); const row = document.createElement("div"); row.className = "cie-answer-row";
+          const input = document.createElement("input");
+          input.type = "text"; input.autocomplete = "off"; input.autocapitalize = "off"; input.placeholder = cfg.placeholder; input.required = true;
+          input.setAttribute("aria-label", `Réponse : ${cfg.label(stage + 1)}`);
+          const submit = document.createElement("button"); submit.type = "submit"; submit.textContent = "Valider";
+          row.append(input, submit); form.appendChild(row);
+          const feedback = document.createElement("p"); feedback.className = "cie-feedback"; feedback.setAttribute("aria-live", "polite");
+          form.addEventListener("submit", event => {
+            event.preventDefault();
+            if (accepted[stage].includes(babelNormalize(input.value))) {
+              stage += 1; babelWrite(cfg.stageKey, String(stage));
+              if (stage === cfg.stages.length) markSecret(cfg.secret);
+              render();
+            } else feedback.textContent = "Ce n’est pas la bonne réponse. Réessaie.";
+          });
+          block.append(title, riddle, form, feedback);
+          stageBox.appendChild(block);
+        }
+        render();
+        if (stage === cfg.stages.length) markSecret(cfg.secret);
+      });
+      // Déclencheurs : un clic sur l'étiquette « Jeux vidéo » ou « Pokémon » de « Mes passions ».
+      document.querySelectorAll("#modal-passions .tag").forEach(tag => {
+        const key = babelNormalize(tag.textContent);
+        const id = Object.keys(quizSeries).find(name => quizSeries[name].tag === key);
+        if (!id) return;
+        tag.addEventListener("click", () => {
+          const cfg = quizSeries[id];
+          babelWrite(cfg.foundKey, "1");
+          const reopen = document.getElementById(cfg.button); if (reopen) reopen.hidden = false;
+          openModal(id);
+        });
       });
       document.querySelectorAll("[data-codex-poem]").forEach(button => button.addEventListener("click", () => {
         showCodexTab("poemes");
