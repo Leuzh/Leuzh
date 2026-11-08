@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Infinite Night</title>
+  <desc id="desc">Une lune violette éclaire une porte gothique et une silhouette au milieu d’une arène obscure.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.9" y2="1">
+      <stop stop-color="#302048"/>
+      <stop offset=".55" stop-color="#15101f"/>
+      <stop offset="1" stop-color="#08070d"/>
+    </linearGradient>
+    <radialGradient id="moon" cx=".38" cy=".32" r=".7">
+      <stop stop-color="#f1e4ff"/>
+      <stop offset=".58" stop-color="#c8a4ff"/>
+      <stop offset="1" stop-color="#8e64bf"/>
+    </radialGradient>
+    <linearGradient id="gate" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#a477bc" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#342447" stop-opacity=".22"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#241a32" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#07060a" stop-opacity=".95"/>
+    </linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="450" fill="url(#sky)"/>
+  <circle cx="605" cy="104" r="78" fill="#a875df" opacity=".18" filter="url(#glow)"/>
+  <circle cx="605" cy="104" r="47" fill="url(#moon)"/>
+  <path d="M625 58c-30 14-40 49-24 76 8 13 20 21 35 24-25 16-59 9-75-16-17-26-9-61 17-78 14-9 32-11 47-6Z" fill="#2b1c3a" opacity=".52"/>
+  <g fill="#e7d7ff" opacity=".7">
+    <circle cx="96" cy="65" r="2"/><circle cx="188" cy="112" r="1.5"/><circle cx="305" cy="54" r="1.7"/>
+    <circle cx="438" cy="93" r="1.4"/><circle cx="713" cy="54" r="1.6"/><circle cx="748" cy="158" r="1.2"/>
+    <path d="m151 169 3-8 3 8 8 3-8 3-3 8-3-8-8-3Z"/><path d="m699 218 2-6 2 6 6 2-6 2-2 6-2-6-6-2Z"/>
+  </g>
+  <path d="M0 288 76 225l55 45 80-91 80 95 74-49 73 72 87-78 68 63 83-108 124 107v169H0Z" fill="#17121f"/>
+  <path d="M0 333 110 272l74 44 97-62 106 85 92-57 79 45 99-74 143 87v110H0Z" fill="#100d16"/>
+  <g fill="#09080d" stroke="url(#gate)" stroke-width="3">
+    <path d="M259 450V228l34-28 31-81 32 81 34 28v222Z"/>
+    <path d="M365 450V194l32-29 29-91 30 91 32 29v256Z"/>
+    <path d="M470 450V227l34-28 31-80 32 80 34 28v223Z"/>
+  </g>
+  <g fill="#b991dc" opacity=".55">
+    <path d="M313 276h16v31h-16zM417 238h17v34h-17zM523 276h17v31h-17z"/>
+    <path d="M315 276a8 8 0 0 1 16 0M418 238a8.5 8.5 0 0 1 17 0M524 276a8.5 8.5 0 0 1 17 0"/>
+  </g>
+  <path d="M0 355h800v95H0z" fill="url(#floor)"/>
+  <g fill="none" stroke="#a77bd1" stroke-opacity=".24">
+    <path d="M400 310 290 450M400 310 510 450M400 310 120 450M400 310 680 450"/>
+    <path d="M248 378h304M190 414h420M136 440h528"/>
+    <circle cx="400" cy="355" r="27"/><circle cx="400" cy="355" r="14"/>
+  </g>
+  <path d="M388 355c-15 20-21 41-20 67l16 28h32l16-28c1-26-5-47-20-67Z" fill="#21172b" stroke="#d3b3ed" stroke-opacity=".65" stroke-width="2"/>
+  <circle cx="400" cy="345" r="12" fill="#3f2c51" stroke="#e1c9f4" stroke-width="2"/>
+  <path d="M400 327v-22m-9 18 9-12 9 12" fill="none" stroke="#f1d5a0" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M0 0h800v450H0z" fill="none" stroke="#d4b5f3" stroke-opacity=".18" stroke-width="2"/>
+</svg>
