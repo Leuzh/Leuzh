@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10091d">
+  <meta name="description" content="Découvre l'univers de Lipoip, ses passions, ses collections et ses différentes facettes.">
+  <title>Lipoip | Un univers à découvrir</title>
+  <style>
+    :root {
+      --bg: #10091d;
+      --panel: #1b102b;
+      --purple: #b18aff;
+      --light: #e8dcff;
+      --muted: #b9abc9;
+      --border: #49315f;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--light);
+      background:
+        radial-gradient(ellipse at 50% 0%, #38204f 0%, transparent 48%),
+        var(--bg);
+      font-family: system-ui, sans-serif;
+      line-height: 1.7;
+    }
+
+    body.modal-open { overflow: hidden; }
+    a { color: inherit; }
+
+    header {
+      text-align: center;
+      padding: 78px 20px 38px;
+    }
+
+    .symbol {
+      color: var(--purple);
+      font-size: 36px;
+      text-shadow: 0 0 25px #a66cff;
+    }
+
+    h1 {
+      margin: 8px 0;
+      font-size: clamp(42px, 12vw, 70px);
+      letter-spacing: 5px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: var(--purple);
+      letter-spacing: 2px;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      max-width: 530px;
+      margin: 22px auto 0;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 16px 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 9px 15px;
+      font-size: 13px;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    nav a:hover, nav a:focus-visible {
+      background: #38204f;
+      border-color: var(--purple);
+      outline: none;
+    }
+
+    nav a:active { transform: scale(.98); }
+
+    main {
+      max-width: 760px;
+      padding: 0 20px;
+      margin: 0 auto;
+    }
+
+    .welcome-panel {
+      text-align: center;
+      margin: 0 auto 28px;
+      padding: 22px;
+      max-width: 650px;
+      background: linear-gradient(145deg, #211431, #170e24);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .welcome-panel p { margin: 0; color: var(--muted); }
+    .welcome-panel strong { color: var(--purple); }
+
+    /* Effet de surbrillance du message d'accueil */
+    #welcome-highlight {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 8px;
+      transition: background .3s ease, box-shadow .3s ease, text-shadow .3s ease;
+    }
+
+    #welcome-highlight.is-highlighted {
+      background: rgba(177, 138, 255, .18);
+      box-shadow: 0 0 22px rgba(177, 138, 255, .55);
+      text-shadow: 0 0 12px rgba(200, 165, 255, .9);
+    }
+
+    /* Les sections s'ouvrent dans des fenêtres modales. */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(8px, 2.5vw, 28px);
+      background: rgba(5, 2, 10, .82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal.is-open {
+      display: flex;
+      animation: overlay-in .18s ease-out;
+    }
+    .modal-window {
+      position: relative;
+      width: min(100%, 1050px);
+      height: min(92dvh, 900px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(91, 49, 124, .23), transparent 55%),
+        linear-gradient(145deg, #211431, #130b20 75%);
+      border: 1px solid #76558e;
+      border-radius: 22px;
+      box-shadow: 0 24px 90px rgba(0, 0, 0, .55), 0 0 35px rgba(177, 138, 255, .12);
+      animation: window-in .22s ease-out;
+    }
+
+    .modal-header {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 17px 22px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(16, 9, 29, .78);
+    }
+
+    .modal-title {
+      margin: 0;
+      color: var(--purple);
+      font-size: clamp(19px, 3vw, 25px);
+      line-height: 1.35;
+    }
+
+    .close-modal {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--light);
+      background: #29183a;
+      font-size: 25px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    .close-modal:hover, .close-modal:focus-visible {
+      background: #38204f;
+      border-color: var(--purple);
+      outline: none;
+    }
+
+    .close-modal:active { transform: rotate(90deg); }
+
+    .modal-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: clamp(20px, 4vw, 38px);
+      scrollbar-color: #76558e #170e24;
+      scrollbar-width: thin;
+    }
+
+    .modal-content h2 {
+      color: var(--purple);
+      font-size: 22px;
+      margin: 0 0 14px;
+    }
+
+    .modal-content h3 { margin: 24px 0 4px; }
+    .modal-content p { color: var(--muted); }
+    .modal-content p:first-child { margin-top: 0; }
+
+    .value {
+      padding: 8px 0;
+      border-bottom: 1px solid #352440;
+    }
+
+    .value:last-child { border-bottom: 0; }
+    .value strong { color: var(--light); }
+    .value p { margin: 4px 0 8px; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      border: 1px solid var(--border);
+      background: #29183a;
+      border-radius: 12px;
+      padding: 7px 12px;
+      font-size: 13px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .photo {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      background: #170e24;
+      overflow: hidden;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: contain;
+      border-radius: 9px;
+    }
+
+    /* Réseaux sociaux : cartes verticales avec logos en couleurs. */
+    .social {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .social a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      min-width: 0;
+      padding: 15px 17px;
+      text-align: left;
+      text-decoration: none;
+      color: var(--light);
+      background: linear-gradient(135deg, #29183a, #1b102b);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    .social a:hover, .social a:focus-visible {
+      background: #38204f;
+      border-color: var(--purple);
+      outline: none;
+    }
+
+    .social a:active { transform: scale(.99); }
+
+    .social-logo {
+      display: block;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      flex: 0 0 46px;
+    }
+
+    .social-label {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    .social-name {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .social-handle {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 20px 48px;
+      color: #9b87ad;
+      font-size: 13px;
+    }
+
+    footer strong {
+      display: block;
+      color: var(--purple);
+      margin-top: 10px;
+    }
+    @keyframes overlay-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes window-in {
+      from { opacity: 0; transform: translateY(12px) scale(.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 55px 18px 28px; }
+      nav { gap: 8px; padding-bottom: 24px; }
+      nav a { padding: 8px 12px; }
+      main { padding: 0 14px; }
+      .welcome-panel { padding: 18px; }
+      .modal { padding: 7px; }
+      .modal-window {
+        width: 100%;
+        height: 96dvh;
+        border-radius: 16px;
+      }
+      .modal-header { padding: 13px 15px; }
+      .modal-content { padding: 20px 17px; }
+      .gallery { grid-template-columns: 1fr; }
+      .photo img { max-height: 65dvh; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+
+    /* Secrets de la CIE */
+    .cie-secret-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      color: #d9c1ff;
+      background: rgba(125, 82, 180, .12);
+      border: 1px solid rgba(190, 150, 255, .28);
+      border-radius: 999px;
+      font: inherit;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .cie-secret-trigger:hover, .cie-secret-trigger:focus-visible {
+      background: rgba(125, 82, 180, .25);
+      border-color: rgba(210, 180, 255, .7);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .cie-riddle {
+      margin: 18px 0;
+      padding: 16px;
+      border: 1px solid rgba(190, 150, 255, .28);
+      border-radius: 14px;
+      background: rgba(20, 12, 35, .62);
+    }
+    .cie-answer-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .cie-answer-row input {
+      flex: 1 1 180px;
+      min-width: 0;
+      padding: 11px 12px;
+      color: var(--text, #f5efff);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(190,150,255,.35);
+      border-radius: 10px;
+      font: inherit;
+    }
+    .cie-answer-row button {
+      padding: 10px 14px;
+      color: #fff;
+      background: #68429a;
+      border: 1px solid #a98ad2;
+      border-radius: 10px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .cie-feedback { min-height: 1.5em; margin-top: 10px; color: #d9c1ff; }
+    .cie-reveal {
+      margin-top: 16px;
+      padding: 16px;
+      border-left: 3px solid #bda0ee;
+      background: rgba(125,82,180,.12);
+      border-radius: 0 12px 12px 0;
+    }
+    .cie-reveal[hidden] { display: none; }
+
+    .cie-star[hidden], .cie-feather[hidden], .cie-final-button[hidden] { display: none !important; }
+    .cie-star {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin: 8px 5px 0 0;
+      padding: 0;
+      border: 1px solid rgba(190,150,255,.24);
+      border-radius: 50%;
+      background: rgba(255,255,255,.035);
+      font-size: 21px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: .72;
+      transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease;
+    }
+    .cie-star:hover, .cie-star:focus-visible { opacity: 1; transform: scale(1.13); outline: 1px solid #d9c1ff; }
+    .cie-star:disabled { cursor: default; opacity: .34; }
+    .cie-star.found { opacity: 1; box-shadow: 0 0 14px currentColor; border-color: currentColor; }
+    .cie-star[data-star="blue"] { color: #78cfff; }
+    .cie-star[data-star="violet"] { color: #c5a0ff; }
+    .cie-star[data-star="gold"] { color: #ffd66e; }
+    .cie-star[data-star="red"] { color: #ff8a9c; }
+    .cie-star[data-star="white"] { color: #f5efff; }
+    .cie-star-hint { font-size: .88rem; color: var(--muted); margin-top: 6px; }
+
+    /* Plumes : cibles discrètes avec une zone tactile plus large que le symbole. */
+    .cie-feather {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: rgba(235,222,255,.72);
+      font-size: 10px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: .78;
+      transition: color .2s, opacity .2s, text-shadow .2s;
+      vertical-align: middle;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cie-feather:hover, .cie-feather:focus-visible {
+      color: #d9c1ff;
+      opacity: 1;
+      text-shadow: 0 0 7px rgba(177,138,255,.75);
+      outline: 1px solid rgba(217,193,255,.45);
+    }
+    .cie-feather.found { color: rgba(197,160,255,.48); opacity: .58; }
+    .cie-feather--tag { width: 16px; height: 16px; font-size: 7px; margin-left: 1px; }
+    .photo { position: relative; }
+    .cie-feather--photo { position: absolute; top: 8px; right: 8px; bottom: auto; z-index: 10; width: 28px; height: 28px; font-size: 12px; opacity: .96; color: #f2eaff; background: rgba(16,9,29,.88); border: 1px solid rgba(217,193,255,.72); box-shadow: 0 1px 7px rgba(0,0,0,.65); }
+    .social { position: relative; }
+    .cie-feather--social { position: absolute; right: 4px; top: calc(50% + 17px); z-index: 2; }
+    .cie-feather--footer { margin-left: 2px; }
+
+    .cie-feather-hint { color: var(--muted); font-size: .9rem; }
+    .cie-feather-hunt { margin-top: 16px; padding: 16px; border: 1px solid rgba(197,160,255,.3); border-radius: 14px; background: rgba(20,12,35,.62); }
+    .cie-feather-hunt[hidden] { display: none; }
+    .cie-final-button { display: inline-block; margin-top: 12px; padding: 11px 16px; color: #fff; background: linear-gradient(135deg,#68429a,#3d2857); border: 1px solid #c5a0ff; border-radius: 999px; font: inherit; font-weight: 650; text-decoration: none; cursor: pointer; box-shadow: 0 0 18px rgba(177,138,255,.16); }
+    .cie-final-button:hover, .cie-final-button:focus-visible { background: #7650a8; outline: 2px solid #d9c1ff; outline-offset: 3px; }
+    .cie-constellation[hidden], .cie-final-riddle[hidden] { display: none; }
+    .cie-constellation { margin-top: 18px; padding: 16px; border: 1px solid rgba(190,150,255,.28); border-radius: 14px; background: rgba(20,12,35,.62); }
+    .cie-constellation-stars { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0; }
+    .cie-final-riddle { margin-top: 16px; padding: 16px; border-left: 3px solid #ffd66e; background: rgba(125,82,180,.12); border-radius: 0 12px 12px 0; }
+
+
+    /* Secret de personnalité : discret, mais utilisable au toucher */
+    .secret-word {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+    .secret-word:focus-visible, .secret-star:focus-visible {
+      outline: 2px solid var(--purple);
+      outline-offset: 3px;
+    }
+    .secret-star {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 28px;
+      margin-left: 3px;
+      padding: 0 4px;
+      vertical-align: baseline;
+      color: #b18aff;
+      background: transparent;
+      border: 0;
+      border-radius: 50%;
+      opacity: .42;
+      cursor: pointer;
+      transition: opacity .2s ease, text-shadow .2s ease, transform .2s ease;
+    }
+    .secret-star:hover, .secret-star:focus-visible {
+      opacity: 1;
+      text-shadow: 0 0 12px #b18aff;
+      transform: rotate(12deg);
+    }
+    .secret-word:hover, .secret-word:focus-visible {
+      text-shadow: 0 0 10px #b18aff;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .secret-star { opacity: .08; }
+      .modal-content p:hover .secret-star,
+      .secret-star:hover, .secret-star:focus-visible { opacity: .9; }
+    }
+    .folie-options { display: grid; gap: 10px; margin: 18px 0; }
+    .folie-option {
+      width: 100%; text-align: left; color: var(--light);
+      background: #241535; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 14px; font: inherit; cursor: pointer;
+    }
+    .folie-option:hover, .folie-option:focus-visible { border-color: var(--purple); }
+    .folie-feedback { margin-top: 14px; padding: 14px; border-radius: 12px; background: #241535; }
+    .folie-feedback[hidden] { display: none; }
+
+    /* Chasse aux sept symboles : indices indépendants et progression locale. */
+    /* Les symboles sont des zones tactiles discrètes, pas des boutons décoratifs visibles. */
+    .lipoip-clue { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; min-width: 22px; margin: 0 1px; padding: 0; border: 1px solid transparent; border-radius: 50%; color: rgba(205,190,225,.13); background: transparent; box-shadow: none; font-size: 12px; cursor: pointer; opacity: .34; transition: color .2s, background .2s, opacity .2s; vertical-align: middle; }
+    .lipoip-clue:hover, .lipoip-clue:focus-visible { opacity: 1; color: #eadcff; background: rgba(87,52,125,.8); box-shadow: 0 0 10px rgba(177,138,255,.28); outline: 2px solid #e8dcff; outline-offset: 2px; }
+    .lipoip-clue.found { color: rgba(205,190,225,.55); background: transparent; border-color: transparent; box-shadow: none; opacity: .9; }
+    .lipoip-clue.found:hover, .lipoip-clue.found:focus-visible { opacity: 1; color: #eadcff; }
+    .lipoip-clue-note { display: none; margin: 8px 0 12px; padding: 10px 13px; border-left: 3px solid #b18aff; border-radius: 0 10px 10px 0; background: rgba(125,82,180,.14); color: #e8dcff; }
+    .lipoip-clue-note.is-visible { display: block; }
+    .lipoip-progress { margin-top: 14px; padding: 13px; border: 1px solid rgba(190,150,255,.3); border-radius: 12px; background: rgba(20,12,35,.62); }
+    .lipoip-progress button { padding: 10px 15px; color: #fff; background: #68429a; border: 1px solid #c5a0ff; border-radius: 999px; font: inherit; cursor: pointer; }
+    .lipoip-progress button[hidden] { display: none !important; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="symbol" aria-hidden="true">✧</div>
+    <h1>Lipoip</h1>
+    <div class="subtitle">Entre ombre et imagination</div>
+    <p class="intro">
+      Une personne, plusieurs facettes, un univers à découvrir.
+      Bienvenue dans mon petit coin du monde.
+    </p>
+  </header>
+
+  <nav aria-label="Navigation principale">
+    <a href="#moi" data-modal="moi">Qui je suis</a>
+    <a href="#passions" data-modal="passions">Mes passions</a>
+    <a href="#album" data-modal="album">Mon album</a>
+    <a href="#reseaux" data-modal="reseaux">Mes réseaux</a>
+    <a href="#secrets" data-modal="secrets">Registre des secrets</a>
+    <a href="#origines" data-modal="origines">Les noms cachés</a>
+  </nav>
+
+  <main>
+    <div class="welcome-panel">
+      <p><strong id="welcome-highlight">Bienvenue dans mon univers.</strong></p>
+      <button
+        id="highlight-button"
+        class="cie-secret-trigger"
+        type="button"
+        aria-pressed="false">
+        ✧ Faire briller mon univers
+      </button>
+      <p>Choisis un chapitre dans la navigation pour en découvrir davantage.</p>
+    </div>
+  </main>
+
+  <!-- Fenêtre : Qui je suis -->
+  <div class="modal" id="modal-moi" role="dialog" aria-modal="true" aria-labelledby="title-moi" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-moi">✧ Qui je suis</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p>
+          J'aime explorer les idées, observer, questionner et chercher
+          du sens là où d'autres ne voient parfois que des détails.
+          La curiosité et l'imagination occupent une place importante
+          dans mon univers.
+        </p>
+        <p>
+          Je peux être sérieux et réfléchi, puis laisser place à un
+          côté plus spontané et décalé. Je ne cherche pas à me résumer
+          à une seule étiquette : je préfère laisser mes différentes
+          <button class="secret-word" type="button" data-modal="folie" aria-label="Explorer le mot facettes">facettes</button> coexister.
+          <button class="secret-star" type="button" data-modal="folie" aria-label="Ouvrir une énigme discrète" title="">✧</button>
+        </p>
+
+        <h3>Mes valeurs</h3>
+        <div class="value">
+          <strong>L'intégrité</strong>
+          <p>Rester fidèle à ce que je pense juste.</p>
+        </div>
+        <div class="value">
+          <strong>La loyauté</strong>
+          <p>Accorder de l'importance aux liens que je choisis.</p>
+        </div>
+        <div class="value">
+          <strong>La patience</strong>
+          <p>Prendre le temps d'observer et de comprendre.</p>
+        </div>
+        <div class="value">
+          <strong>La curiosité</strong>
+          <p>Continuer à apprendre, questionner et découvrir.</p>
+          <button class="cie-feather" type="button" data-feather="1" aria-label="Fragment discret près de la curiosité" hidden>🪶</button>
+        </div>
+        <p><em>Je préfère que l'on apprenne à me connaître page après page.</em> <button class="lipoip-clue" type="button" data-clue="1" aria-label="Découvrir un symbole">✧</button></p>
+        <p class="lipoip-clue-note" id="clue-note-1">Un visage se comprend rarement en un seul regard.</p>
+        <button class="lipoip-clue" type="button" data-clue="2" aria-label="Découvrir un second symbole">⌘</button>
+        <p class="lipoip-clue-note" id="clue-note-2">Les passions laissent des traces dans leurs marges.</p>
+        <button class="cie-star" type="button" data-star="violet" aria-label="Étoile violette" title="Une étoile discrète" disabled hidden>✦</button>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Énigme secrète : La folie -->
+  <div class="modal" id="modal-folie" role="dialog" aria-modal="true" aria-labelledby="title-folie" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-folie">✧ Un secret entre les lignes</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p><em>Certains me cachent, d'autres me cultivent. Je peux surgir au milieu d'une conversation parfaitement normale et transformer l'instant en quelque chose d'inattendu. Qui suis-je ?</em></p>
+        <div class="folie-options" role="group" aria-label="Choisir une réponse">
+          <button class="folie-option" type="button" data-folie-answer="humour">L'humour</button>
+          <button class="folie-option" type="button" data-folie-answer="folie">La folie</button>
+          <button class="folie-option" type="button" data-folie-answer="chaos">Le chaos absolu</button>
+        </div>
+        <div class="folie-feedback" id="folie-feedback" aria-live="polite" hidden></div>
+        <div class="folie-reward" id="folie-reward" hidden>
+          <h3>Le secret est révélé 🃏</h3>
+          <p><strong>Derrière le sérieux se cache parfois la folie.</strong></p>
+          <p>Les idées absurdes, les pensées improbables et les élans spontanés font aussi partie de mon univers. Je peux réfléchir longuement à une question, puis partir dans une direction que personne n'avait anticipée.</p>
+          <p>Je ne vois pas forcément de contradiction entre ces deux facettes. Après tout, pourquoi faudrait-il choisir entre réfléchir au monde et savoir le prendre à la légère ?</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Fenêtre : Mes passions -->
+  <div class="modal" id="modal-passions" role="dialog" aria-modal="true" aria-labelledby="title-passions" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-passions">☾ Mes passions et collections</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p>
+          J'aime les univers qui ont une identité, une histoire et
+          une âme. Les jeux, les cartes à collectionner, les figurines
+          et les mondes imaginaires font partie de mes passions.
+        </p>
+        <p>
+          J'aime aussi créer des personnages, imaginer des histoires
+          et construire des mondes dans lesquels chaque détail peut
+          avoir un sens.
+        </p>
+        <div class="tags">
+          <span class="tag">Cartes à collectionner</span>
+          <span class="tag">Pokémon</span>
+          <span class="tag">Jeux vidéo</span>
+          <span class="tag">Figurines</span>
+          <span class="tag">Imaginaire</span>
+          <span class="tag">Écriture<button class="cie-feather cie-feather--tag" type="button" data-feather="2" aria-label="Petit fragment dans les étiquettes" hidden>🪶</button></span>
+        </div>
+        <button class="lipoip-clue" type="button" data-clue="3" aria-label="Découvrir un symbole">☾</button>
+        <p class="lipoip-clue-note" id="clue-note-3">Une collection raconte aussi ce qui ne se voit pas.</p>
+        <button class="lipoip-clue" type="button" data-clue="4" aria-label="Découvrir un second symbole">❖</button>
+        <p class="lipoip-clue-note" id="clue-note-4">Certaines histoires n’ont pas besoin de mots.</p>
+        <button class="cie-star" type="button" data-star="blue" aria-label="Étoile bleue" title="Une étoile discrète" disabled hidden>✦</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Fenêtre : Mon album -->
+  <div class="modal" id="modal-album" role="dialog" aria-modal="true" aria-labelledby="title-album" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-album">☽ Mon album</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p>
+          Quelques fragments de mon univers, en images.
+          Cette galerie sera complétée au fil du temps.
+        </p>
+        <div class="gallery">
+          <div class="photo"><img src="photos/1792277583334.jpg" alt="Photo 1" loading="lazy"></div>
+          <div class="photo"><img src="photos/1792277583411.jpg" alt="Photo 2" loading="lazy"><button class="cie-feather cie-feather--photo" type="button" data-feather="3" aria-label="Fragment discret dans une photo" hidden>🪶</button></div>
+          <div class="photo"><img src="photos/IMG_20260502_223811_866.webp" alt="Photo 3" loading="lazy"></div>
+          <div class="photo"><img src="photos/Sans titre 34_20260708011617.jpg" alt="Photo 4" loading="lazy"></div>
+        </div>
+        <button class="lipoip-clue" type="button" data-clue="5" aria-label="Découvrir un symbole près de l'album">⌁</button>
+        <p class="lipoip-clue-note" id="clue-note-5">Une image n’est pas toujours une fin de page.</p>
+        <button class="cie-star" type="button" data-star="gold" aria-label="Étoile dorée" title="Une étoile discrète" disabled hidden>✦</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Fenêtre : Mes réseaux -->
+  <div class="modal" id="modal-reseaux" role="dialog" aria-modal="true" aria-labelledby="title-reseaux" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-reseaux">✦ Me retrouver ailleurs</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p>
+          Tu peux également découvrir d'autres facettes de mon univers
+          sur mes réseaux sociaux.
+        </p>
+
+        <div class="social">
+          <a href="https://www.instagram.com/leuzh_lipoip?rpxt=Nm0zYm0zNXNncTZk"
+             target="_blank" rel="noopener noreferrer">
+            <img class="social-logo"
+                 src="https://cdn.simpleicons.org/instagram/E4405F"
+                 alt="Logo Instagram">
+            <span class="social-label">
+              <span class="social-name">Instagram ↗</span>
+              <span class="social-handle">@leuzh_lipoip</span>
+            </span>
+          </a>
+
+          <a href="https://www.tiktok.com/@leuzhlipoip?_r=1&_t=ZN-9Adoo4NVLLq"
+             target="_blank" rel="noopener noreferrer">
+            <img class="social-logo"
+                 src="https://cdn.simpleicons.org/tiktok/FFFFFF"
+                 alt="Logo TikTok">
+            <span class="social-label">
+              <span class="social-name">TikTok ↗</span>
+              <span class="social-handle">@leuzhlipoip</span>
+            </span>
+          </a>
+          <button class="cie-feather cie-feather--social" type="button" data-feather="4" aria-label="Fragment discret près des réseaux" hidden>🪶</button>
+        </div>
+        <button class="lipoip-clue" type="button" data-clue="6" aria-label="Découvrir un symbole">♧</button>
+        <p class="lipoip-clue-note" id="clue-note-6">Tout chemin extérieur peut mener à une vieille archive.</p>
+        <button class="cie-star" type="button" data-star="red" aria-label="Étoile rouge" title="Une étoile discrète" disabled hidden>✦</button>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- Archives secrètes de la CIE -->
+  <div class="modal" id="modal-cie" role="dialog" aria-modal="true" aria-labelledby="title-cie" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-cie">✦ Archives étoilées de la CIE</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <button class="lipoip-clue" type="button" data-clue="7" aria-label="Découvrir le septième symbole">🐾</button>
+        <p class="lipoip-clue-note" id="clue-note-7">Une archive peut contenir une chasse qui n’appartient à aucune archive.</p>
+        <div class="lipoip-progress"><p id="lipoip-clue-progress" aria-live="polite">Les fragments demeurent incomplets.</p><button id="lipoip-open-riddle" type="button" data-modal="piste-chat" hidden>✧ Reconstituer la piste</button></div>
+        <p>Un signe s'est allumé dans les marges. La Carte d'Identité Étoilé reconnaît les curieux, mais elle ne livre rien sans une petite réflexion.</p>
+        <div class="cie-riddle">
+          <p><strong>Première énigme</strong></p>
+          <p>« Je n'ai ni voix ni oreilles, pourtant je peux transmettre mille voix. Je garde les pensées et raconte les mondes. Qui suis-je ? »</p>
+          <form id="cie-riddle-form">
+            <div class="cie-answer-row">
+              <input id="cie-answer" name="answer" type="text" autocomplete="off" placeholder="Ta réponse…" aria-label="Réponse à l'énigme" required>
+              <button type="submit">Révéler</button>
+            </div>
+          </form>
+          <p id="cie-feedback" class="cie-feedback" aria-live="polite"></p>
+        </div>
+        <div id="cie-reveal" class="cie-reveal" hidden>
+          <p><strong>✧ Archive déverrouillée ✧</strong></p>
+          <p>Tu as trouvé le livre, mais le véritable secret n'est pas l'encre qu'il contient. C'est ce qu'on choisit d'y entendre.</p>
+          <p><em>« Le monde attend juste d'être écouté, alors écoute-le et raconte-le. »</em></p>
+          <p>Une première étoile s'allume. Cinq autres éclats attendent dans les pages du site. Retrouve-les et suis leur ordre.</p>
+          <div class="cie-constellation">
+            <p><strong>✧ L'énigme de la constellation ✧</strong></p>
+            <p>« La glace ouvre la voie. Le crépuscule vient ensuite. Le soleil brille au milieu. La braise le suit, et la lune clôt le voyage. »</p>
+            <p class="cie-star-hint">Cherche les cinq petites étoiles dans les différentes fenêtres, puis clique dessus dans l'ordre donné par l'énigme.</p>
+            <div class="cie-constellation-stars" aria-label="Progression de la constellation">
+              <span id="cie-step-1">☆</span><span id="cie-step-2">☆</span><span id="cie-step-3">☆</span><span id="cie-step-4">☆</span><span id="cie-step-5">☆</span>
+            </div>
+            <p id="cie-star-feedback" class="cie-feedback" aria-live="polite">La constellation attend son premier éclat.</p>
+          </div>
+          <div id="cie-final-riddle" class="cie-final-riddle" hidden>
+            <p><strong>✦ Deuxième archive : le gardien silencieux ✦</strong></p>
+            <p>« Je nais quand une pensée quitte le silence. Je peux traverser les siècles sans faire un pas. Je change selon celui qui me lit, mais mes signes restent les mêmes. Je peux ouvrir mille portes sans posséder de clé. Qui suis-je ? »</p>
+            <form id="cie-final-form">
+              <div class="cie-answer-row">
+                <input id="cie-final-answer" name="final-answer" type="text" autocomplete="off" placeholder="La réponse de la deuxième archive…" aria-label="Réponse à la deuxième énigme" required>
+                <button type="submit">Déchiffrer</button>
+              </div>
+            </form>
+            <p id="cie-final-feedback" class="cie-feedback" aria-live="polite"></p>
+            <div id="cie-feather-hunt" class="cie-feather-hunt" hidden>
+              <p><strong>✧ Troisième épreuve : les plumes perdues ✧</strong></p>
+              <p>« Je tombe sans me blesser, je voyage sans jambes. Je suis la trace légère d'un messager du ciel. Cinq fragments de moi se sont dispersés dans les pages de ce monde. Retrouve-les tous. »</p>
+              <p id="cie-feather-hint" class="cie-feather-hint">Les plumes sont apparues. Un indice se précisera à chaque fragment retrouvé.</p>
+              <p id="cie-feather-feedback" class="cie-feedback" aria-live="polite">0 plume sur 5 retrouvée.</p>
+              <button id="cie-final-button" class="cie-final-button" type="button" data-modal="cie-archive" hidden>✧ Ouvrir la dernière archive</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Dernière archive, accessible après la chasse aux plumes -->
+  <div class="modal" id="modal-cie-archive" role="dialog" aria-modal="true" aria-labelledby="title-cie-archive" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-cie-archive">✧ La dernière archive</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p><strong>Tu as retrouvé les cinq plumes.</strong></p>
+        <p>Chaque étoile t'a guidé, chaque mot t'a ouvert une porte, et chaque plume t'a rapproché du dernier secret.</p>
+        <p><em>« Les histoires ne disparaissent pas. Elles attendent simplement quelqu'un pour les porter plus loin. »</em></p>
+        <p>La CIE garde encore bien des pages vierges. Celle-ci est désormais à toi.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Piste finale des sept symboles -->
+  <div class="modal" id="modal-piste-chat" role="dialog" aria-modal="true" aria-labelledby="title-piste-chat" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-piste-chat">✧ La piste réunie</h2>
+        <button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button>
+      </div>
+      <div class="modal-content">
+        <p><strong>Sept signes, sept fragments.</strong> Tu les as trouvés sans ordre, mais ils t'ont tous conduit ici.</p>
+        <p>Derrière cette question se cache un compagnon que l'on dit indépendant, mystérieux et maître de ses propres choix.</p>
+        <div class="cie-riddle">
+          <p><strong>Énigme</strong></p>
+          <p>« Quel est l'un des meilleurs amis de l'homme ? »</p>
+          <form id="lipoip-cat-riddle-form">
+            <div class="cie-answer-row">
+              <input id="lipoip-cat-answer" name="cat-answer" type="text" autocomplete="off" placeholder="Ta réponse…" aria-label="Réponse à la piste finale" required>
+              <button type="submit">Vérifier</button>
+            </div>
+          </form>
+          <p id="lipoip-cat-feedback" class="cie-feedback" aria-live="polite"></p>
+          <div id="lipoip-cat-success" class="cie-reveal" hidden>
+            <p><strong>✧ Secret déverrouillé ✧</strong></p>
+            <p>Tu as trouvé la bonne réponse. Une nouvelle page de ton histoire attendra son heure.</p>
+            <p>Tu as trouvé l'album secret d'Aria. Remplace les noms des fichiers ci-dessous par ceux de tes photos de chat.</p>
+            <div class="gallery aria-gallery">
+              <div class="photo"><img src="photos/aria-1.jpg" alt="Aria, photo secrète 1" loading="lazy"></div>
+              <div class="photo"><img src="photos/aria-2.jpg" alt="Aria, photo secrète 2" loading="lazy"></div>
+              <div class="photo"><img src="photos/aria-3.jpg" alt="Aria, photo secrète 3" loading="lazy"></div>
+              <div class="photo"><img src="photos/aria-4.jpg" alt="Aria, photo secrète 4" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- Registre de progression des secrets -->
+  <div class="modal" id="modal-secrets" role="dialog" aria-modal="true" aria-labelledby="title-secrets" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-secrets">📜 Registre des secrets</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p id="secret-count" aria-live="polite">0 secret découvert sur 9.</p>
+        <div style="height:12px;background:rgba(255,255,255,.10);border-radius:99px;overflow:hidden;margin:12px 0 20px"><div id="secret-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#f5d77b);transition:width .25s"></div></div>
+        <p id="secret-percent"><strong>0 %</strong> exploré</p>
+        <ul id="secret-list" style="padding-left:22px">
+          <li data-secret-item="cie-livre">Le livre de la CIE</li><li data-secret-item="cie-etoiles">La constellation</li><li data-secret-item="cie-gardien">Le gardien silencieux</li><li data-secret-item="cie-plumes">Les cinq plumes</li><li data-secret-item="cie-archive">La dernière archive</li><li data-secret-item="folie">L'énigme de la folie</li><li data-secret-item="aria">Le secret d'Aria</li><li data-secret-item="lipoip">L'origine de Lipoip</li><li data-secret-item="leuzh">L'origine de Leuzh</li>
+        </ul>
+        <div id="secret-complete-message" hidden><h3>✧ Tu as tout découvert ! ✧</h3><p>Félicitations, tu as percé tous les secrets actuellement présents dans cet univers. Merci d'avoir pris le temps d'explorer, de chercher et de lire entre les lignes. D'autres pages pourront s'ajouter un jour, mais celles-ci portent désormais une part de toi.</p></div>
+        <p><small>La progression est enregistrée localement sur cet appareil.</small></p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Énigmes sur l'origine des pseudonymes -->
+  <div class="modal" id="modal-origines" role="dialog" aria-modal="true" aria-labelledby="title-origines" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-origines">✧ Les noms cachés</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Deux noms, deux histoires. La seconde énigme ne s'ouvrira qu'après la première.</p>
+        <div class="cie-riddle"><p><strong>Première énigme : le nom sucré</strong></p><p>« Je suis né d'un nom sucré, choisi pour un jeu. Une faute de lettres m'a donné une autre forme, et cette erreur est devenue mon identité. Qui suis-je ? »</p>
+          <form id="origin-lipoip-form"><div class="cie-answer-row"><input id="origin-lipoip-answer" type="text" autocomplete="off" placeholder="Qui suis-je ?" aria-label="Réponse à la première énigme" required><button type="submit">Révéler</button></div></form><p id="origin-lipoip-feedback" class="cie-feedback" aria-live="polite"></p>
+          <div id="origin-lipoip-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Lipoip ✧</strong></p><p>Je voulais choisir le pseudonyme « Lolipop » pour le jeu mobile AFK Arena. Mais, à cause de ma dyslexie, j’ai inversé des lettres en l’écrivant : « Lipoip » est né de cette erreur. Finalement, ce nom imprévu est devenu mon pseudonyme.</p></div>
+        </div>
+        <div id="origin-leuzh-block" class="cie-riddle" hidden><p><strong>Deuxième énigme : la marque de la confrérie</strong></p><p>« J'avais déjà un nom lorsque j'ai rejoint une confrérie. Ses membres portaient tous une même marque dans leur nom. La mienne s'est glissée dans le mien, puis j'ai pris la plume pour les miens. Quel nom en est né ? »</p>
+          <form id="origin-leuzh-form"><div class="cie-answer-row"><input id="origin-leuzh-answer" type="text" autocomplete="off" placeholder="Quel nom ?" aria-label="Réponse à la deuxième énigme" required><button type="submit">Déchiffrer</button></div></form><p id="origin-leuzh-feedback" class="cie-feedback" aria-live="polite"></p>
+          <div id="origin-leuzh-reward" class="cie-reveal" hidden><p><strong>✧ L'origine de Leuzh ✧</strong></p><p>J’ai rejoint la Confrérie Euzhienne alors que mon pseudonyme était déjà Lipoip. Les membres ajoutaient « Euzh » à leur nom. De cette tradition est né « Leuzh ». Je suis ensuite devenu le scribe de cette confrérie, aujourd’hui inactive, mais dont l’héritage continue de vivre dans mes souvenirs et mes créations.</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Merci d'avoir pris le temps de découvrir ces quelques pages.
+    <strong>Tout ne se révèle pas au premier regard.</strong><button class="cie-feather cie-feather--footer" type="button" data-feather="5" aria-label="Fragment discret dans le pied de page" hidden>🪶</button>
+    <p>✧ Lipoip ✧</p>
+    <button class="cie-secret-trigger" type="button" data-modal="cie" aria-label="Découvrir un secret étoilé">✦ Un éclat étrange</button>
+    <button class="cie-star" type="button" data-star="white" aria-label="Étoile blanche" title="Une étoile discrète" disabled hidden>✦</button>
+  </footer>
+
+  <script>
+    (() => {
+      const modalLinks = document.querySelectorAll("[data-modal]");
+      const modals = document.querySelectorAll(".modal");
+      let activeModal = null;
+      let previousFocus = null;
+
+      function openModal(name) {
+        const modal = document.getElementById(`modal-${name}`);
+        if (!modal) return;
+
+        if (activeModal && activeModal !== modal) {
+          activeModal.classList.remove("is-open");
+          activeModal.setAttribute("aria-hidden", "true");
+        } else if (!activeModal) {
+          previousFocus = document.activeElement;
+        }
+        activeModal = modal;
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+
+        const closeButton = modal.querySelector(".close-modal");
+        if (closeButton) closeButton.focus();
+
+        // Replace la fenêtre au début de son contenu à chaque ouverture.
+        const content = modal.querySelector(".modal-content");
+        if (content) content.scrollTop = 0;
+      }
+
+      function closeModal() {
+        if (!activeModal) return;
+
+        activeModal.classList.remove("is-open");
+        activeModal.setAttribute("aria-hidden", "true");
+        activeModal = null;
+        document.body.classList.remove("modal-open");
+
+        if (previousFocus && typeof previousFocus.focus === "function") {
+          previousFocus.focus();
+        }
+      }
+
+      // Registre des secrets : chaque découverte est conservée sur cet appareil.
+      const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh"];
+      const secretStorageKey = "lipoip-secret-registry-v1";
+      let discoveredSecrets = new Set();
+      try { discoveredSecrets = new Set(JSON.parse(localStorage.getItem(secretStorageKey) || "[]")); } catch (_) {}
+      function markSecret(id) {
+        if (!secretIds.includes(id)) return;
+        discoveredSecrets.add(id);
+        try { localStorage.setItem(secretStorageKey, JSON.stringify([...discoveredSecrets])); } catch (_) {}
+        updateSecretRegistry();
+      }
+      function updateSecretRegistry() {
+        const count = secretIds.filter(id => discoveredSecrets.has(id)).length;
+        const percent = Math.round(count / secretIds.length * 100);
+        const countNode = document.getElementById("secret-count");
+        const percentNode = document.getElementById("secret-percent");
+        const bar = document.getElementById("secret-progress-bar");
+        const complete = document.getElementById("secret-complete-message");
+        if (countNode) countNode.textContent = `${count} secret${count === 1 ? "" : "s"} découvert${count === 1 ? "" : "s"} sur ${secretIds.length}.`;
+        if (percentNode) percentNode.innerHTML = `<strong>${percent} %</strong> exploré`;
+        if (bar) bar.style.width = `${percent}%`;
+        if (complete) complete.hidden = count !== secretIds.length;
+        document.querySelectorAll("[data-secret-item]").forEach(item => {
+          const found = discoveredSecrets.has(item.dataset.secretItem);
+          // Le registre ne révèle aucun nom avant que le secret soit découvert.
+          item.hidden = !found;
+          item.style.opacity = "1";
+          item.style.listStyleType = "'✦  '";
+          const status = item.querySelector("small");
+          if (status) status.remove();
+        });
+      }
+      updateSecretRegistry();
+      // Réconcilie les découvertes déjà sauvegardées dans les anciennes énigmes.
+      try { if (localStorage.getItem("lipoip-folie-unlocked") === "1") markSecret("folie"); } catch (_) {}
+
+      const originLipoipForm = document.getElementById("origin-lipoip-form");
+      const originLeuzhForm = document.getElementById("origin-leuzh-form");
+      const originLipoipReward = document.getElementById("origin-lipoip-reward");
+      const originLeuzhBlock = document.getElementById("origin-leuzh-block");
+      const originLeuzhReward = document.getElementById("origin-leuzh-reward");
+      try {
+        if (localStorage.getItem("lipoip-origin-lipoip-v1") === "1") { originLipoipReward.hidden = false; originLeuzhBlock.hidden = false; }
+        if (localStorage.getItem("lipoip-origin-leuzh-v1") === "1") originLeuzhReward.hidden = false;
+      } catch (_) {}
+      function normalizeAnswer(value) { return (value || "").trim().toLocaleLowerCase("fr-FR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[’']/g, "").replace(/\s+/g, " "); }
+      if (originLipoipForm) originLipoipForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const answer = normalizeAnswer(document.getElementById("origin-lipoip-answer").value);
+        const feedback = document.getElementById("origin-lipoip-feedback");
+        if (["lipoip", "le lipoip"].includes(answer)) {
+          feedback.textContent = "La première histoire se révèle. La seconde énigme est maintenant accessible.";
+          originLipoipReward.hidden = false; originLeuzhBlock.hidden = false;
+          try { localStorage.setItem("lipoip-origin-lipoip-v1", "1"); } catch (_) {}
+          markSecret("lipoip");
+        } else feedback.textContent = "Ce nom est né d'une erreur de lettres. Essaie encore.";
+      });
+      if (originLeuzhForm) originLeuzhForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const answer = normalizeAnswer(document.getElementById("origin-leuzh-answer").value);
+        const feedback = document.getElementById("origin-leuzh-feedback");
+        if (["leuzh", "le leuzh"].includes(answer)) {
+          feedback.textContent = "La marque de la confrérie a retrouvé son origine.";
+          originLeuzhReward.hidden = false;
+          try { localStorage.setItem("lipoip-origin-leuzh-v1", "1"); } catch (_) {}
+          markSecret("leuzh");
+        } else feedback.textContent = "Relis l'indice sur la marque partagée par les membres.";
+      });
+
+      // Énigme de niveau 1 : la récompense reste débloquée sur cet appareil.
+      const folieReward = document.getElementById("folie-reward");
+      const folieFeedback = document.getElementById("folie-feedback");
+      const folieOptions = document.querySelectorAll("[data-folie-answer]");
+      const folieUnlocked = () => {
+        try { return localStorage.getItem("lipoip-folie-unlocked") === "1"; }
+        catch (error) { return false; }
+      };
+      function syncFolieState() {
+        if (folieUnlocked()) {
+          folieReward.hidden = false;
+          folieFeedback.hidden = true;
+          folieOptions.forEach(option => option.hidden = true);
+          markSecret("folie");
+        }
+      }
+      folieOptions.forEach(option => {
+        option.addEventListener("click", () => {
+          if (option.dataset.folieAnswer === "folie") {
+            try { localStorage.setItem("lipoip-folie-unlocked", "1"); } catch (error) {}
+            folieFeedback.hidden = true;
+            folieReward.hidden = false;
+            folieOptions.forEach(item => item.hidden = true);
+            markSecret("folie");
+          } else {
+            folieFeedback.textContent = "Pas tout à fait ! Cherche ce qui peut surgir spontanément et rendre l'instant inattendu. 😉";
+            folieFeedback.hidden = false;
+          }
+        });
+      });
+      syncFolieState();
+
+      modalLinks.forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          openModal(link.dataset.modal);
+          if (link.dataset.modal === "cie-archive") markSecret("cie-archive");
+        });
+      });
+
+      modals.forEach(modal => {
+        const closeButton = modal.querySelector(".close-modal");
+        if (closeButton) closeButton.addEventListener("click", closeModal);
+
+        // Ferme seulement si l'utilisateur clique sur le fond sombre.
+        modal.addEventListener("click", event => {
+          if (event.target === modal) closeModal();
+        });
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeModal();
+      });
+
+      // Petite énigme locale de la CIE : aucune donnée n'est envoyée ni enregistrée.
+      const riddleForm = document.getElementById("cie-riddle-form");
+      if (riddleForm) {
+        riddleForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const answer = (document.getElementById("cie-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          const feedback = document.getElementById("cie-feedback");
+          const reveal = document.getElementById("cie-reveal");
+          if (["livre", "un livre", "le livre"].includes(answer)) {
+            feedback.textContent = "La serrure cède. Une archive s'ouvre…";
+            reveal.hidden = false;
+            markSecret("cie-livre");
+          } else {
+            feedback.textContent = "La serrure reste close. Relis l'énigme et cherche ce qui conserve les pensées.";
+            reveal.hidden = true;
+          }
+        });
+      }
+
+      // Chasse aux cinq étoiles : bleue, violette, dorée, rouge, blanche.
+      const starOrder = ["blue", "violet", "gold", "red", "white"];
+      const starButtons = [...document.querySelectorAll("[data-star]")];
+      const starFeedback = document.getElementById("cie-star-feedback");
+      const finalRiddle = document.getElementById("cie-final-riddle");
+      let starProgress = 0;
+      let starsUnlocked = false;
+
+      function unlockStars() {
+        starsUnlocked = true;
+        starButtons.forEach(button => { button.hidden = false; button.disabled = false; });
+      }
+
+      starButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          if (!starsUnlocked || document.getElementById("cie-reveal").hidden) return;
+          const chosen = button.dataset.star;
+          if (chosen === starOrder[starProgress]) {
+            button.classList.add("found");
+            button.disabled = true;
+            const step = document.getElementById(`cie-step-${starProgress + 1}`);
+            if (step) step.textContent = "✦";
+            starProgress += 1;
+            if (starProgress === starOrder.length) {
+              starFeedback.textContent = "La constellation est complète. Une seconde archive s'ouvre…";
+              finalRiddle.hidden = false;
+              markSecret("cie-etoiles");
+            } else {
+              starFeedback.textContent = `Bon éclat ! ${starProgress} étoile${starProgress > 1 ? 's' : ''} sur 5 retrouvée${starProgress > 1 ? 's' : ''}.`;
+            }
+          } else {
+            starProgress = 0;
+            starButtons.forEach(item => { item.classList.remove("found"); item.disabled = false; });
+            for (let i = 1; i <= 5; i++) {
+              const step = document.getElementById(`cie-step-${i}`);
+              if (step) step.textContent = "☆";
+            }
+            starFeedback.textContent = "L'ordre est brisé. Relis l'énigme et recommence depuis la première étoile.";
+          }
+        });
+      });
+
+      const finalForm = document.getElementById("cie-final-form");
+      if (finalForm) {
+        finalForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const answer = (document.getElementById("cie-final-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          const feedback = document.getElementById("cie-final-feedback");
+          if (["un livre", "livre", "le livre", "une histoire", "histoire", "un texte", "texte", "l'ecriture", "ecriture", "l'écriture"].includes(answer)) {
+            feedback.textContent = "La seconde serrure s'ouvre : les mots peuvent voyager plus loin que leur auteur. Quelque chose de léger s'est dispersé dans le site…";
+            unlockFeathers();
+            markSecret("cie-gardien");
+          } else {
+            feedback.textContent = "La porte reste close. Pense à ce qui voyage à travers les siècles et change selon celui qui le découvre.";
+          }
+        });
+      }
+
+ // Les plumes n'apparaissent qu'après la résolution de la deuxième énigme.
+      const featherButtons = [...document.querySelectorAll("[data-feather]")];
+      const featherHunt = document.getElementById("cie-feather-hunt");
+      const featherFeedback = document.getElementById("cie-feather-feedback");
+      const finalButton = document.getElementById("cie-final-button");
+      const foundFeathers = new Set();
+
+      const featherHint = document.getElementById("cie-feather-hint");
+      const featherHints = {
+        "1": "Indice : une valeur se cache dans la façon de raconter la curiosité.",
+        "2": "Indice : parmi les étiquettes des passions, l'écriture a une petite marge secrète.",
+        "3": "Indice : dans l'album, observe les bords d'une image plutôt que son sujet.",
+        "4": "Indice : près des portes qui mènent vers les réseaux, un détail attend.",
+        "5": "Indice : le dernier fragment veille tout en bas de la page."
+      };
+
+      function updateFeatherHint() {
+        const next = ["1", "2", "3", "4", "5"].find(id => !foundFeathers.has(id));
+        if (featherHint) {
+          featherHint.textContent = next ? featherHints[next] : "Tous les fragments sont réunis. La dernière archive t'attend.";
+        }
+      }
+
+      function unlockFeathers() {
+        featherHunt.hidden = false;
+        featherButtons.forEach(button => { button.hidden = false; });
+        featherFeedback.textContent = "0 plume sur 5 retrouvée.";
+        updateFeatherHint();
+      }
+
+      featherButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          if (button.hidden || foundFeathers.has(button.dataset.feather)) return;
+          foundFeathers.add(button.dataset.feather);
+          button.classList.add("found");
+          button.disabled = true;
+          button.setAttribute("aria-label", "Plume retrouvée");
+          featherFeedback.textContent = `${foundFeathers.size} plume${foundFeathers.size > 1 ? "s" : ""} sur 5 retrouvée${foundFeathers.size > 1 ? "s" : ""}.`;
+          updateFeatherHint();
+          if (foundFeathers.size === featherButtons.length) {
+            featherFeedback.textContent = "Les cinq plumes sont réunies. La dernière archive est maintenant accessible.";
+            finalButton.hidden = false;
+            markSecret("cie-plumes");
+          }
+        });
+      });
+
+      // L'accès à la chasse reste fermé tant que la première énigme n'est pas résolue.
+      // Chasse indépendante aux sept symboles : ordre libre, sauvegarde locale.
+      const clueButtons = [...document.querySelectorAll("[data-clue]")];
+      const clueProgress = document.getElementById("lipoip-clue-progress");
+      const openCatRiddle = document.getElementById("lipoip-open-riddle");
+      const catForm = document.getElementById("lipoip-cat-riddle-form");
+      const catFeedback = document.getElementById("lipoip-cat-feedback");
+      const catSuccess = document.getElementById("lipoip-cat-success");
+      // Cette chasse recommence à zéro à chaque actualisation, sans modifier la CIE.
+      const clueStorageKey = "lipoip-seven-symbols-v2";
+      const catStorageKey = "lipoip-cat-secret-v1";
+      let foundClues = new Set();
+      try { foundClues = new Set(JSON.parse(localStorage.getItem(clueStorageKey) || "[]")); } catch (_) {}
+
+      function refreshClueProgress() {
+        if (clueProgress) clueProgress.textContent = foundClues.size === 7 ? "Les sept fragments sont réunis. La piste peut être reconstituée." : "Les fragments demeurent incomplets.";
+        if (openCatRiddle) openCatRiddle.hidden = foundClues.size < 7;
+        clueButtons.forEach(button => {
+          const id = button.dataset.clue;
+          const found = foundClues.has(id);
+          button.classList.toggle("found", found);
+          button.setAttribute("aria-pressed", String(found));
+          const note = document.getElementById(`clue-note-${id}`);
+          if (note && !found) note.classList.remove("is-visible");
+        });
+      }
+
+      clueButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const id = button.dataset.clue;
+          const note = document.getElementById(`clue-note-${id}`);
+          if (!foundClues.has(id)) {
+            foundClues.add(id);
+            try { localStorage.setItem(clueStorageKey, JSON.stringify([...foundClues])); } catch (_) {}
+            refreshClueProgress();
+          }
+          // Un second toucher masque l'indice, sans oublier le symbole trouvé.
+          if (note) note.classList.toggle("is-visible");
+        });
+      });
+      refreshClueProgress();
+      try { if (localStorage.getItem(catStorageKey) === "1" && catSuccess) catSuccess.hidden = false; } catch (_) {}
+
+      if (catForm) {
+        catForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const answer = (document.getElementById("lipoip-cat-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          if (["chat", "un chat", "le chat"].includes(answer)) {
+            if (catFeedback) catFeedback.textContent = "La serrure s'ouvre. Le secret est à toi.";
+            if (catSuccess) catSuccess.hidden = false;
+            markSecret("aria");
+            try { localStorage.setItem(catStorageKey, "1"); } catch (_) {}
+          } else {
+            if (catFeedback) catFeedback.textContent = "La serrure reste close. Relis les fragments et la piste réunie.";
+            if (catSuccess) catSuccess.hidden = true;
+          }
+        });
+      }
+
+
+      if (riddleForm) {
+        riddleForm.addEventListener("submit", () => {
+          const answer = (document.getElementById("cie-answer").value || "")
+            .trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          if (["livre", "un livre", "le livre"].includes(answer)) unlockStars();
+        });
+      }
+
+      // Bouton qui active ou désactive la surbrillance du message d'accueil.
+      const highlightButton = document.getElementById("highlight-button");
+      const welcomeHighlight = document.getElementById("welcome-highlight");
+
+      if (highlightButton && welcomeHighlight) {
+        highlightButton.addEventListener("click", () => {
+          const highlighted = welcomeHighlight.classList.toggle("is-highlighted");
+          highlightButton.setAttribute("aria-pressed", String(highlighted));
+          highlightButton.textContent = highlighted
+            ? "✧ Éteindre l'éclat"
+            : "✧ Faire briller mon univers";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
