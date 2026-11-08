@@ -177,7 +177,7 @@
     .welcome-panel strong { color: var(--purple); }
 
     .immersive-open-button, .immersive-action { border:1px solid rgba(190,150,255,.55); border-radius:999px; padding:9px 15px; color:var(--light); background:linear-gradient(135deg,rgba(76,45,108,.85),rgba(32,19,49,.95)); font:inherit; cursor:pointer; box-shadow:0 0 14px rgba(166,108,255,.14); }
-    .immersive-open-button { margin-top:16px; }
+    .immersive-open-button { position:fixed; z-index:1000; top:calc(env(safe-area-inset-top, 0px) + 12px); right:calc(env(safe-area-inset-right, 0px) + 12px); max-width:calc(100vw - 24px); margin:0; font-size:.85rem; }
     .immersive-open-button:hover,.immersive-action:hover,.immersive-open-button:focus-visible,.immersive-action:focus-visible { border-color:#f5d77b; outline:2px solid rgba(245,215,123,.24); }
     .immersive-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
     .immersive-action--primary { border-color:rgba(245,215,123,.7); color:#fff0c4; }
@@ -1064,6 +1064,7 @@
   <div id="immersive-atmosphere" aria-hidden="true">
     <i class="immersive-mote" style="--mx:8%;--my:24%;--ms:3px;--mt:8s;--md:-2s"></i><i class="immersive-mote" style="--mx:19%;--my:68%;--ms:4px;--mt:11s;--md:-7s"></i><i class="immersive-mote" style="--mx:31%;--my:42%;--ms:2px;--mt:9s;--md:-4s"></i><i class="immersive-mote" style="--mx:43%;--my:82%;--ms:3px;--mt:12s;--md:-9s"></i><i class="immersive-mote" style="--mx:56%;--my:19%;--ms:4px;--mt:10s;--md:-5s"></i><i class="immersive-mote" style="--mx:67%;--my:57%;--ms:2px;--mt:8s;--md:-6s"></i><i class="immersive-mote" style="--mx:79%;--my:32%;--ms:3px;--mt:13s;--md:-10s"></i><i class="immersive-mote" style="--mx:91%;--my:73%;--ms:4px;--mt:9s;--md:-3s"></i>
   </div>
+  <button class="immersive-open-button" type="button" data-modal="immersif">✧ Mode immersif</button>
   <header>
     <button class="titles-corner-button" type="button" data-modal="titres">✧ Mes titres</button>
     <button class="codex-corner-button" type="button" data-modal="codex" aria-label="Ouvrir le codex de la Confrérie Euzhienne">📜 Codex</button>
@@ -1097,7 +1098,6 @@
         ✧ Faire briller mon univers
       </button>
       <p>Choisis un chapitre dans la navigation pour en découvrir davantage.</p>
-      <button class="immersive-open-button" type="button" data-modal="immersif">✧ Mode immersif</button>
     </div>
     <section class="in-project-card" id="infinite-night-project" aria-labelledby="in-project-title" data-immersive-layer="1">
       <div class="in-project-mark" aria-hidden="true">☾</div>
