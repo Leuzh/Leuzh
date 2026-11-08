@@ -176,6 +176,32 @@
     .welcome-panel p { margin: 0; color: var(--muted); }
     .welcome-panel strong { color: var(--purple); }
 
+    .immersive-open-button, .immersive-action { border:1px solid rgba(190,150,255,.55); border-radius:999px; padding:9px 15px; color:var(--light); background:linear-gradient(135deg,rgba(76,45,108,.85),rgba(32,19,49,.95)); font:inherit; cursor:pointer; box-shadow:0 0 14px rgba(166,108,255,.14); }
+    .immersive-open-button { margin-top:16px; }
+    .immersive-open-button:hover,.immersive-action:hover,.immersive-open-button:focus-visible,.immersive-action:focus-visible { border-color:#f5d77b; outline:2px solid rgba(245,215,123,.24); }
+    .immersive-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+    .immersive-action--primary { border-color:rgba(245,215,123,.7); color:#fff0c4; }
+    .immersive-action--danger { border-color:rgba(255,130,150,.6); background:rgba(105,24,50,.38); }
+    .immersive-control { display:grid; gap:8px; margin:18px 0; padding:14px; border:1px solid rgba(177,138,255,.24); border-radius:14px; background:rgba(12,7,22,.34); }
+    .immersive-control label,.immersive-control legend { color:var(--light); font-weight:650; }
+    .immersive-control input[type="range"] { width:100%; accent-color:#b18aff; touch-action:pan-y; }
+    .immersive-value { color:var(--purple); font-variant-numeric:tabular-nums; }
+    .immersive-check { display:flex; align-items:flex-start; gap:10px; }
+    .immersive-check input { width:20px; height:20px; margin:2px 0 0; accent-color:#b18aff; }
+    #immersive-status { min-height:1.5em; color:var(--muted); }
+    [data-immersive-layer] { --immersive-x:0px; --immersive-y:0px; }
+    body.immersive-active [data-immersive-layer] { translate:var(--immersive-x) var(--immersive-y); scale:var(--immersive-scale,1); transition:translate .35s cubic-bezier(.2,.7,.2,1),scale .35s cubic-bezier(.2,.7,.2,1); }
+    #immersive-atmosphere { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; opacity:0; transition:opacity .45s ease; }
+    body.immersive-active #immersive-atmosphere { opacity:1; }
+    header, nav, main, footer { position:relative; z-index:1; }
+    .immersive-mote { position:absolute; left:var(--mx); top:var(--my); width:var(--ms); height:var(--ms); border-radius:50%; background:#e4d3ff; box-shadow:0 0 12px 3px rgba(177,138,255,.42); opacity:0; animation:immersive-float var(--mt) ease-in-out var(--md) infinite alternate; animation-play-state:paused; }
+    body.immersive-active .immersive-mote { animation-play-state:running; }
+    @keyframes immersive-float { from { opacity:.12; transform:translate3d(0,10px,0) scale(.75); } to { opacity:.72; transform:translate3d(10px,-18px,0) scale(1.2); } }
+    body.immersive-reduced #immersive-atmosphere { opacity:.25; }
+    body.immersive-reduced .immersive-mote { animation:none; opacity:.22; }
+    body.immersive-reduced.immersive-active [data-immersive-layer] { transition:none; }
+    @media (prefers-reduced-motion: reduce) { #immersive-atmosphere { transition:none; } body.immersive-active [data-immersive-layer] { transition:none; } }
+
     .in-project-card { display:flex; align-items:center; gap:22px; max-width:650px; margin:0 auto 42px; padding:24px; border:1px solid rgba(177,138,255,.42); border-radius:20px; background:radial-gradient(ellipse at 5% 50%,rgba(125,52,72,.28),transparent 55%),linear-gradient(145deg,#1b1420,#110d17); box-shadow:0 16px 44px rgba(0,0,0,.2); scroll-margin-top:20px; }
     .in-project-mark { flex:0 0 78px; width:78px; height:78px; display:grid; place-items:center; border:1px solid #b18aff88; border-radius:50%; color:#f0cd94; font-size:42px; text-shadow:0 0 22px #c26d88; background:#120d18; }
     .in-project-copy h2 { margin:0 0 8px; font:800 clamp(24px,5vw,34px)/1.1 Georgia,serif; letter-spacing:.05em; color:#eed9b6; }
@@ -1035,20 +1061,23 @@
 
 <body>
   <div id="shooting-stars" aria-hidden="true"><span class="shooting-star" style="--x:92%;--d:7s;--delay:0s;--y:8%"></span><span class="shooting-star" style="--x:78%;--d:9s;--delay:2.5s;--y:22%"></span><span class="shooting-star" style="--x:64%;--d:8s;--delay:5s;--y:35%"></span><span class="shooting-star" style="--x:50%;--d:10s;--delay:1.2s;--y:12%"></span><span class="shooting-star" style="--x:36%;--d:7.5s;--delay:6.5s;--y:28%"></span><span class="shooting-star" style="--x:22%;--d:9.5s;--delay:3.8s;--y:18%"></span><span class="shooting-star" style="--x:8%;--d:8.5s;--delay:8s;--y:40%"></span><span class="shooting-star" style="--x:58%;--d:11s;--delay:9.5s;--y:50%"></span><span class="shooting-star" style="--x:84%;--d:10.5s;--delay:4.5s;--y:60%"></span></div>
+  <div id="immersive-atmosphere" aria-hidden="true">
+    <i class="immersive-mote" style="--mx:8%;--my:24%;--ms:3px;--mt:8s;--md:-2s"></i><i class="immersive-mote" style="--mx:19%;--my:68%;--ms:4px;--mt:11s;--md:-7s"></i><i class="immersive-mote" style="--mx:31%;--my:42%;--ms:2px;--mt:9s;--md:-4s"></i><i class="immersive-mote" style="--mx:43%;--my:82%;--ms:3px;--mt:12s;--md:-9s"></i><i class="immersive-mote" style="--mx:56%;--my:19%;--ms:4px;--mt:10s;--md:-5s"></i><i class="immersive-mote" style="--mx:67%;--my:57%;--ms:2px;--mt:8s;--md:-6s"></i><i class="immersive-mote" style="--mx:79%;--my:32%;--ms:3px;--mt:13s;--md:-10s"></i><i class="immersive-mote" style="--mx:91%;--my:73%;--ms:4px;--mt:9s;--md:-3s"></i>
+  </div>
   <header>
     <button class="titles-corner-button" type="button" data-modal="titres">✧ Mes titres</button>
     <button class="codex-corner-button" type="button" data-modal="codex" aria-label="Ouvrir le codex de la Confrérie Euzhienne">📜 Codex</button>
     <button class="symbol star-code-trigger" id="star-code-trigger" type="button" data-modal="code-secret" aria-label="Une étoile au-dessus de Lipoip">✧</button>
-    <h1 id="main-title">Lipoip</h1>
-    <div class="subtitle">Entre ombre et imagination</div>
-    <div id="equipped-title-badge" class="equipped-title-badge" hidden></div>
-    <p class="intro">
+    <h1 id="main-title" data-immersive-layer="3">Lipoip</h1>
+    <div class="subtitle" data-immersive-layer="2">Entre ombre et imagination</div>
+    <div id="equipped-title-badge" class="equipped-title-badge" data-immersive-layer="2" hidden></div>
+    <p class="intro" data-immersive-layer="1">
       Une personne, plusieurs facettes, un univers à découvrir.
       Bienvenue dans mon petit coin du monde.
     </p>
   </header>
 
-  <nav aria-label="Navigation principale">
+  <nav aria-label="Navigation principale" data-immersive-layer="1">
     <a href="#moi" data-modal="moi">Qui je suis</a>
     <a href="#passions" data-modal="passions">Mes passions</a>
     <a href="#album" data-modal="album">Mon album</a>
@@ -1058,7 +1087,7 @@
   </nav>
 
   <main>
-    <div class="welcome-panel">
+    <div class="welcome-panel" data-immersive-layer="2">
       <p><strong id="welcome-highlight" tabindex="0" role="button" aria-label="Détail secret du message de bienvenue">Bienvenue dans mon univers.</strong></p>
       <button
         id="highlight-button"
@@ -1068,8 +1097,9 @@
         ✧ Faire briller mon univers
       </button>
       <p>Choisis un chapitre dans la navigation pour en découvrir davantage.</p>
+      <button class="immersive-open-button" type="button" data-modal="immersif">✧ Mode immersif</button>
     </div>
-    <section class="in-project-card" id="infinite-night-project" aria-labelledby="in-project-title">
+    <section class="in-project-card" id="infinite-night-project" aria-labelledby="in-project-title" data-immersive-layer="1">
       <div class="in-project-mark" aria-hidden="true">☾</div>
       <div class="in-project-copy">
         <p class="in-project-kicker">PROJET EN COURS · JEU WEB</p>
@@ -1083,6 +1113,22 @@
   <div id="title-fx" aria-hidden="true"><div class="tfx tfx--egide"><svg class="tfx-shield" style="--d:0s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:2.4s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><svg class="tfx-shield" style="--d:4.8s" viewBox="0 0 32 38"><path d="M16 2 L29 7 V18 C29 28 22 34 16 36 C10 34 3 28 3 18 V7 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div class="tfx tfx--marteau"><div class="tfx-forge"></div><i class="tfx-ember" style="--x:13%;--d:0.0s;--t:5.0s;--s:3px"></i><i class="tfx-ember" style="--x:50%;--d:0.8s;--t:5.9s;--s:5px"></i><i class="tfx-ember" style="--x:87%;--d:1.7s;--t:6.8s;--s:7px"></i><i class="tfx-ember" style="--x:28%;--d:2.5s;--t:7.7s;--s:3px"></i><i class="tfx-ember" style="--x:65%;--d:3.3s;--t:8.6s;--s:5px"></i><i class="tfx-ember" style="--x:6%;--d:4.1s;--t:5.5s;--s:7px"></i><i class="tfx-ember" style="--x:43%;--d:5.0s;--t:6.4s;--s:3px"></i><i class="tfx-ember" style="--x:80%;--d:5.8s;--t:7.3s;--s:5px"></i><i class="tfx-ember" style="--x:21%;--d:0.6s;--t:8.2s;--s:7px"></i><i class="tfx-ember" style="--x:58%;--d:1.5s;--t:5.1s;--s:3px"></i><i class="tfx-ember" style="--x:95%;--d:2.3s;--t:6.0s;--s:5px"></i><i class="tfx-ember" style="--x:36%;--d:3.1s;--t:6.9s;--s:7px"></i><i class="tfx-ember" style="--x:73%;--d:4.0s;--t:7.8s;--s:3px"></i><i class="tfx-ember" style="--x:14%;--d:4.8s;--t:8.7s;--s:5px"></i><i class="tfx-ember" style="--x:51%;--d:5.6s;--t:5.6s;--s:7px"></i><i class="tfx-ember" style="--x:88%;--d:0.4s;--t:6.5s;--s:3px"></i></div><div class="tfx tfx--chapelet"><div class="tfx-rosary"><span class="tfx-bead" style="--a:0deg;--d:0.0s"></span><span class="tfx-bead" style="--a:30deg;--d:0.4s"></span><span class="tfx-bead" style="--a:60deg;--d:0.8s"></span><span class="tfx-bead" style="--a:90deg;--d:1.2s"></span><span class="tfx-bead" style="--a:120deg;--d:1.6s"></span><span class="tfx-bead" style="--a:150deg;--d:2.0s"></span><span class="tfx-bead" style="--a:180deg;--d:2.4s"></span><span class="tfx-bead" style="--a:210deg;--d:2.8s"></span><span class="tfx-bead" style="--a:240deg;--d:3.2s"></span><span class="tfx-bead" style="--a:270deg;--d:3.6s"></span><span class="tfx-bead" style="--a:300deg;--d:4.0s"></span><span class="tfx-bead" style="--a:330deg;--d:4.4s"></span></div></div><div class="tfx tfx--plume"><div class="tfx-wipe" style="--d:0s"><div class="tfx-wa"><div class="tfx-wb"><svg viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice"><path d="M10 30 C40 10 70 50 100 28 S150 8 180 30 S240 46 290 24"/></svg></div></div></div><div class="tfx-wipe" style="--d:1.6s"><div class="tfx-wa"><div class="tfx-wb"><svg viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice"><path d="M10 70 C45 52 75 88 110 66 S170 50 205 70 S255 86 290 66"/></svg></div></div></div><div class="tfx-wipe" style="--d:3.2s"><div class="tfx-wa"><div class="tfx-wb"><svg viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice"><path d="M10 110 C50 92 80 128 120 106 S175 90 215 110 S260 124 290 106"/></svg></div></div></div><div class="tfx-glyphs"><span style="--d:1.2s;left:8%;top:15.7%">❦</span><span style="--d:2.8s;left:76.7%;top:42.9%">✎</span><span style="--d:4.4s;left:13.3%;top:71%">§</span></div></div><div class="tfx tfx--sceau"><div class="tfx-sfill"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="84"/></svg></div><div class="tfx-swipe" style="--d:0s"><div class="tfx-wa"><div class="tfx-wb"><svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><circle cx="100" cy="100" r="84"/></svg></div></div></div><div class="tfx-swipe" style="--d:1.2s"><div class="tfx-wa"><div class="tfx-wb"><svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><path d="M100 28 L162 64 L162 136 L100 172 L38 136 L38 64 Z"/></svg></div></div></div><div class="tfx-swipe" style="--d:2.4s"><div class="tfx-wa"><div class="tfx-wb"><svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><path d="M100 48 L152 138 L48 138 Z"/></svg></div></div></div></div><div class="tfx tfx--epee"><div class="tfx-halo"></div><div class="tfx-blade"></div><div class="tfx-flare"></div></div><div class="tfx tfx--chercheur"><i class="tfx-mote" style="--x:10%;--y:17%;--s:4px;--t:7.0s;--d:0.0s"></i><i class="tfx-mote" style="--x:39%;--y:64%;--s:5px;--t:8.3s;--d:7.3s"></i><i class="tfx-mote" style="--x:68%;--y:23%;--s:5px;--t:9.6s;--d:5.6s"></i><i class="tfx-mote" style="--x:5%;--y:70%;--s:4px;--t:10.9s;--d:3.9s"></i><i class="tfx-mote" style="--x:34%;--y:29%;--s:5px;--t:7.2s;--d:2.2s"></i><i class="tfx-mote" style="--x:63%;--y:76%;--s:5px;--t:8.5s;--d:0.5s"></i><i class="tfx-mote" style="--x:92%;--y:35%;--s:4px;--t:9.8s;--d:7.8s"></i><i class="tfx-mote" style="--x:29%;--y:82%;--s:5px;--t:11.1s;--d:6.1s"></i><i class="tfx-mote" style="--x:58%;--y:41%;--s:5px;--t:7.4s;--d:4.4s"></i><i class="tfx-mote" style="--x:87%;--y:88%;--s:4px;--t:8.7s;--d:2.7s"></i><i class="tfx-mote" style="--x:24%;--y:47%;--s:5px;--t:10.0s;--d:1.0s"></i><i class="tfx-mote" style="--x:53%;--y:6%;--s:5px;--t:11.3s;--d:8.3s"></i></div><div class="tfx tfx--scribe"><div class="tfx-ruled"></div><div class="tfx-margin"></div></div><div class="tfx tfx--leuzh"><div class="tfx-candle tfx-candle--l"></div><div class="tfx-candle tfx-candle--r"></div></div><div class="tfx tfx--etoiles"><div class="tfx-const"><i class="tfx-link" style="--x:10%;--y:70%;--len:35.0;--a:-59.0deg;--d:0.0s"></i><i class="tfx-link" style="--x:28%;--y:40%;--len:22.7;--a:41.4deg;--d:1.3s"></i><i class="tfx-link" style="--x:45%;--y:55%;--len:33.5;--a:-63.4deg;--d:2.6s"></i><i class="tfx-link" style="--x:60%;--y:25%;--len:26.9;--a:48.0deg;--d:3.9s"></i><i class="tfx-link" style="--x:78%;--y:45%;--len:31.6;--a:-71.6deg;--d:5.2s"></i><i class="tfx-link" style="--x:88%;--y:15%;--len:65.5;--a:105.9deg;--d:6.5s"></i><i class="tfx-star" style="--x:10%;--y:70%;--t:3.00s;--d:0.0s"></i><i class="tfx-star" style="--x:28%;--y:40%;--t:3.45s;--d:-0.6s"></i><i class="tfx-star" style="--x:45%;--y:55%;--t:3.90s;--d:-1.2s"></i><i class="tfx-star" style="--x:60%;--y:25%;--t:4.35s;--d:-1.8s"></i><i class="tfx-star" style="--x:78%;--y:45%;--t:4.80s;--d:-2.4s"></i><i class="tfx-star" style="--x:88%;--y:15%;--t:5.25s;--d:-3.0s"></i><i class="tfx-star" style="--x:70%;--y:78%;--t:5.70s;--d:-3.6s"></i></div></div><div class="tfx tfx--plumes"><span class="tfx-feather" style="--x:12%;--y:8;--t:17s;--d:-3s"><i></i></span><span class="tfx-feather" style="--x:32%;--y:30;--t:21s;--d:-11s"><i></i></span><span class="tfx-feather" style="--x:55%;--y:12;--t:19s;--d:-6s"><i></i></span><span class="tfx-feather" style="--x:74%;--y:40;--t:23s;--d:-15s"><i></i></span><span class="tfx-feather" style="--x:90%;--y:20;--t:18s;--d:-9s"><i></i></span></div><div class="tfx tfx--aria"><span class="tfx-eyes" style="--x:5%;--y:44%;--t:11s;--d:-2s"><i></i><i></i></span><span class="tfx-eyes" style="--x:76%;--y:22%;--t:13s;--d:-7s"><i></i><i></i></span><span class="tfx-eyes" style="--x:58%;--y:91%;--t:12s;--d:-4s"><i></i><i></i></span></div><div class="tfx tfx--couronne"><div class="tfx-weave tfx-weave--a"></div><div class="tfx-weave tfx-weave--b"></div></div><div class="tfx tfx--fnaf"><div class="tfx-scan"></div><div class="tfx-rec"><i></i>REC</div></div><div class="tfx tfx--pokemon"><span class="tfx-ball" style="--x:10%;--y:70%;--t:19s;--d:-4s"></span><span class="tfx-ball" style="--x:30%;--y:45%;--t:23s;--d:-13s"></span><span class="tfx-ball" style="--x:52%;--y:60%;--t:21s;--d:-8s"></span><span class="tfx-ball" style="--x:72%;--y:35%;--t:25s;--d:-18s"></span><span class="tfx-ball" style="--x:90%;--y:55%;--t:20s;--d:-11s"></span></div><div class="tfx tfx--complet"><div class="soul-aurora soul-aurora--a"></div><div class="soul-aurora soul-aurora--b"></div><div class="soul-aurora soul-aurora--c"></div><div class="soul-galaxy"><svg viewBox="0 0 200 200" aria-hidden="true"><defs><radialGradient id="soulCore"><stop offset="0" stop-color="#fff6dc" stop-opacity=".9"/><stop offset=".25" stop-color="#ffd98a" stop-opacity=".35"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient></defs><g fill="none" stroke-linecap="round"><path d="M105.0 100.0 L105.1 101.1 L105.0 102.2 L104.6 103.3 L104.0 104.4 L103.1 105.3 L102.0 106.1 L100.7 106.7 L99.3 107.0 L97.7 106.9 L96.2 106.6 L94.7 105.9 L93.3 104.9 L92.1 103.5 L91.2 101.9 L90.6 100.0 L90.4 98.0 L90.7 95.9 L91.4 93.8 L92.6 91.8 L94.2 90.0 L96.3 88.5 L98.7 87.5 L101.4 87.0 L104.2 87.0 L107.1 87.7 L109.9 89.0 L112.5 90.9 L114.8 93.4 L116.5 96.5 L117.6 100.0 L117.9 103.8 L117.5 107.8 L116.1 111.7 L113.9 115.4 L110.8 118.8 L107.0 121.5 L102.5 123.4 L97.4 124.4 L92.1 124.4 L86.6 123.1 L81.4 120.7 L76.5 117.1 L72.3 112.3 L69.1 106.6 L67.1 100.0 L66.4 92.9 L67.3 85.4 L69.8 78.1 L73.9 71.1 L79.7 64.8 L86.9 59.7 L95.4 56.1 L104.8 54.2 L114.8 54.3 L125.0 56.6 L134.9 61.2 L144.0 68.0 L151.9 76.9 L157.9 87.7 L161.7 100.0" stroke="#b48cff" stroke-width="9" opacity=".10"/><path d="M105.0 100.0 L105.1 101.1 L105.0 102.2 L104.6 103.3 L104.0 104.4 L103.1 105.3 L102.0 106.1 L100.7 106.7 L99.3 107.0 L97.7 106.9 L96.2 106.6 L94.7 105.9 L93.3 104.9 L92.1 103.5 L91.2 101.9 L90.6 100.0 L90.4 98.0 L90.7 95.9 L91.4 93.8 L92.6 91.8 L94.2 90.0 L96.3 88.5 L98.7 87.5 L101.4 87.0 L104.2 87.0 L107.1 87.7 L109.9 89.0 L112.5 90.9 L114.8 93.4 L116.5 96.5 L117.6 100.0 L117.9 103.8 L117.5 107.8 L116.1 111.7 L113.9 115.4 L110.8 118.8 L107.0 121.5 L102.5 123.4 L97.4 124.4 L92.1 124.4 L86.6 123.1 L81.4 120.7 L76.5 117.1 L72.3 112.3 L69.1 106.6 L67.1 100.0 L66.4 92.9 L67.3 85.4 L69.8 78.1 L73.9 71.1 L79.7 64.8 L86.9 59.7 L95.4 56.1 L104.8 54.2 L114.8 54.3 L125.0 56.6 L134.9 61.2 L144.0 68.0 L151.9 76.9 L157.9 87.7 L161.7 100.0" stroke="#b48cff" stroke-width="4.5" opacity=".16"/><path d="M105.0 100.0 L105.1 101.1 L105.0 102.2 L104.6 103.3 L104.0 104.4 L103.1 105.3 L102.0 106.1 L100.7 106.7 L99.3 107.0 L97.7 106.9 L96.2 106.6 L94.7 105.9 L93.3 104.9 L92.1 103.5 L91.2 101.9 L90.6 100.0 L90.4 98.0 L90.7 95.9 L91.4 93.8 L92.6 91.8 L94.2 90.0 L96.3 88.5 L98.7 87.5 L101.4 87.0 L104.2 87.0 L107.1 87.7 L109.9 89.0 L112.5 90.9 L114.8 93.4 L116.5 96.5 L117.6 100.0 L117.9 103.8 L117.5 107.8 L116.1 111.7 L113.9 115.4 L110.8 118.8 L107.0 121.5 L102.5 123.4 L97.4 124.4 L92.1 124.4 L86.6 123.1 L81.4 120.7 L76.5 117.1 L72.3 112.3 L69.1 106.6 L67.1 100.0 L66.4 92.9 L67.3 85.4 L69.8 78.1 L73.9 71.1 L79.7 64.8 L86.9 59.7 L95.4 56.1 L104.8 54.2 L114.8 54.3 L125.0 56.6 L134.9 61.2 L144.0 68.0 L151.9 76.9 L157.9 87.7 L161.7 100.0" stroke="#fff3d6" stroke-width="1.4" opacity=".34"/><path d="M95.0 100.0 L94.9 98.9 L95.0 97.8 L95.4 96.7 L96.0 95.6 L96.9 94.7 L98.0 93.9 L99.3 93.3 L100.7 93.0 L102.3 93.1 L103.8 93.4 L105.3 94.1 L106.7 95.1 L107.9 96.5 L108.8 98.1 L109.4 100.0 L109.6 102.0 L109.3 104.1 L108.6 106.2 L107.4 108.2 L105.8 110.0 L103.7 111.5 L101.3 112.5 L98.6 113.0 L95.8 113.0 L92.9 112.3 L90.1 111.0 L87.5 109.1 L85.2 106.6 L83.5 103.5 L82.4 100.0 L82.1 96.2 L82.5 92.2 L83.9 88.3 L86.1 84.6 L89.2 81.2 L93.0 78.5 L97.5 76.6 L102.6 75.6 L107.9 75.6 L113.4 76.9 L118.6 79.3 L123.5 82.9 L127.7 87.7 L130.9 93.4 L132.9 100.0 L133.6 107.1 L132.7 114.6 L130.2 121.9 L126.1 128.9 L120.3 135.2 L113.1 140.3 L104.6 143.9 L95.2 145.8 L85.2 145.7 L75.0 143.4 L65.1 138.8 L56.0 132.0 L48.1 123.1 L42.1 112.3 L38.3 100.0" stroke="#8ab4ff" stroke-width="9" opacity=".10"/><path d="M95.0 100.0 L94.9 98.9 L95.0 97.8 L95.4 96.7 L96.0 95.6 L96.9 94.7 L98.0 93.9 L99.3 93.3 L100.7 93.0 L102.3 93.1 L103.8 93.4 L105.3 94.1 L106.7 95.1 L107.9 96.5 L108.8 98.1 L109.4 100.0 L109.6 102.0 L109.3 104.1 L108.6 106.2 L107.4 108.2 L105.8 110.0 L103.7 111.5 L101.3 112.5 L98.6 113.0 L95.8 113.0 L92.9 112.3 L90.1 111.0 L87.5 109.1 L85.2 106.6 L83.5 103.5 L82.4 100.0 L82.1 96.2 L82.5 92.2 L83.9 88.3 L86.1 84.6 L89.2 81.2 L93.0 78.5 L97.5 76.6 L102.6 75.6 L107.9 75.6 L113.4 76.9 L118.6 79.3 L123.5 82.9 L127.7 87.7 L130.9 93.4 L132.9 100.0 L133.6 107.1 L132.7 114.6 L130.2 121.9 L126.1 128.9 L120.3 135.2 L113.1 140.3 L104.6 143.9 L95.2 145.8 L85.2 145.7 L75.0 143.4 L65.1 138.8 L56.0 132.0 L48.1 123.1 L42.1 112.3 L38.3 100.0" stroke="#8ab4ff" stroke-width="4.5" opacity=".16"/><path d="M95.0 100.0 L94.9 98.9 L95.0 97.8 L95.4 96.7 L96.0 95.6 L96.9 94.7 L98.0 93.9 L99.3 93.3 L100.7 93.0 L102.3 93.1 L103.8 93.4 L105.3 94.1 L106.7 95.1 L107.9 96.5 L108.8 98.1 L109.4 100.0 L109.6 102.0 L109.3 104.1 L108.6 106.2 L107.4 108.2 L105.8 110.0 L103.7 111.5 L101.3 112.5 L98.6 113.0 L95.8 113.0 L92.9 112.3 L90.1 111.0 L87.5 109.1 L85.2 106.6 L83.5 103.5 L82.4 100.0 L82.1 96.2 L82.5 92.2 L83.9 88.3 L86.1 84.6 L89.2 81.2 L93.0 78.5 L97.5 76.6 L102.6 75.6 L107.9 75.6 L113.4 76.9 L118.6 79.3 L123.5 82.9 L127.7 87.7 L130.9 93.4 L132.9 100.0 L133.6 107.1 L132.7 114.6 L130.2 121.9 L126.1 128.9 L120.3 135.2 L113.1 140.3 L104.6 143.9 L95.2 145.8 L85.2 145.7 L75.0 143.4 L65.1 138.8 L56.0 132.0 L48.1 123.1 L42.1 112.3 L38.3 100.0" stroke="#fff3d6" stroke-width="1.4" opacity=".34"/></g><circle cx="100" cy="100" r="30" fill="url(#soulCore)"/></svg></div><div class="soul-halo"></div><div class="soul-ring soul-ring--a"></div><div class="soul-ring soul-ring--b"></div><div class="soul-stars soul-stars--1"></div><div class="soul-stars soul-stars--2"></div><div class="soul-comet"></div></div><div class="tfx tfx--complet"><div class="tfx-nebula tfx-nebula--a"></div><div class="tfx-nebula tfx-nebula--b"></div><div class="tfx-nebula tfx-nebula--c"></div><div class="tfx-ray tfx-ray--l"></div><div class="tfx-ray tfx-ray--r"></div><div class="tfx-field tfx-field--a"></div><div class="tfx-field tfx-field--b"></div><div class="tfx-dial tfx-dial--a"></div><div class="tfx-dial tfx-dial--b"></div></div></div>
 
   <div id="artifact-fx" aria-hidden="true"></div>
+
+  <!-- Réglages immersifs : utilise le gestionnaire de modales commun. -->
+  <div class="modal" id="modal-immersif" role="dialog" aria-modal="true" aria-labelledby="title-immersif" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="title-immersif">✧ Mode immersif</h2><button class="close-modal" type="button" aria-label="Fermer la fenêtre">×</button></div>
+      <div class="modal-content">
+        <p>Régle la profondeur et les lueurs de l’univers. Les changements prennent effet lorsque tu appuies sur « Appliquer ».</p>
+        <div class="immersive-control"><label for="immersive-depth">Profondeur <output class="immersive-value" id="immersive-depth-value" for="immersive-depth">50 %</output></label><input id="immersive-depth" type="range" min="0" max="100" step="1" value="50"></div>
+        <div class="immersive-control"><label for="immersive-particles">Intensité des particules <output class="immersive-value" id="immersive-particles-value" for="immersive-particles">45 %</output></label><input id="immersive-particles" type="range" min="0" max="100" step="1" value="45"></div>
+        <div class="immersive-control"><label for="immersive-speed">Vitesse des animations <output class="immersive-value" id="immersive-speed-value" for="immersive-speed">100 %</output></label><input id="immersive-speed" type="range" min="50" max="150" step="5" value="100"></div>
+        <fieldset class="immersive-control"><legend>Capteurs du téléphone</legend><label class="immersive-check" for="immersive-orientation"><input id="immersive-orientation" type="checkbox"><span>Utiliser l’orientation de l’appareil si elle est disponible et autorisée.</span></label><small>Sans capteur, un mouvement de pointeur sur ordinateur fournit un effet léger.</small></fieldset>
+        <p id="immersive-status" role="status" aria-live="polite"></p>
+        <div class="immersive-actions"><button class="immersive-action immersive-action--primary" id="immersive-apply" type="button">Appliquer</button><button class="immersive-action" id="immersive-reset" type="button">Réinitialiser</button><button class="immersive-action immersive-action--danger" id="immersive-disable" type="button">Désactiver le mode</button></div>
+      </div>
+    </section>
+  </div>
 
   <!-- Fenêtre : Quelques faits sur moi -->
   <div class="modal" id="modal-faits" role="dialog" aria-modal="true" aria-labelledby="title-faits" aria-hidden="true">
@@ -1664,6 +1710,209 @@
         }
       }
 
+      // Mode immersif : réglages isolés des autres sauvegardes et effets actifs uniquement après validation.
+      const immersiveStorageKey = "lipoip-immersive-settings-v1";
+      const immersiveDefaults = { enabled:false, depth:50, particles:45, speed:100, orientation:false };
+      const immersiveLayerNodes = [...document.querySelectorAll("[data-immersive-layer]")];
+      const immersiveAtmosphere = document.getElementById("immersive-atmosphere");
+      const immersiveMotes = [...document.querySelectorAll(".immersive-mote")];
+      const immersiveStatus = document.getElementById("immersive-status");
+      const immersiveControls = {
+        depth: document.getElementById("immersive-depth"),
+        particles: document.getElementById("immersive-particles"),
+        speed: document.getElementById("immersive-speed"),
+        orientation: document.getElementById("immersive-orientation")
+      };
+      const immersiveOutputs = {
+        depth: document.getElementById("immersive-depth-value"),
+        particles: document.getElementById("immersive-particles-value"),
+        speed: document.getElementById("immersive-speed-value")
+      };
+      const clampImmersive = (value, min, max, fallback) => {
+        const number = Number(value);
+        return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+      };
+      function readImmersiveSettings() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(immersiveStorageKey) || "null");
+          if (!saved || typeof saved !== "object") return { ...immersiveDefaults };
+          return {
+            enabled: saved.enabled === true,
+            depth: clampImmersive(saved.depth, 0, 100, immersiveDefaults.depth),
+            particles: clampImmersive(saved.particles, 0, 100, immersiveDefaults.particles),
+            speed: clampImmersive(saved.speed, 50, 150, immersiveDefaults.speed),
+            orientation: saved.orientation === true
+          };
+        } catch (_) { return { ...immersiveDefaults }; }
+      }
+      let immersiveSettings = readImmersiveSettings();
+      let immersiveDraft = { ...immersiveSettings };
+      let immersivePointerHandler = null;
+      let immersiveOrientationHandler = null;
+      let immersiveOrientationActive = false;
+      let immersiveMotionQuery = null;
+      let immersiveMotionChangeHandler = null;
+      let immersiveRunId = 0;
+      const immersiveReducedMotion = () => !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      function saveImmersiveSettings() {
+        try { localStorage.setItem(immersiveStorageKey, JSON.stringify(immersiveSettings)); } catch (_) {
+          if (immersiveStatus) immersiveStatus.textContent = "Le navigateur n’a pas pu enregistrer les réglages sur cet appareil.";
+        }
+      }
+      function showImmersiveDraft() {
+        ["depth", "particles", "speed"].forEach(key => {
+          const value = Number(immersiveControls[key].value);
+          immersiveDraft[key] = value;
+          immersiveOutputs[key].value = `${value} %`;
+          immersiveOutputs[key].textContent = `${value} %`;
+        });
+        immersiveDraft.orientation = immersiveControls.orientation.checked;
+      }
+      function fillImmersiveControls(settings) {
+        ["depth", "particles", "speed"].forEach(key => {
+          immersiveControls[key].value = String(settings[key]);
+          immersiveOutputs[key].value = `${settings[key]} %`;
+          immersiveOutputs[key].textContent = `${settings[key]} %`;
+        });
+        immersiveControls.orientation.checked = settings.orientation;
+        immersiveDraft = { ...settings };
+      }
+      function stopImmersiveInput() {
+        immersiveRunId += 1;
+        if (immersivePointerHandler) window.removeEventListener("pointermove", immersivePointerHandler);
+        if (immersiveOrientationHandler) window.removeEventListener("deviceorientation", immersiveOrientationHandler);
+        if (immersiveMotionQuery && immersiveMotionChangeHandler) {
+          if (immersiveMotionQuery.removeEventListener) immersiveMotionQuery.removeEventListener("change", immersiveMotionChangeHandler);
+          else if (immersiveMotionQuery.removeListener) immersiveMotionQuery.removeListener(immersiveMotionChangeHandler);
+        }
+        immersivePointerHandler = null;
+        immersiveOrientationHandler = null;
+        immersiveMotionQuery = null;
+        immersiveMotionChangeHandler = null;
+        immersiveOrientationActive = false;
+      }
+      function clearImmersiveEffects() {
+        document.body.classList.remove("immersive-active", "immersive-reduced");
+        immersiveLayerNodes.forEach(node => {
+          node.style.removeProperty("--immersive-x");
+          node.style.removeProperty("--immersive-y");
+          node.style.removeProperty("--immersive-scale");
+        });
+        immersiveMotes.forEach(mote => {
+          mote.style.removeProperty("opacity");
+          mote.style.removeProperty("animation-duration");
+          mote.style.removeProperty("animation-play-state");
+        });
+        if (immersiveAtmosphere) immersiveAtmosphere.style.removeProperty("--immersive-particle-opacity");
+      }
+      function setImmersiveMotion(x, y) {
+        if (immersiveReducedMotion()) { x = 0; y = 0; }
+        const strength = immersiveSettings.depth / 100;
+        immersiveLayerNodes.forEach(node => {
+          const layer = Number(node.dataset.immersiveLayer) || 1;
+          const distance = strength * layer * 7;
+          node.style.setProperty("--immersive-x", `${(x * distance).toFixed(2)}px`);
+          node.style.setProperty("--immersive-y", `${(y * distance).toFixed(2)}px`);
+          node.style.setProperty("--immersive-scale", (1 + strength * layer * .002).toFixed(4));
+        });
+      }
+      function attachImmersiveInput(requestSensorPermission) {
+        stopImmersiveInput();
+        if (!immersiveSettings.enabled) return;
+        const runId = immersiveRunId;
+        immersiveMotionQuery = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+        if (immersiveMotionQuery) {
+          immersiveMotionChangeHandler = event => {
+            document.body.classList.toggle("immersive-reduced", event.matches);
+            if (event.matches) {
+              if (immersivePointerHandler) window.removeEventListener("pointermove", immersivePointerHandler);
+              if (immersiveOrientationHandler) window.removeEventListener("deviceorientation", immersiveOrientationHandler);
+              immersivePointerHandler = null;
+              immersiveOrientationHandler = null;
+              immersiveOrientationActive = false;
+              setImmersiveMotion(0, 0);
+            }
+            else attachImmersiveInput(false);
+          };
+          if (immersiveMotionQuery.addEventListener) immersiveMotionQuery.addEventListener("change", immersiveMotionChangeHandler);
+          else if (immersiveMotionQuery.addListener) immersiveMotionQuery.addListener(immersiveMotionChangeHandler);
+        }
+        if (immersiveReducedMotion()) return;
+        immersivePointerHandler = event => {
+          if (event.pointerType === "touch" || immersiveOrientationActive) return;
+          const width = Math.max(1, window.innerWidth);
+          const height = Math.max(1, window.innerHeight);
+          setImmersiveMotion((event.clientX / width - .5) * 2, (event.clientY / height - .5) * 2);
+        };
+        window.addEventListener("pointermove", immersivePointerHandler, { passive:true });
+        if (!immersiveSettings.orientation) return;
+        const Orientation = window.DeviceOrientationEvent;
+        if (!Orientation) {
+          if (immersiveStatus) immersiveStatus.textContent = "Capteur indisponible : les effets restent statiques ou suivent le pointeur.";
+          return;
+        }
+        const startOrientation = () => {
+          if (!immersiveSettings.enabled || runId !== immersiveRunId || immersiveReducedMotion()) return;
+          immersiveOrientationHandler = event => {
+            if (!Number.isFinite(event.beta) || !Number.isFinite(event.gamma)) return;
+            immersiveOrientationActive = true;
+            setImmersiveMotion(Math.max(-1, Math.min(1, event.gamma / 35)), Math.max(-1, Math.min(1, event.beta / 45)));
+          };
+          window.addEventListener("deviceorientation", immersiveOrientationHandler, { passive:true });
+        };
+        if (requestSensorPermission && typeof Orientation.requestPermission === "function") {
+          Orientation.requestPermission().then(result => {
+            if (runId !== immersiveRunId || !immersiveSettings.enabled) return;
+            if (result === "granted") { startOrientation(); if (immersiveStatus) immersiveStatus.textContent = "Capteur d’orientation autorisé."; }
+            else if (immersiveStatus) immersiveStatus.textContent = "Autorisation refusée : le pointeur reste disponible sur ordinateur.";
+          }).catch(() => { if (immersiveStatus) immersiveStatus.textContent = "Capteur non autorisé : le pointeur reste disponible sur ordinateur."; });
+        } else startOrientation();
+      }
+      function activateImmersive(requestSensorPermission) {
+        immersiveSettings.enabled = true;
+        document.body.classList.add("immersive-active");
+        document.body.classList.toggle("immersive-reduced", immersiveReducedMotion());
+        if (immersiveAtmosphere) immersiveAtmosphere.style.setProperty("--immersive-particle-opacity", String(immersiveSettings.particles / 100));
+        immersiveMotes.forEach(mote => {
+          const baseDuration = Number.parseFloat(getComputedStyle(mote).getPropertyValue("--mt")) || 10;
+          mote.style.animationDuration = `${(baseDuration * 100 / immersiveSettings.speed).toFixed(2)}s`;
+          mote.style.opacity = String(immersiveSettings.particles / 100);
+          mote.style.animationPlayState = immersiveSettings.particles === 0 ? "paused" : "running";
+        });
+        attachImmersiveInput(requestSensorPermission);
+        if (immersiveReducedMotion() && immersiveStatus) immersiveStatus.textContent = "Mouvement réduit activé par les préférences de l’appareil ; les animations sont suspendues.";
+        else if (immersiveStatus && !immersiveSettings.orientation) immersiveStatus.textContent = "Mode immersif actif.";
+      }
+      function deactivateImmersive(persist = true) {
+        stopImmersiveInput();
+        clearImmersiveEffects();
+        immersiveSettings.enabled = false;
+        if (persist) saveImmersiveSettings();
+      }
+      function applyImmersiveSettings(requestSensorPermission = true) {
+        showImmersiveDraft();
+        immersiveSettings = { ...immersiveDraft, enabled:true };
+        activateImmersive(requestSensorPermission);
+        saveImmersiveSettings();
+      }
+      fillImmersiveControls(immersiveSettings);
+      Object.values(immersiveControls).forEach(control => control.addEventListener("input", showImmersiveDraft));
+      document.getElementById("immersive-apply")?.addEventListener("click", () => applyImmersiveSettings(true));
+      document.getElementById("immersive-reset")?.addEventListener("click", () => {
+        const shouldStayEnabled = immersiveSettings.enabled;
+        immersiveSettings = { ...immersiveDefaults, enabled:shouldStayEnabled };
+        fillImmersiveControls(immersiveSettings);
+        if (shouldStayEnabled) activateImmersive(false);
+        saveImmersiveSettings();
+        if (immersiveStatus) immersiveStatus.textContent = "Réglages réinitialisés.";
+      });
+      document.getElementById("immersive-disable")?.addEventListener("click", () => {
+        deactivateImmersive(true);
+        fillImmersiveControls(immersiveSettings);
+        if (immersiveStatus) immersiveStatus.textContent = "Mode immersif désactivé.";
+      });
+      if (immersiveSettings.enabled) activateImmersive(false);
+
       // Registre des secrets : chaque découverte est conservée sur cet appareil.
       const secretIds = ["cie-livre", "cie-etoiles", "cie-gardien", "cie-plumes", "cie-archive", "folie", "aria", "lipoip", "leuzh", "couronne", "konami", "boulder-dash", "babel", "zodiaque", "fnaf", "pokemon", "portes"];
       const secretStorageKey = "lipoip-secret-registry-v1";
@@ -1984,6 +2233,7 @@
         link.addEventListener("click", event => {
           event.preventDefault();
           openModal(link.dataset.modal);
+          if (link.dataset.modal === "immersif") return;
           if (link.dataset.modal === "cie-archive") markSecret("cie-archive");
           trackMainVisit(link.dataset.modal);
           trackSequence(link.dataset.modal);
