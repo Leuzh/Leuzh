@@ -1058,6 +1058,7 @@
     @media (prefers-reduced-motion: reduce) { body[data-equipped-title="complet"] .symbol { animation:none; } }
   </style>
   <link rel="stylesheet" href="game-library.css">
+  <link rel="stylesheet" href="nexus/presentation.css">
 </head>
 
 <body>
@@ -1086,6 +1087,7 @@
     <a href="#reseaux" data-modal="reseaux">Mes réseaux</a>
     <a href="#faits" data-modal="faits">Quelques faits sur moi</a>
     <a href="#bibliotheque" data-modal="bibliotheque">Bibliothèque</a>
+    <a href="#nexus" data-modal="nexus">NEXUS</a>
   </nav>
 
   <main>
@@ -1121,6 +1123,22 @@
           <div class="game-library-grid" id="game-library-grid"></div>
           <noscript><p>Active JavaScript pour parcourir la bibliothèque et ouvrir ses jeux.</p></noscript>
         </section>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="modal-nexus" role="dialog" aria-modal="true" aria-labelledby="nexus-presentation-title" aria-hidden="true">
+    <section class="modal-window">
+      <div class="modal-header"><h2 class="modal-title" id="nexus-presentation-title">✧ NEXUS Ambient Display</h2><button class="close-modal" type="button" aria-label="Fermer la présentation de NEXUS">×</button></div>
+      <div class="modal-content nexus-presentation">
+        <p class="nexus-presentation-kicker">UNE EXTENSION DE L’UNIVERS LIPOIP</p>
+        <p class="nexus-presentation-lead">Un espace personnel pour habiter le temps, accorder l’atmosphère et retrouver tes fragments.</p>
+        <div class="nexus-presentation-grid">
+          <article><span aria-hidden="true">◷</span><h3>Un tableau vivant</h3><p>Horloge, atmosphère, énergie, musique locale et fragments réunis dans un même espace.</p></article>
+          <article><span aria-hidden="true">✧</span><h3>À ton image</h3><p>Widgets, dispositions et thèmes pensés pour évoluer avec ton usage, sur téléphone comme sur ordinateur.</p></article>
+          <article><span aria-hidden="true">☾</span><h3>Présent, même hors ligne</h3><p>NEXUS est conçu pour garder ses outils locaux disponibles sans réseau et actualiser la météo lorsqu’une connexion est présente.</p></article>
+        </div>
+        <a class="nexus-presentation-launch" href="nexus/">Ouvrir NEXUS <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </div>
@@ -2248,7 +2266,7 @@
         link.addEventListener("click", event => {
           event.preventDefault();
           openModal(link.dataset.modal);
-          if (link.dataset.modal === "immersif") return;
+          if (link.dataset.modal === "immersif" || link.dataset.modal === "nexus") return;
           if (link.dataset.modal === "cie-archive") markSecret("cie-archive");
           trackMainVisit(link.dataset.modal);
           trackSequence(link.dataset.modal);

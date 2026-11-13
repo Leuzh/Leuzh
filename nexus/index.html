@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10091d">
+  <meta name="description" content="NEXUS Ambient Display, un tableau de bord personnel de l’univers Lipoip.">
+  <title>NEXUS Ambient Display · Lipoip</title>
+  <link rel="stylesheet" href="./nexus.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <main class="nexus-shell">
+    <header class="nexus-topbar">
+      <a class="nexus-brand" href="../" aria-label="Retour au site Lipoip">
+        <span class="nexus-mark" aria-hidden="true">✧</span>
+        <span><strong>NEXUS</strong><small>AMBIENT DISPLAY</small></span>
+      </a>
+      <div class="nexus-top-actions">
+        <a class="nexus-return" href="../">← Lipoip</a>
+        <button class="nexus-control" id="settings-button" type="button" aria-label="Ouvrir les paramètres">⚙ <span>Réglages</span></button>
+        <button class="nexus-control" id="fullscreen-button" type="button" aria-label="Passer en plein écran">⛶ <span>Plein écran</span></button>
+      </div>
+    </header>
+
+    <section class="nexus-hero" aria-label="Horloge et date">
+      <div class="nexus-clock" id="nexus-clock" aria-live="off">00:00</div>
+      <div class="nexus-hero-meta">
+        <p class="nexus-eyebrow">LE TEMPS VOUS APPARTIENT</p>
+        <p class="nexus-date" id="nexus-date">Chargement…</p>
+        <span class="nexus-orbit" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="nexus-grid" id="nexus-grid" aria-label="Widgets NEXUS">
+      <article class="nexus-widget" data-widget="weather" aria-labelledby="weather-title">
+        <header class="nexus-widget-head"><h2 id="weather-title">Atmosphère</h2><span aria-hidden="true">☁</span></header>
+        <div class="nexus-weather-current">
+          <span class="nexus-widget-symbol" id="weather-symbol" aria-label="Conditions météo">◇</span>
+          <div><p class="nexus-weather-temperature" id="weather-temperature">—</p><p class="nexus-widget-state" id="weather-condition">Mesure indisponible</p></div>
+        </div>
+        <p class="nexus-weather-city" id="weather-current-city">Aucune ville sélectionnée</p>
+        <div class="nexus-weather-data" id="weather-data" hidden>
+          <p>Ressenti <strong id="weather-apparent">—</strong></p>
+          <p>Vent <strong id="weather-wind">—</strong></p>
+          <p class="nexus-muted" id="weather-updated"></p>
+        </div>
+        <form class="nexus-weather-search" id="weather-search-form">
+          <label class="nexus-sr-only" for="weather-city-query">Rechercher une ville</label>
+          <input id="weather-city-query" type="search" minlength="2" maxlength="100" placeholder="Rechercher une ville" autocomplete="off">
+          <button class="nexus-small-button" type="submit">Rechercher</button>
+        </form>
+        <div class="nexus-weather-select-row">
+          <label class="nexus-sr-only" for="weather-city-results">Résultats de ville</label>
+          <select id="weather-city-results" aria-label="Choisir une ville dans les résultats" hidden></select>
+          <button class="nexus-small-button" id="weather-use-city" type="button" disabled hidden>Utiliser</button>
+        </div>
+        <div class="nexus-weather-footer"><button class="nexus-text-button" id="weather-refresh" type="button">Actualiser</button><span>Données Open-Meteo</span></div>
+        <p class="nexus-widget-feedback" id="weather-feedback" role="status" aria-live="polite">Recherche une ville pour afficher la météo.</p>
+      </article>
+
+      <article class="nexus-widget" data-widget="battery" aria-labelledby="battery-title">
+        <header class="nexus-widget-head"><h2 id="battery-title">Énergie</h2><span aria-hidden="true">⌁</span></header>
+        <div class="nexus-battery-line"><strong id="battery-value">—</strong><div class="nexus-battery" id="battery-meter" role="meter" aria-label="Niveau de batterie" aria-valuemin="0" aria-valuemax="100" aria-valuetext="Informations indisponibles"><span class="nexus-battery-fill" id="battery-fill"></span></div></div>
+        <p class="nexus-widget-feedback" id="battery-status" role="status" aria-live="polite">Vérification de la disponibilité…</p>
+      </article>
+
+      <article class="nexus-widget" data-widget="audio" aria-labelledby="audio-title">
+        <header class="nexus-widget-head"><h2 id="audio-title">Résonance</h2><span aria-hidden="true">♫</span></header>
+        <div class="nexus-audio-preview">
+          <span class="nexus-disc" aria-hidden="true">♫</span>
+          <div class="nexus-audio-info"><p class="nexus-widget-state" id="audio-track-name">Aucun fichier sélectionné</p><p class="nexus-muted" id="audio-status">Le fichier audio reste sur cet appareil.</p></div>
+        </div>
+        <audio id="nexus-audio" preload="metadata"></audio>
+        <label class="nexus-control nexus-audio-file-label" for="audio-file">＋ Choisir un fichier audio<input id="audio-file" type="file" accept="audio/*"></label>
+        <input class="nexus-audio-seek" id="audio-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Position de lecture" disabled>
+        <div class="nexus-audio-time"><span id="audio-current-time">00:00</span><span id="audio-duration">00:00</span></div>
+        <div class="nexus-audio-controls">
+          <button class="nexus-small-button" id="audio-play" type="button" disabled>▶ Lire</button>
+          <button class="nexus-small-button" id="audio-pause" type="button" disabled>Ⅱ Pause</button>
+          <button class="nexus-small-button" id="audio-stop" type="button" disabled>■ Arrêter</button>
+          <button class="nexus-text-button" id="audio-remove" type="button" hidden>Supprimer le fichier mémorisé</button>
+        </div>
+      </article>
+
+      <article class="nexus-widget" data-widget="fragments" aria-labelledby="fragments-title">
+        <header class="nexus-widget-head"><h2 id="fragments-title">Fragments du jour</h2><span aria-hidden="true">✧</span></header>
+        <p class="nexus-fragment-preview" id="fragment-current">Chargement des fragments…</p>
+        <p class="nexus-muted" id="fragment-counter"></p>
+        <button class="nexus-small-button" id="manage-fragments" type="button">Gérer mes fragments</button>
+      </article>
+    </section>
+
+    <p class="nexus-status" id="nexus-status" role="status" aria-live="polite"></p>
+    <footer class="nexus-footer">NEXUS AMBIENT DISPLAY <span aria-hidden="true">·</span> UN ESPACE DE L’UNIVERS LIPOIP</footer>
+  </main>
+
+  <dialog class="nexus-settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+    <section class="nexus-settings-content">
+      <header class="nexus-settings-header">
+        <div><p class="nexus-eyebrow">ESPACE PERSONNEL</p><h1 id="settings-title">Réglages NEXUS</h1></div>
+        <button class="nexus-control nexus-settings-close" id="close-settings" type="button" aria-label="Fermer les réglages">×</button>
+      </header>
+      <p class="nexus-muted">Les préférences et les dispositions sont enregistrées sur cet appareil, indépendamment des données Lipoip.</p>
+
+      <section class="nexus-settings-section" aria-labelledby="display-settings-title">
+        <h2 id="display-settings-title">Affichage</h2>
+        <label class="nexus-setting-row" for="time-format">
+          <span><strong>Format de l’heure</strong><small>Choisis l’affichage de l’horloge.</small></span>
+          <select id="time-format"><option value="24">24 heures</option><option value="12">12 heures</option></select>
+        </label>
+        <div class="nexus-setting-row nexus-layout-row"><span><strong>Disposition active</strong><small>Les réglages portrait et paysage restent séparés.</small></span><span class="nexus-layout-badge" id="active-layout">Portrait</span></div>
+        <label class="nexus-setting-row" for="fragment-rotation"><span><strong>Rotation des fragments</strong><small>Affiche les citations à tour de rôle.</small></span><input class="nexus-checkbox" id="fragment-rotation" type="checkbox" checked></label>
+        <label class="nexus-setting-row" for="fragment-interval"><span><strong>Intervalle de rotation</strong><small>De 10 secondes à 5 minutes.</small></span><select id="fragment-interval"><option value="10">10 secondes</option><option value="30">30 secondes</option><option value="60">1 minute</option><option value="120">2 minutes</option><option value="300">5 minutes</option></select></label>
+      </section>
+
+      <section class="nexus-settings-section" aria-labelledby="backup-settings-title">
+        <h2 id="backup-settings-title">Sauvegarde et restauration</h2>
+        <p class="nexus-muted">L’export contient les préférences et les deux dispositions. Il ne contient aucun fichier audio.</p>
+        <div class="nexus-settings-actions">
+          <button class="nexus-control nexus-control-primary" id="export-config" type="button">Exporter JSON</button>
+          <label class="nexus-control nexus-file-label" for="import-config">Importer JSON
+            <input id="import-config" type="file" accept="application/json,.json">
+          </label>
+          <button class="nexus-control" id="reset-config" type="button">Réinitialiser</button>
+        </div>
+        <p class="nexus-settings-feedback" id="settings-feedback" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="nexus-recovery" id="recovery-panel" aria-labelledby="recovery-title" hidden>
+        <h2 id="recovery-title">Copie de récupération</h2>
+        <p class="nexus-muted" id="recovery-description">Une ancienne configuration NEXUS a été conservée car elle était illisible ou incompatible.</p>
+        <div class="nexus-settings-actions">
+          <button class="nexus-control" id="export-recovery" type="button">Télécharger la copie</button>
+          <button class="nexus-control" id="clear-recovery" type="button">Effacer la copie</button>
+        </div>
+      </section>
+    </section>
+  </dialog>
+
+  <dialog class="nexus-settings-dialog nexus-fragments-dialog" id="fragments-dialog" aria-labelledby="fragments-dialog-title">
+    <section class="nexus-settings-content">
+      <header class="nexus-settings-header">
+        <div><p class="nexus-eyebrow">COLLECTION PERSONNELLE</p><h1 id="fragments-dialog-title">Mes fragments</h1></div>
+        <button class="nexus-control nexus-settings-close" id="close-fragments" type="button" aria-label="Fermer mes fragments">×</button>
+      </header>
+      <p class="nexus-muted">Ajoute, modifie ou retire tes phrases. Elles restent enregistrées sur cet appareil.</p>
+      <form class="nexus-fragment-form" id="fragment-form">
+        <label for="fragment-text">Nouvelle phrase</label>
+        <textarea id="fragment-text" maxlength="500" rows="3" required placeholder="Écris une phrase à garder…"></textarea>
+        <p class="nexus-settings-feedback" id="fragment-form-feedback" role="status" aria-live="polite"></p>
+        <div class="nexus-settings-actions"><button class="nexus-control nexus-control-primary" id="fragment-save" type="submit">Ajouter</button><button class="nexus-control" id="fragment-cancel-edit" type="button" hidden>Annuler la modification</button></div>
+      </form>
+      <h2 class="nexus-list-title">Tes phrases</h2>
+      <ul class="nexus-fragment-list" id="fragment-list"></ul>
+    </section>
+  </dialog>
+</body>
+</html>
