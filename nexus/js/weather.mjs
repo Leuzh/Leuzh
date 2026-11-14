@@ -195,8 +195,11 @@ export function initWeatherWidget({documentRef = document, storage, getState, co
     event.preventDefault();
     const query = queryInput.value.trim();
     useCityButton.disabled = true;
+    useCityButton.hidden = true;
     resultsSelect.hidden = true;
     feedback.textContent = 'Recherche de ville…';
+    const searchButton = form.querySelector('button[type="submit"]');
+    if (searchButton) searchButton.disabled = true;
     try {
       locations = await searchLocations(query, fetchImpl);
       resultsSelect.replaceChildren();
@@ -211,10 +214,13 @@ export function initWeatherWidget({documentRef = document, storage, getState, co
         return;
       }
       resultsSelect.hidden = false;
+      useCityButton.hidden = false;
       useCityButton.disabled = false;
       feedback.textContent = `${locations.length} résultat${locations.length > 1 ? 's' : ''}. Sélectionne la ville à utiliser.`;
     } catch (error) {
       feedback.textContent = error instanceof Error ? error.message : 'La recherche de ville a échoué.';
+    } finally {
+      if (searchButton) searchButton.disabled = false;
     }
   });
 
@@ -232,6 +238,8 @@ export function initWeatherWidget({documentRef = document, storage, getState, co
     if (commit(next, `Ville météo enregistrée : ${location.name}.`)) {
       queryInput.value = location.name.split(',')[0];
       resultsSelect.hidden = true;
+      useCityButton.hidden = true;
+      useCityButton.disabled = true;
       latestCache = cacheMatches(location) ? latestCache : null;
       await refresh({force: true});
     }

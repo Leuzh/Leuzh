@@ -66,7 +66,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid #e8dcff; outline-offs
 .nexus-widget[data-layout-span="2"] { grid-column: span 2; }
 .nexus-widget-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
 .nexus-widget-head h2 { margin: 0; color: #d5c5ed; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.nexus-widget-head > span { color: var(--nexus-accent); font-size: 1.1rem; }
+.nexus-widget-head-actions > span { color: var(--nexus-accent); font-size: 1.1rem; }
 .nexus-widget-symbol { color: var(--nexus-accent); font-size: 1.8rem; line-height: 1.2; text-shadow: 0 0 18px rgba(177, 138, 255, .24); }
 .nexus-widget-state { margin: 8px 0 3px; color: var(--nexus-text); font-size: 1rem; }
 .nexus-muted { margin: 6px 0 0; color: var(--nexus-muted); font-size: .82rem; line-height: 1.55; }
@@ -119,6 +119,37 @@ a:focus-visible, button:focus-visible { outline: 2px solid #e8dcff; outline-offs
 .nexus-checkbox { width: 21px; height: 21px; accent-color: var(--nexus-accent); }
 .nexus-status { min-height: 1.5em; margin: 16px 0 0; color: var(--nexus-muted); font-size: .82rem; text-align: center; }
 .nexus-footer { padding-top: 20px; color: #827392; font-size: .65rem; letter-spacing: .14em; text-align: center; }
+
+
+/* Widget editor and per-card controls */
+.nexus-widget-head-actions { display: inline-flex; align-items: center; gap: 8px; color: var(--nexus-accent); }
+.nexus-widget-edit { display: inline-grid; width: 32px; height: 32px; place-items: center; padding: 0; border: 1px solid rgba(177, 138, 255, .25); border-radius: 10px; color: var(--nexus-text); background: rgba(177, 138, 255, .07); cursor: pointer; }
+.nexus-widget-edit:hover, .nexus-widget-edit:focus-visible { border-color: var(--nexus-accent); }
+.nexus-widget[data-layout-span="3"] { grid-column: span 3; }
+.nexus-widget[data-layout-size="compact"] { min-height: 150px; }
+.nexus-widget[data-layout-size="standard"] { min-height: 205px; }
+.nexus-widget[data-layout-size="expanded"] { min-height: 280px; }
+.nexus-widget-editor { width: min(720px, calc(100% - 24px)); }
+.nexus-widget-editor-list { display: grid; gap: 10px; margin-top: 17px; }
+.nexus-widget-editor-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 13px; border: 1px solid rgba(73, 49, 95, .75); border-radius: 15px; background: rgba(22, 14, 36, .58); }
+.nexus-widget-editor-name { display: grid; gap: 3px; min-width: 0; }
+.nexus-widget-editor-name strong { color: var(--nexus-text); font-size: .9rem; }
+.nexus-widget-editor-name small { color: var(--nexus-muted); font-size: .72rem; }
+.nexus-widget-editor-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 7px; }
+.nexus-widget-editor-controls label { display: grid; gap: 3px; color: var(--nexus-muted); font-size: .66rem; }
+.nexus-widget-editor-controls select { max-width: 116px; min-height: 38px; padding: 6px 8px; border: 1px solid rgba(177, 138, 255, .3); border-radius: 9px; color: var(--nexus-text); background: #211431; font: inherit; font-size: .75rem; }
+.nexus-widget-editor-controls .nexus-checkbox { width: 22px; height: 22px; }
+.nexus-widget-order { display: flex; gap: 4px; }
+.nexus-widget-order button { width: 34px; min-height: 38px; border: 1px solid rgba(177, 138, 255, .25); border-radius: 9px; color: var(--nexus-text); background: rgba(177, 138, 255, .07); cursor: pointer; }
+.nexus-widget-order button:disabled { opacity: .3; cursor: not-allowed; }
+.nexus-widget[hidden] { display: none !important; }
+@media (max-width: 600px) {
+  .nexus-widget-editor-row { grid-template-columns: minmax(0, 1fr); }
+  .nexus-widget-editor-controls { justify-content: flex-start; }
+}
+@media (max-width: 360px) {
+  .nexus-widget[data-layout-span="2"], .nexus-widget[data-layout-span="3"] { grid-column: auto; }
+}
 
 .nexus-settings-dialog { width: min(560px, calc(100% - 24px)); max-width: none; max-height: 88vh; max-height: min(88dvh, 800px); margin: auto; padding: 0; overflow: auto; border: 1px solid rgba(177, 138, 255, .4); border-radius: 23px; color: var(--nexus-text); background: linear-gradient(145deg, #211431, #130b20 78%); box-shadow: 0 22px 70px rgba(0, 0, 0, .55); overscroll-behavior: contain; }
 .nexus-settings-dialog::backdrop { background: rgba(5, 3, 10, .76); }

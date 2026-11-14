@@ -18,6 +18,7 @@
       </a>
       <div class="nexus-top-actions">
         <a class="nexus-return" href="../">← Lipoip</a>
+        <button class="nexus-control" id="widgets-button" type="button" aria-label="Organiser les widgets">▦ <span>Widgets</span></button>
         <button class="nexus-control" id="settings-button" type="button" aria-label="Ouvrir les paramètres">⚙ <span>Réglages</span></button>
         <button class="nexus-control" id="fullscreen-button" type="button" aria-label="Passer en plein écran">⛶ <span>Plein écran</span></button>
       </div>
@@ -34,7 +35,7 @@
 
     <section class="nexus-grid" id="nexus-grid" aria-label="Widgets NEXUS">
       <article class="nexus-widget" data-widget="weather" aria-labelledby="weather-title">
-        <header class="nexus-widget-head"><h2 id="weather-title">Atmosphère</h2><span aria-hidden="true">☁</span></header>
+        <header class="nexus-widget-head"><h2 id="weather-title">Atmosphère</h2><div class="nexus-widget-head-actions"><span aria-hidden="true">☁</span><button class="nexus-widget-edit" type="button" data-widget-edit="weather" aria-label="Régler le widget Atmosphère">⚙</button></div></header>
         <div class="nexus-weather-current">
           <span class="nexus-widget-symbol" id="weather-symbol" aria-label="Conditions météo">◇</span>
           <div><p class="nexus-weather-temperature" id="weather-temperature">—</p><p class="nexus-widget-state" id="weather-condition">Mesure indisponible</p></div>
@@ -60,13 +61,13 @@
       </article>
 
       <article class="nexus-widget" data-widget="battery" aria-labelledby="battery-title">
-        <header class="nexus-widget-head"><h2 id="battery-title">Énergie</h2><span aria-hidden="true">⌁</span></header>
+        <header class="nexus-widget-head"><h2 id="battery-title">Énergie</h2><div class="nexus-widget-head-actions"><span aria-hidden="true">⌁</span><button class="nexus-widget-edit" type="button" data-widget-edit="battery" aria-label="Régler le widget Énergie">⚙</button></div></header>
         <div class="nexus-battery-line"><strong id="battery-value">—</strong><div class="nexus-battery" id="battery-meter" role="meter" aria-label="Niveau de batterie" aria-valuemin="0" aria-valuemax="100" aria-valuetext="Informations indisponibles"><span class="nexus-battery-fill" id="battery-fill"></span></div></div>
         <p class="nexus-widget-feedback" id="battery-status" role="status" aria-live="polite">Vérification de la disponibilité…</p>
       </article>
 
       <article class="nexus-widget" data-widget="audio" aria-labelledby="audio-title">
-        <header class="nexus-widget-head"><h2 id="audio-title">Résonance</h2><span aria-hidden="true">♫</span></header>
+        <header class="nexus-widget-head"><h2 id="audio-title">Résonance</h2><div class="nexus-widget-head-actions"><span aria-hidden="true">♫</span><button class="nexus-widget-edit" type="button" data-widget-edit="audio" aria-label="Régler le widget Résonance">⚙</button></div></header>
         <div class="nexus-audio-preview">
           <span class="nexus-disc" aria-hidden="true">♫</span>
           <div class="nexus-audio-info"><p class="nexus-widget-state" id="audio-track-name">Aucun fichier sélectionné</p><p class="nexus-muted" id="audio-status">Le fichier audio reste sur cet appareil.</p></div>
@@ -84,7 +85,7 @@
       </article>
 
       <article class="nexus-widget" data-widget="fragments" aria-labelledby="fragments-title">
-        <header class="nexus-widget-head"><h2 id="fragments-title">Fragments du jour</h2><span aria-hidden="true">✧</span></header>
+        <header class="nexus-widget-head"><h2 id="fragments-title">Fragments du jour</h2><div class="nexus-widget-head-actions"><span aria-hidden="true">✧</span><button class="nexus-widget-edit" type="button" data-widget-edit="fragments" aria-label="Régler le widget Fragments du jour">⚙</button></div></header>
         <p class="nexus-fragment-preview" id="fragment-current">Chargement des fragments…</p>
         <p class="nexus-muted" id="fragment-counter"></p>
         <button class="nexus-small-button" id="manage-fragments" type="button">Gérer mes fragments</button>
@@ -94,6 +95,22 @@
     <p class="nexus-status" id="nexus-status" role="status" aria-live="polite"></p>
     <footer class="nexus-footer">NEXUS AMBIENT DISPLAY <span aria-hidden="true">·</span> UN ESPACE DE L’UNIVERS LIPOIP</footer>
   </main>
+
+  <dialog class="nexus-settings-dialog nexus-widget-editor" id="widget-editor-dialog" aria-labelledby="widget-editor-title">
+    <section class="nexus-settings-content">
+      <header class="nexus-settings-header">
+        <div><p class="nexus-eyebrow">ATELIER DU TABLEAU DE BORD</p><h1 id="widget-editor-title">Organiser les widgets</h1></div>
+        <button class="nexus-control nexus-settings-close" id="close-widget-editor" type="button" aria-label="Fermer l’éditeur">×</button>
+      </header>
+      <p class="nexus-muted">Choisis une disposition, puis règle la visibilité, la largeur, la hauteur et l’ordre de chaque widget. Les réglages portrait et paysage sont indépendants.</p>
+      <label class="nexus-setting-row" for="widget-layout-mode">
+        <span><strong>Disposition à modifier</strong><small>Tu peux préparer l’autre orientation à l’avance.</small></span>
+        <select id="widget-layout-mode"><option value="portrait">Portrait</option><option value="landscape">Paysage</option></select>
+      </label>
+      <div class="nexus-widget-editor-list" id="widget-editor-list"></div>
+      <p class="nexus-settings-feedback" id="widget-editor-feedback" role="status" aria-live="polite"></p>
+    </section>
+  </dialog>
 
   <dialog class="nexus-settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
     <section class="nexus-settings-content">

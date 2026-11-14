@@ -24,12 +24,23 @@ const importInput = document.getElementById('import-config');
 const recoveryPanel = document.getElementById('recovery-panel');
 const recoveryDescription = document.getElementById('recovery-description');
 const grid = document.getElementById('nexus-grid');
+const widgetsButton = document.getElementById('widgets-button');
+const widgetEditorDialog = document.getElementById('widget-editor-dialog');
+const closeWidgetEditorButton = document.getElementById('close-widget-editor');
+const widgetLayoutMode = document.getElementById('widget-layout-mode');
+const widgetEditorList = document.getElementById('widget-editor-list');
+const widgetEditorFeedback = document.getElementById('widget-editor-feedback');
+const widgetNames = {
+  weather: 'Atmosphère', battery: 'Énergie', audio: 'Résonance', fragments: 'Fragments du jour'
+};
+let widgetEditorOrientation = 'portrait';
 
 let storage = null;
 try { storage = window.localStorage; } catch (_) {}
 const loaded = loadState(storage);
 let state = loaded.state;
 let orientation = detectOrientation(window);
+widgetEditorOrientation = orientation;
 let clockTimer = 0;
 let fragmentsWidget = null;
 
@@ -70,7 +81,137 @@ function refreshSettings() {
   applyLayout(grid, state.layouts, orientation);
   refreshRecoveryPanel();
   fragmentsWidget?.refresh();
+  if (widgetEditorDialog?.open) renderWidgetEditor();
 }
+
+function updateWidgetLayout(widgetId, patch) {
+  const layout = state.layouts[widgetEditorOrientation];
+  const widgets = {...layout.widgets, [widgetId]: {...layout.widgets[widgetId], ...patch}};
+  const layouts = {...state.layouts, [widgetEditorOrientation]: {...layout, widgets}};
+  commit({...state, layouts}, `Réglages de ${widgetNames[widgetId]} enregistrés.`);
+}
+
+function moveWidget(widgetId, delta) {
+  const layout = state.layouts[widgetEditorOrientation];
+  const order = [...layout.order];
+  const index = order.indexOf(widgetId);
+  const target = index + delta;
+  if (index < 0 || target < 0 || target >= order.length) return;
+  [order[index], order[target]] = [order[target], order[index]];
+  const layouts = {...state.layouts, [widgetEditorOrientation]: {...layout, order}};
+  commit({...state, layouts}, `Ordre des widgets enregistré.`);
+}
+
+function makeEditorSelect(labelText, value, options, onChange) {
+  const label = document.createElement('label');
+  label.append(document.createTextNode(labelText));
+  const select = document.createElement('select');
+  for (const [optionValue, optionLabel] of options) {
+    const option = document.createElement('option');
+    option.value = optionValue;
+    option.textContent = optionLabel;
+    select.append(option);
+  }
+  select.value = String(value);
+  select.addEventListener('change', () => onChange(select.value));
+  label.append(select);
+  return label;
+}
+
+function renderWidgetEditor(focusWidget = '') {
+  if (!widgetEditorList) return;
+  widgetLayoutMode.value = widgetEditorOrientation;
+  const layout = state.layouts[widgetEditorOrientation];
+  widgetEditorList.replaceChildren();
+  for (const [index, id] of layout.order.entries()) {
+    const settings = layout.widgets[id];
+    const row = document.createElement('section');
+    row.className = 'nexus-widget-editor-row';
+    row.dataset.editorWidget = id;
+
+    const name = document.createElement('div');
+    name.className = 'nexus-widget-editor-name';
+    const title = document.createElement('strong');
+    title.textContent = widgetNames[id];
+    const hint = document.createElement('small');
+    hint.textContent = `Position ${index + 1} sur ${layout.order.length}`;
+    name.append(title, hint);
+
+    const controls = document.createElement('div');
+    controls.className = 'nexus-widget-editor-controls';
+
+    const visibilityLabel = document.createElement('label');
+    visibilityLabel.append(document.createTextNode('Visible'));
+    const visibility = document.createElement('input');
+    visibility.type = 'checkbox';
+    visibility.className = 'nexus-checkbox';
+    visibility.checked = settings.visible;
+    visibility.setAttribute('aria-label', `Afficher ${widgetNames[id]}`);
+    visibility.addEventListener('change', () => updateWidgetLayout(id, {visible: visibility.checked}));
+    visibilityLabel.append(visibility);
+
+    const maxSpan = widgetEditorOrientation === 'landscape' ? 3 : 2;
+    const widthOptions = [['1', '1 colonne'], ['2', widgetEditorOrientation === 'landscape' ? '2 colonnes' : 'Pleine largeur']];
+    if (maxSpan === 3) widthOptions.push(['3', '3 colonnes']);
+    const width = makeEditorSelect('Largeur', Math.min(settings.span, maxSpan), widthOptions,
+      value => updateWidgetLayout(id, {span: Number(value)}));
+    const height = makeEditorSelect('Hauteur', settings.size, [
+      ['compact', 'Compacte'], ['standard', 'Normale'], ['expanded', 'Étendue']
+    ], value => updateWidgetLayout(id, {size: value}));
+
+    const order = document.createElement('div');
+    order.className = 'nexus-widget-order';
+    const up = document.createElement('button');
+    up.type = 'button'; up.textContent = '↑'; up.disabled = index === 0;
+    up.setAttribute('aria-label', `Déplacer ${widgetNames[id]} vers le haut`);
+    up.addEventListener('click', () => moveWidget(id, -1));
+    const down = document.createElement('button');
+    down.type = 'button'; down.textContent = '↓'; down.disabled = index === layout.order.length - 1;
+    down.setAttribute('aria-label', `Déplacer ${widgetNames[id]} vers le bas`);
+    down.addEventListener('click', () => moveWidget(id, 1));
+    order.append(up, down);
+
+    controls.append(visibilityLabel, width, height, order);
+    row.append(name, controls);
+    widgetEditorList.append(row);
+  }
+  if (focusWidget) {
+    const row = widgetEditorList.querySelector(`[data-editor-widget="${focusWidget}"]`);
+    row?.scrollIntoView({block: 'nearest'});
+    row?.querySelector('input, select, button')?.focus({preventScroll: true});
+  }
+  widgetEditorFeedback.textContent = `Modification de la disposition ${widgetEditorOrientation === 'portrait' ? 'portrait' : 'paysage'}. Les changements sont enregistrés automatiquement.`;
+}
+
+function openWidgetEditor(focusWidget = '') {
+  if (typeof widgetEditorDialog.showModal !== 'function') {
+    say('L’éditeur de widgets n’est pas pris en charge par ce navigateur.');
+    return;
+  }
+  widgetEditorOrientation = orientation;
+  widgetLayoutMode.value = widgetEditorOrientation;
+  renderWidgetEditor();
+  if (!widgetEditorDialog.open) widgetEditorDialog.showModal();
+  if (focusWidget) {
+    const row = widgetEditorList.querySelector(`[data-editor-widget="${focusWidget}"]`);
+    row?.scrollIntoView({block: 'nearest'});
+    row?.querySelector('input, select, button')?.focus({preventScroll: true});
+  }
+}
+
+widgetsButton.addEventListener('click', () => openWidgetEditor());
+closeWidgetEditorButton.addEventListener('click', () => widgetEditorDialog.close());
+widgetEditorDialog.addEventListener('click', event => {
+  if (event.target === widgetEditorDialog) widgetEditorDialog.close();
+});
+widgetLayoutMode.addEventListener('change', () => {
+  widgetEditorOrientation = widgetLayoutMode.value;
+  renderWidgetEditor();
+});
+grid.addEventListener('click', event => {
+  const button = event.target.closest('[data-widget-edit]');
+  if (button) openWidgetEditor(button.dataset.widgetEdit);
+});
 
 function syncFullscreenButton() {
   const active = document.fullscreenElement === document.documentElement;

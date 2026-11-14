@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  APP_ID, LEGACY_STATE_KEY, RECOVERY_KEY, STATE_KEY, clearRecovery, createDefaultState,
+  APP_ID, LEGACY_STATE_KEY, OLDER_STATE_KEY, RECOVERY_KEY, STATE_KEY, clearRecovery, createDefaultState,
   exportJson, loadState, parseImportJson, readRecovery, saveState, validateState
 } from './storage.mjs';
 
@@ -26,7 +26,7 @@ test('default layouts are distinct, complete and independently editable', () => 
 test('defaults persist only under nexus.* and reload without loss', () => {
   const storage = new MemoryStorage();
   const loaded = loadState(storage, fixedDate);
-  assert.equal(loaded.state.schemaVersion, 2);
+  assert.equal(loaded.state.schemaVersion, 3);
   assert.equal(storage.getItem(STATE_KEY) !== null, true);
   assert.equal([...storage.values.keys()].every(key => key.startsWith('nexus.')), true);
   const changed = {...loaded.state, preferences: {timeFormat: '12'}};
@@ -73,7 +73,7 @@ test('corrupt local data is preserved in the recovery namespace and defaults rem
   const corrupt = '{broken nexus data';
   storage.setItem(STATE_KEY, corrupt);
   const result = loadState(storage, fixedDate);
-  assert.equal(result.state.schemaVersion, 2);
+  assert.equal(result.state.schemaVersion, 3);
   assert.equal(result.recoverySaved, true);
   assert.equal(readRecovery(storage).raw, corrupt);
   assert.equal(storage.getItem(STATE_KEY), corrupt);
@@ -94,37 +94,63 @@ test('unknown stored schema is quarantined rather than silently overwritten', ()
 test('storage failures return a clear warning without throwing', () => {
   const unavailable = {getItem() { throw new Error('denied'); }};
   const result = loadState(unavailable, fixedDate);
-  assert.equal(result.state.schemaVersion, 2);
+  assert.equal(result.state.schemaVersion, 3);
   assert.match(result.warning, /inaccessible/i);
   const full = {setItem() { throw new Error('quota'); }};
   assert.equal(saveState(full, createDefaultState(fixedDate), fixedDate).ok, false);
 });
 
-test('v1 settings migrate to v2 while retaining both layouts and the hour preference', () => {
+test('v1 settings migrate to v3 while retaining both layouts and the hour preference', () => {
   const storage = new MemoryStorage();
   const previous = createDefaultState(fixedDate);
   previous.schemaVersion = 1;
   delete previous.widgets;
   previous.preferences.timeFormat = '12';
   previous.layouts.portrait.order.reverse();
-  storage.setItem(LEGACY_STATE_KEY, JSON.stringify(previous));
+  for (const layout of Object.values(previous.layouts)) {
+    for (const widget of Object.values(layout.widgets)) delete widget.size;
+  }
+  storage.setItem(OLDER_STATE_KEY, JSON.stringify(previous));
   const migrated = loadState(storage, fixedDate);
-  assert.equal(migrated.state.schemaVersion, 2);
+  assert.equal(migrated.state.schemaVersion, 3);
   assert.equal(migrated.state.preferences.timeFormat, '12');
   assert.deepEqual(migrated.state.layouts.portrait.order, previous.layouts.portrait.order);
   assert.deepEqual(migrated.state.layouts.landscape.order, previous.layouts.landscape.order);
-  assert.equal(storage.getItem(LEGACY_STATE_KEY), null);
+  assert.equal(storage.getItem(OLDER_STATE_KEY), null);
   assert.notEqual(storage.getItem(STATE_KEY), null);
+});
+
+test('v2 settings migrate to v3 while preserving weather, fragments and both layouts', () => {
+  const storage = new MemoryStorage();
+  const previous = createDefaultState(fixedDate);
+  previous.schemaVersion = 2;
+  for (const layout of Object.values(previous.layouts)) {
+    for (const widget of Object.values(layout.widgets)) delete widget.size;
+  }
+  previous.widgets.weather = {city: 'Quillan, Occitanie, France', latitude: 42.87, longitude: 2.18};
+  previous.widgets.fragments.customQuotes = [{id: 'q1', text: 'Une phrase à garder'}];
+  previous.layouts.landscape.order.reverse();
+  storage.setItem(LEGACY_STATE_KEY, JSON.stringify(previous));
+  const migrated = loadState(storage, fixedDate);
+  assert.equal(migrated.state.schemaVersion, 3);
+  assert.equal(migrated.state.widgets.weather.city, 'Quillan, Occitanie, France');
+  assert.deepEqual(migrated.state.widgets.fragments.customQuotes, previous.widgets.fragments.customQuotes);
+  assert.equal(migrated.state.layouts.portrait.widgets.weather.size, 'standard');
+  assert.deepEqual(migrated.state.layouts.landscape.order, previous.layouts.landscape.order);
+  assert.equal(storage.getItem(LEGACY_STATE_KEY), null);
 });
 
 test('v1 exports can be imported and migrated before restoration', () => {
   const legacy = createDefaultState(fixedDate);
   legacy.schemaVersion = 1;
   delete legacy.widgets;
+  for (const layout of Object.values(legacy.layouts)) {
+    for (const widget of Object.values(layout.widgets)) delete widget.size;
+  }
   const result = parseImportJson(JSON.stringify({
     format: APP_ID, schemaVersion: 1, exportedAt: fixedDate.toISOString(), data: legacy
   }));
   assert.equal(result.ok, true);
-  assert.equal(result.state.schemaVersion, 2);
+  assert.equal(result.state.schemaVersion, 3);
   assert.equal(result.state.widgets.fragments.intervalSeconds, 60);
 });

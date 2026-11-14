@@ -15,7 +15,9 @@ export function applyLayout(grid, layouts, orientation) {
   for (const id of layout.order) {
     const card = cards.get(id);
     card.hidden = !layout.widgets[id].visible;
-    card.dataset.layoutSpan = String(layout.widgets[id].span);
+    const maxColumns = orientation === 'landscape' ? 3 : 2;
+    card.dataset.layoutSpan = String(Math.min(layout.widgets[id].span, maxColumns));
+    card.dataset.layoutSize = layout.widgets[id].size || 'standard';
     grid.append(card);
   }
   grid.dataset.orientation = orientation;
